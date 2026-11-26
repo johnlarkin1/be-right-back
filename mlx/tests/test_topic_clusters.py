@@ -47,9 +47,7 @@ class TestChunkText:
         assert "second line of my message" in chunk_dialogue(data, "Riley Chen")
 
     def test_extract_words_drops_laughs_names_and_stop_words(self):
-        counts = extract_words(
-            "Hahahaha yeahhh lolol Riley we're getting ramen, RAMEN", {"riley"}
-        )
+        counts = extract_words("Hahahaha yeahhh lolol Riley we're getting ramen, RAMEN", {"riley"})
         assert counts == {"ramen": 2}
 
     def test_links_are_not_words(self):
