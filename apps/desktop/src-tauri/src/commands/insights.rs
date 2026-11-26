@@ -7,9 +7,7 @@
 //! - 3D/2D embedding visualization (UMAP coordinates + Leiden clusters)
 
 use crate::queries;
-use ingestion::tapbacks::{
-    ReactedMessage, TapbackContact, TapbackEmoji, TapbackMonth, TapbackSummary, TapbackWindow,
-};
+use ingestion::tapbacks::{ReactedMessage, TapbackContact, TapbackEmoji, TapbackMonth, TapbackSummary, TapbackWindow};
 use ingestion::{DuckDbConnection, MetadataDb, VectorDb};
 use serde::{Deserialize, Serialize};
 use tracing::info;
@@ -431,10 +429,7 @@ pub async fn get_day_details(date: String, end_date: Option<String>) -> Result<D
 
 /// Tapback totals and kind mix. With `contact_id`, only Tapbacks between you and that person.
 #[tauri::command]
-pub async fn get_tapback_summary(
-    window: TapbackWindow,
-    contact_id: Option<String>,
-) -> Result<TapbackSummary, String> {
+pub async fn get_tapback_summary(window: TapbackWindow, contact_id: Option<String>) -> Result<TapbackSummary, String> {
     let db = MetadataDb::open().map_err(|e| format!("Failed to open metadata db: {}", e))?;
     db.tapback_summary(contact_id.as_deref(), window)
         .map_err(|e| format!("Failed to read tapbacks: {}", e))
