@@ -1,0 +1,6 @@
+# Ignore large bundled binaries (generated during build)
+binaries/
+mlx/
+
+# These will be downloaded/copied by build scripts
+# See scripts/download-*.sh and scripts/copy-mlx.sh

@@ -1,0 +1,44 @@
+{
+  "editor.formatOnSave": true,
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  "rust-analyzer.diagnostics.enable": true,
+  "rust-analyzer.lens.enable": true,
+  "cSpell.words": [
+    "abcddb",
+    "ADDRESSBOOK",
+    "executemany",
+    "eyeroll",
+    "hdbscan",
+    "hnsw",
+    "kmeans",
+    "linalg",
+    "modernbert",
+    "nomic",
+    "nomicai",
+    "phonenumber",
+    "Riemannian",
+    "streamtyped",
+    "subclusters",
+    "tauri",
+    "tinyllama",
+    "umap",
+    "Unarchiver",
+    "uncanonicalized",
+    "Uncategorized",
+    "ZABCDPHONENUMBER",
+    "ZABCDRECORD",
+    "ZFIRSTNAME",
+    "ZFULLNUMBER",
+    "ZLASTNAME",
+    "ZOWNER"
+  ]
+}

@@ -1,0 +1,36 @@
+[package]
+name = "messages-db"
+version = "0.1.0"
+edition = "2024"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+# Workspace crates
+common = { path = "../common" }
+
+# Database
+rusqlite = { workspace = true }
+phonenumber = "0.3"
+
+# macOS integration
+objc = "0.2.7"
+objc-foundation = "0.1.1"
+
+# Text processing
+unicode-normalization = "0.1.25"
+
+# Serialization
+serde = { workspace = true }
+
+# Date/time
+chrono = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Utilities
+dirs = { workspace = true }

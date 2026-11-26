@@ -1,0 +1,50 @@
+[workspace]
+members = [
+  "crates/common",
+  "crates/messages-db",
+  "crates/training",
+  "crates/personas",
+  "crates/inference",
+  "crates/ingestion",
+  "apps/cli",
+  "apps/desktop/src-tauri",
+]
+# apps/collab is a Linux server with its own workspace and lockfile.
+exclude = ["apps/collab"]
+resolver = "2"
+
+# Shared package metadata. Crates opt in with `license.workspace = true` etc.
+# PolyForm-Noncommercial-1.0.0 is a listed SPDX identifier, so the machine-readable
+# `license` field is preferred over `license-file` (full text still lives in LICENSE).
+[workspace.package]
+# Edition 2024 alone only implies 1.85. The real floor is higher: `is_multiple_of` needs 1.87 and
+# `str::floor_char_boundary` (agent/mod.rs) needs 1.91. Declaring it turns on clippy's
+# `incompatible_msrv` lint, which is how that second one was found -- otherwise the first report
+# would have been a user on an older toolchain hitting a compile error deep in a build.
+# This is a floor only; CI still tracks stable, so new clippy lints can still appear.
+rust-version = "1.91"
+license = "PolyForm-Noncommercial-1.0.0"
+authors = ["John Larkin <john@berightback.xyz>"]
+repository = "https://github.com/johnlarkin1/be-right-back"
+homepage = "https://berightback.xyz"
+
+[workspace.dependencies]
+ts-rs = "12"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+dirs = "6.0"
+duckdb = { version = "= 1.20001.0", features = ["bundled", "chrono"] }
+thiserror = "2.0"
+anyhow = "1.0"
+tracing = "0.1"
+tokio = { version = "1" }
+sysinfo = { version = "0.37", default-features = false, features = ["system"] }
+rusqlite = { version = "0.43.0", features = ["bundled"] }
+regex = "1.11"
+strum = "0.27"
+strum_macros = "0.27"
+
+# The exact vector scan in `embedding_matrix.rs` takes ~1.6s per search unoptimized.
+[profile.dev.package.ingestion]
+opt-level = 3

@@ -1,0 +1,31 @@
+{
+  "action": "check-indexes",
+  "indexes": [
+    {
+      "name": "idx_chunks_contact_time",
+      "table": "message_chunks",
+      "unique": false
+    },
+    {
+      "name": "idx_chunks_end_timestamp",
+      "table": "message_chunks",
+      "unique": false
+    },
+    {
+      "name": "idx_chunks_hnsw",
+      "table": "message_chunks",
+      "unique": false
+    },
+    {
+      "name": "idx_chunks_ingestion",
+      "table": "message_chunks",
+      "unique": false
+    },
+    {
+      "name": "idx_chunks_timestamp",
+      "table": "message_chunks",
+      "unique": false
+    }
+  ],
+  "fts_exists": false
+}

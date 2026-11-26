@@ -1,0 +1,119 @@
+[
+  {
+    "id": "japan-planning",
+    "title": "Planning the Japan trip",
+    "contact": "jordan",
+    "days": [
+      {
+        "day_offset": -505,
+        "slot": "evening",
+        "messages": [
+          { "from": "jordan", "text": "ok I've been thinking about this all day. what if we actually did japan in the spring" },
+          { "from": "me", "text": "wait seriously" },
+          { "from": "jordan", "text": "seriously. flights are weirdly cheap right now and I have the vacation days banked" },
+          { "from": "me", "text": "ok I'm in. how long are we thinking" },
+          { "from": "jordan", "text": "two weeks? tokyo, kyoto, maybe a couple days somewhere quiet" },
+          { "from": "me", "text": "let's do it" }
+        ]
+      },
+      {
+        "day_offset": -488,
+        "slot": "night",
+        "messages": [
+          { "from": "jordan", "text": "booked the flights!! we leave march 14 and come back the 28th" },
+          { "from": "me", "text": "oh my god it's real" },
+          { "from": "jordan", "text": "$1,180 each, which honestly for those dates is a steal" },
+          { "from": "me", "text": "you are extremely good at this" }
+        ]
+      },
+      {
+        "day_offset": -462,
+        "slot": "evening",
+        "messages": [
+          { "from": "jordan", "text": "so for the quiet few days — I found a ryokan and I think it's the one" },
+          { "from": "me", "text": "show me" },
+          { "from": "jordan", "text": "we booked the Hoshinoya in Kyoto for the third night, the one with the private onsen looking over the river", "fact": "ryokan-name" },
+          { "from": "me", "text": "that looks unreal" },
+          { "from": "jordan", "text": "it was the splurge of the whole trip and I regret nothing" }
+        ]
+      },
+      {
+        "day_offset": -440,
+        "slot": "lunch",
+        "messages": [
+          { "from": "me", "text": "hey do we need to sort out the rail pass before we go or can we do it there" },
+          { "from": "jordan", "text": "before. I'll order them this week, they mail you a voucher" },
+          { "from": "me", "text": "amazing thank you" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "japan-food-recs",
+    "title": "Maya's food recommendations before Japan",
+    "contact": "maya",
+    "days": [
+      {
+        "day_offset": -470,
+        "slot": "evening",
+        "messages": [
+          { "from": "me", "text": "you did tokyo two years ago right. give me your list" },
+          { "from": "maya", "text": "oh I have been WAITING for this" },
+          { "from": "maya", "text": "you have to get the black cod at Nobu, it genuinely rearranged my brain chemistry", "fact": "nobu-black-cod" },
+          { "from": "me", "text": "noted" },
+          { "from": "maya", "text": "book it early though, they fill up like a month out" }
+        ]
+      },
+      {
+        "day_offset": -455,
+        "slot": "night",
+        "messages": [
+          { "from": "maya", "text": "oh also — skip the conveyor belt spot everyone posts about near the station, it's a tourist trap and I'm still bitter", "distractor_for": "nobu-black-cod" },
+          { "from": "me", "text": "lol noted, avoiding" },
+          { "from": "maya", "text": "protecting you from my own mistakes 😤" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "japan-trip-itself",
+    "title": "The trip",
+    "contact": "jordan",
+    "days": [
+      {
+        "day_offset": -400,
+        "slot": "morning",
+        "messages": [
+          { "from": "jordan", "text": "we are ON THE PLANE. 14 hours. see you on the other side of the international date line" },
+          { "from": "me", "text": "godspeed" }
+        ]
+      },
+      {
+        "day_offset": -394,
+        "slot": "night",
+        "messages": [
+          { "from": "me", "text": "ok that kaiseki dinner tonight was 280 a head which is by a mile the most we have ever spent on a single meal", "fact": "most-expensive-meal" },
+          { "from": "jordan", "text": "worth every yen and I will not be taking questions" },
+          { "from": "me", "text": "no argument here. fourteen courses" },
+          { "from": "jordan", "text": "the one with the persimmon. I'm still thinking about the one with the persimmon" }
+        ]
+      },
+      {
+        "day_offset": -391,
+        "slot": "evening",
+        "messages": [
+          { "from": "jordan", "text": "the onsen at the ryokan at 6am with the mist coming off the water might be the best thing I've ever done" },
+          { "from": "me", "text": "genuinely peak human experience" }
+        ]
+      },
+      {
+        "day_offset": -386,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "me", "text": "maya was right about the black cod by the way. she was so right" },
+          { "from": "jordan", "text": "I'm texting her immediately" }
+        ]
+      }
+    ]
+  }
+]

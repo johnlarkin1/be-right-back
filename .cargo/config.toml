@@ -1,0 +1,16 @@
+[build]
+rustflags = ["--check-cfg=cfg(feature, values(\"cargo-clippy\"))"]
+
+[env]
+MACOSX_DEPLOYMENT_TARGET = "14.0"
+
+# ts-rs defaults i64/u64 to `bigint`, which is correct for Rust's range but wrong
+# for this boundary: Tauri IPC is JSON, so serde writes a JSON number and the
+# frontend receives a JS `number`. Emitting `bigint` would describe a runtime
+# value that never exists.
+TS_RS_LARGE_INT = "number"
+
+# All bindings land in one directory so ts-rs emits "./ingestion" style imports
+# between them. Without this each crate writes a path relative to its own
+# manifest, and the cross-file imports do not resolve from the frontend.
+TS_RS_EXPORT_DIR = { value = "apps/desktop/src/bindings", relative = true }

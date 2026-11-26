@@ -1,0 +1,90 @@
+[
+  {
+    "id": "apartment-hunt",
+    "title": "Finding the new apartment",
+    "contact": "jordan",
+    "days": [
+      {
+        "day_offset": -300,
+        "slot": "evening",
+        "messages": [
+          { "from": "jordan", "text": "our lease is up in three months and I think I want to actually move this time" },
+          { "from": "me", "text": "agreed. I cannot do another winter with that radiator" },
+          { "from": "jordan", "text": "ok so what's the budget we're actually comfortable with" },
+          { "from": "me", "text": "honestly if we can stay under 3k all in I'd be happy" }
+        ]
+      },
+      {
+        "day_offset": -284,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "jordan", "text": "saw two today. one was a shoebox with great light, one was huge and smelled like a basement" },
+          { "from": "me", "text": "lol which one are you leaning toward" },
+          { "from": "jordan", "text": "the shoebox obviously, I'm a woman of taste" },
+          { "from": "me", "text": "for the record our old place was 2,400 and I still thought that was steep", "distractor_for": "rent-amount" }
+        ]
+      },
+      {
+        "day_offset": -271,
+        "slot": "evening",
+        "messages": [
+          { "from": "jordan", "text": "WE GOT IT" },
+          { "from": "me", "text": "NO WAY" },
+          { "from": "jordan", "text": "we got it — 411 Vanderbilt, apartment 3R. third floor, the one with the bay window", "fact": "apartment-address" },
+          { "from": "jordan", "text": "it's $2,850 a month, utilities not included, and we have to put down first, last and one month security", "fact": "rent-amount" },
+          { "from": "me", "text": "that's a lot of money at once but ok. worth it" },
+          { "from": "jordan", "text": "worth it worth it worth it" }
+        ]
+      },
+      {
+        "day_offset": -248,
+        "slot": "morning",
+        "messages": [
+          { "from": "me", "text": "moving day. the truck is here and I have made a terrible mistake by not hiring movers" },
+          { "from": "jordan", "text": "I warned you about the couch" },
+          { "from": "me", "text": "you warned me about the couch" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "landlord-repairs",
+    "title": "Building issues with Theo",
+    "contact": "theo",
+    "days": [
+      {
+        "day_offset": -244,
+        "slot": "morning",
+        "messages": [
+          { "from": "theo", "text": "Hi Alex, welcome to the building. My number is the best way to reach me for anything urgent." },
+          { "from": "me", "text": "thanks theo, appreciate it" }
+        ]
+      },
+      {
+        "day_offset": -196,
+        "slot": "morning",
+        "messages": [
+          { "from": "me", "text": "hey theo, no hot water in 3R since last night" },
+          { "from": "theo", "text": "Apologies — the boiler is out for the whole building. The plumber is scheduled for Thursday morning.", "fact": "boiler-broken" },
+          { "from": "me", "text": "ok thanks for the heads up" }
+        ]
+      },
+      {
+        "day_offset": -104,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "me", "text": "hi theo — the window in the back bedroom won't latch, think the frame shifted" },
+          { "from": "theo", "text": "I'll have someone come by next week to take a look." }
+        ]
+      },
+      {
+        "day_offset": -19,
+        "slot": "morning",
+        "messages": [
+          { "from": "theo", "text": "Heads up: the water will be shut off Tuesday between 9am and 2pm for a riser repair on the second floor.", "fact": "water-shutoff" },
+          { "from": "me", "text": "good to know, thanks" }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,229 @@
+/* ============================================
+   SEMANTIC TOKENS
+   Use these in components - they adapt to theme
+   Defaults are set to retro theme values
+   ============================================ */
+
+:root {
+  /* ============================================
+     SURFACES
+     ============================================ */
+
+  --color-surface: var(--primitive-crt-bg);
+  --color-surface-elevated: var(--primitive-crt-bg-light);
+  --color-surface-overlay: rgba(0, 0, 0, 0.8);
+  --color-surface-card: rgba(24, 24, 27, 0.4);
+  --color-surface-tooltip: rgba(24, 24, 27, 0.95);
+  --color-surface-input: transparent;
+
+  /* ============================================
+     TEXT
+     ============================================ */
+
+  --color-text-primary: var(--primitive-zinc-50);
+  --color-text-secondary: var(--primitive-zinc-400);
+  --color-text-muted: var(--primitive-zinc-500);
+  --color-text-inverse: var(--primitive-zinc-950);
+  --color-text-accent: var(--primitive-crt-green);
+  --color-text-accent-secondary: var(--primitive-crt-amber);
+
+  /* ============================================
+     ACCENT COLORS
+     ============================================ */
+
+  --color-accent: var(--primitive-crt-green);
+  --color-accent-dim: var(--primitive-crt-green-dim);
+  --color-accent-subtle: var(--primitive-crt-green-faint);
+  --color-accent-secondary: var(--primitive-crt-amber);
+  --color-accent-secondary-dim: var(--primitive-crt-amber-dim);
+  --color-accent-secondary-subtle: var(--primitive-crt-amber-faint);
+
+  /* ============================================
+     BORDERS
+     ============================================ */
+
+  --color-border: rgba(39, 39, 42, 0.8);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-accent: var(--primitive-crt-green-subtle);
+  --color-border-accent-secondary: var(--primitive-crt-amber-subtle);
+  --color-border-tooltip: var(--primitive-zinc-700);
+
+  /* ============================================
+     STATUS COLORS
+     ============================================ */
+
+  --color-success: var(--primitive-crt-green);
+  --color-warning: var(--primitive-crt-amber);
+  --color-error: var(--primitive-crt-error);
+  --color-info: var(--primitive-crt-cyan-solid);
+
+  /* ============================================
+     GHOST COLORS
+     ============================================ */
+
+  --color-ghost-green: var(--primitive-ghost-green);
+  --color-ghost-pink: var(--primitive-ghost-pink);
+  --color-ghost-pink-hover: var(--primitive-ghost-pink-hover);
+  --color-ghost-pink-active: var(--primitive-ghost-pink-active);
+  --color-ghost-magenta: var(--primitive-ghost-magenta);
+  --color-ghost-purple: var(--primitive-ghost-purple);
+  --color-ghost-cyan: var(--primitive-ghost-cyan);
+  --color-ghost-amber: var(--primitive-ghost-amber);
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  --font-display: var(--primitive-font-vt323);
+  --font-body: var(--primitive-font-ibm-plex);
+  --font-mono: var(--primitive-font-ibm-plex);
+  --font-terminal: var(--primitive-font-vt323);
+
+  /* ============================================
+     SPACING (Semantic)
+     ============================================ */
+
+  --space-section: var(--primitive-space-8);
+  --space-element: var(--primitive-space-4);
+  --space-inline: var(--primitive-space-2);
+  --space-tight: var(--primitive-space-1);
+
+  /* ============================================
+     BORDER RADII (Semantic)
+     ============================================ */
+
+  --radius-card: var(--primitive-radius-lg);
+  --radius-button: var(--primitive-radius-md);
+  --radius-input: var(--primitive-radius-sm);
+  --radius-badge: var(--primitive-radius-full);
+  --radius-modal: var(--primitive-radius-xl);
+
+  /* ============================================
+     SHADOWS & EFFECTS
+     ============================================ */
+
+  --shadow-card: var(--primitive-shadow-md);
+  --shadow-elevated: var(--primitive-shadow-lg);
+  --shadow-modal: var(--primitive-shadow-xl);
+  --shadow-glow: var(--primitive-shadow-glow-green);
+  --shadow-glow-strong: var(--primitive-shadow-glow-green-strong);
+
+  /* Text Glow Effects */
+  --text-glow: 0 0 8px currentColor;
+  --text-glow-strong:
+    0 0 4px currentColor, 0 0 8px currentColor, 0 0 16px currentColor;
+  --text-glow-none: none;
+
+  /* Box Glow Effects */
+  --box-glow:
+    0 0 8px var(--primitive-crt-green-glow),
+    inset 0 0 8px var(--primitive-crt-green-faint);
+  --box-glow-none: none;
+
+  /* ============================================
+     TRANSITIONS
+     ============================================ */
+
+  --transition-fast: var(--primitive-duration-fast)
+    var(--primitive-ease-default);
+  --transition-normal: var(--primitive-duration-normal)
+    var(--primitive-ease-default);
+  --transition-slow: var(--primitive-duration-slow)
+    var(--primitive-ease-default);
+
+  /* ============================================
+     Z-INDEX (Semantic)
+     ============================================ */
+
+  --z-dropdown: var(--primitive-z-dropdown);
+  --z-sticky: var(--primitive-z-sticky);
+  --z-modal-backdrop: var(--primitive-z-modal-backdrop);
+  --z-modal: var(--primitive-z-modal);
+  --z-tooltip: var(--primitive-z-tooltip);
+  --z-crt-glow: var(--primitive-z-crt-glow);
+  --z-crt-vignette: var(--primitive-z-crt-vignette);
+  --z-crt-scanlines: var(--primitive-z-crt-scanlines);
+
+  /* ============================================
+     COMPONENT-SPECIFIC TOKENS
+     ============================================ */
+
+  /* Message Bubbles */
+  --message-user-bg: var(--primitive-crt-green-faint);
+  --message-user-border: var(--primitive-crt-green-subtle);
+  --message-user-text: var(--primitive-crt-green);
+  --message-persona-bg: var(--primitive-crt-amber-faint);
+  --message-persona-border: var(--primitive-crt-amber-subtle);
+  --message-persona-text: var(--primitive-crt-amber);
+
+  /* Navigation */
+  --nav-item-active-bg: var(--primitive-crt-green-faint);
+  --nav-item-hover-bg: rgba(0, 255, 65, 0.05);
+  --nav-item-active-text: var(--primitive-crt-green);
+  --nav-item-inactive-text: var(--primitive-crt-green-dim);
+
+  /* Input Fields */
+  --input-bg: transparent;
+  --input-border: var(--color-border);
+  --input-focus-border: var(--color-accent);
+  --input-text: var(--primitive-crt-green);
+  --input-caret: var(--primitive-crt-green);
+
+  /* Cards */
+  --card-bg: var(--color-surface-card);
+  --card-border: var(--color-border);
+
+  /* TopBar */
+  --topbar-bg: linear-gradient(
+    180deg,
+    rgba(10, 14, 10, 0.95),
+    rgba(10, 14, 10, 0.85)
+  );
+  --topbar-border: var(--color-border);
+  --topbar-height: 52px;
+
+  /* Hub Button (Ghost Home) */
+  --hub-button-color: var(--primitive-ghost-pink);
+  --hub-button-hover: var(--primitive-ghost-pink-hover);
+  --hub-button-active: var(--primitive-ghost-pink-active);
+
+  /* Insights */
+  --insights-gradient-start: var(--primitive-mint-400);
+  --insights-gradient-end: var(--primitive-violet-500);
+  --insights-you-color: var(--primitive-crt-green);
+  --insights-them-color: var(--primitive-sky-400);
+
+  /* Page type scale */
+  --text-page-title-size: 44px;
+  --text-page-title-weight: 400;
+  --text-section-title-size: 22px;
+  --text-section-title-weight: 400;
+  --text-stat-size: 40px;
+  --text-stat-weight: 400;
+
+  /* Charts: categorical palette for series such as topics */
+  --chart-cat-1: #00ff41;
+  --chart-cat-2: #ffb000;
+  --chart-cat-3: #22d3ee;
+  --chart-cat-4: #ff6b35;
+  --chart-cat-5: #a3e635;
+  --chart-cat-6: #60a5fa;
+  --chart-cat-7: #fde047;
+  --chart-cat-8: #2dd4bf;
+  --chart-other: var(--primitive-zinc-700);
+  --chart-grid: rgba(0, 255, 65, 0.18);
+
+  /* Hover fill for list rows and quiet buttons */
+  --color-surface-hover: rgba(0, 255, 65, 0.05);
+
+  /* CRT Effect Toggles */
+  --crt-scanline-opacity: 0.15;
+  --crt-vignette-opacity: 0.4;
+  --crt-glow-opacity: 0.03;
+  --show-crt-effects: 1;
+
+  /* Scrollbar */
+  --scrollbar-track: var(--color-surface-elevated);
+  --scrollbar-thumb: var(--primitive-crt-green-dim);
+  --scrollbar-thumb-hover: var(--primitive-crt-green);
+}

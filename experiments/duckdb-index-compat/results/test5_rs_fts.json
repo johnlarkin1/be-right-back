@@ -1,0 +1,153 @@
+{
+  "action": "query-fts",
+  "language": "rust",
+  "results": [
+    {
+      "num_results": 4,
+      "query_id": "fts1",
+      "query_text": "hello world",
+      "results": [
+        {
+          "chunk_id": 0,
+          "score": 1.295476879496524
+        },
+        {
+          "chunk_id": 30,
+          "score": 1.295476879496524
+        },
+        {
+          "chunk_id": 60,
+          "score": 1.295476879496524
+        },
+        {
+          "chunk_id": 90,
+          "score": 1.295476879496524
+        }
+      ]
+    },
+    {
+      "num_results": 6,
+      "query_id": "fts2",
+      "query_text": "weather forecast",
+      "results": [
+        {
+          "chunk_id": 79,
+          "score": 2.2847034549726133
+        },
+        {
+          "chunk_id": 19,
+          "score": 2.2847034549726133
+        },
+        {
+          "chunk_id": 49,
+          "score": 2.2847034549726133
+        },
+        {
+          "chunk_id": 25,
+          "score": 1.9962914892702008
+        },
+        {
+          "chunk_id": 55,
+          "score": 1.9962914892702008
+        },
+        {
+          "chunk_id": 85,
+          "score": 1.9962914892702008
+        }
+      ]
+    },
+    {
+      "num_results": 10,
+      "query_id": "fts3",
+      "query_text": "dinner restaurant",
+      "results": [
+        {
+          "chunk_id": 70,
+          "score": 2.1219373548623364
+        },
+        {
+          "chunk_id": 10,
+          "score": 2.1219373548623364
+        },
+        {
+          "chunk_id": 40,
+          "score": 2.1219373548623364
+        },
+        {
+          "chunk_id": 56,
+          "score": 1.9686550995147076
+        },
+        {
+          "chunk_id": 86,
+          "score": 1.9686550995147076
+        },
+        {
+          "chunk_id": 26,
+          "score": 1.9686550995147076
+        },
+        {
+          "chunk_id": 12,
+          "score": 1.150552297816575
+        },
+        {
+          "chunk_id": 72,
+          "score": 1.150552297816575
+        },
+        {
+          "chunk_id": 74,
+          "score": 0.9843275497573538
+        },
+        {
+          "chunk_id": 44,
+          "score": 0.9843275497573538
+        }
+      ]
+    },
+    {
+      "num_results": 7,
+      "query_id": "fts4",
+      "query_text": "meeting tomorrow",
+      "results": [
+        {
+          "chunk_id": 27,
+          "score": 2.3156170036776147
+        },
+        {
+          "chunk_id": 57,
+          "score": 2.3156170036776147
+        },
+        {
+          "chunk_id": 87,
+          "score": 2.3156170036776147
+        },
+        {
+          "chunk_id": 6,
+          "score": 1.0827627641648767
+        },
+        {
+          "chunk_id": 66,
+          "score": 1.0827627641648767
+        },
+        {
+          "chunk_id": 36,
+          "score": 1.0827627641648767
+        },
+        {
+          "chunk_id": 96,
+          "score": 1.0827627641648767
+        }
+      ]
+    },
+    {
+      "num_results": 1,
+      "query_id": "fts5",
+      "query_text": "unique_token_xyz",
+      "results": [
+        {
+          "chunk_id": 42,
+          "score": 4.904567022350838
+        }
+      ]
+    }
+  ]
+}

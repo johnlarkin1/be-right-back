@@ -1,0 +1,30 @@
+<!-- @dsCard group="Actions" height=300 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; }
+  [data-theme="modern"] .only-retro { display: none !important; }
+  html:not([data-theme="modern"]) .only-modern { display: none !important; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .demo-note { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-secondary); margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<p class="demo-note">.btn .btn-primary / .btn .btn-secondary</p>
+<div class="demo-row" style="margin-bottom:20px">
+  <button class="btn btn-primary focus-ring">Start ingestion</button>
+  <button class="btn btn-secondary focus-ring">Cancel</button>
+</div>
+<p class="demo-note">.terminal-button</p>
+<div class="demo-row" style="margin-bottom:20px">
+  <button class="terminal-button focus-ring">[Re-analyze]</button>
+</div>
+<p class="demo-note">.settings-btn (modal footer)</p>
+<div class="settings-actions" style="max-width:360px;border-top:0;padding-top:0">
+  <button class="settings-btn settings-btn-secondary">Cancel</button>
+  <button class="settings-btn settings-btn-primary">Save</button>
+</div>
+</body>
+</html>

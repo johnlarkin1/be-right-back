@@ -1,0 +1,38 @@
+{
+  "now": "2026-02-09",
+  "note": "Ground truth date ranges relative to now=2026-02-09 (Monday). Set A = phrasings the regex planner has unit tests for (regex passes these by construction). Set B = paraphrases / world-knowledge the regex was never built for. match: crisp=exact day match required; fuzzy=+/-2 day tolerance on relative math; none=should extract NO date range (tests hallucination).",
+  "cases": [
+    {"id": "A-yesterday",        "set": "A", "query": "who did I text yesterday",                                "min": "2026-02-08", "max": "2026-02-08", "prefer_recent": true,  "match": "crisp"},
+    {"id": "A-today",            "set": "A", "query": "what happened today",                                    "min": "2026-02-09", "max": "2026-02-09", "prefer_recent": true,  "match": "crisp"},
+    {"id": "A-last-month",       "set": "A", "query": "what happened last month",                               "min": "2026-01-01", "max": "2026-01-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-this-month",       "set": "A", "query": "what happened this month",                               "min": "2026-02-01", "max": "2026-02-09", "prefer_recent": true,  "match": "crisp"},
+    {"id": "A-this-year",        "set": "A", "query": "what concerts did I go to this year",                    "min": "2026-01-01", "max": "2026-02-09", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-last-year",        "set": "A", "query": "what happened last year",                                "min": "2025-01-01", "max": "2025-12-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-in-2025",          "set": "A", "query": "who did I text the most in 2025",                        "min": "2025-01-01", "max": "2025-12-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-in-jan-2025",      "set": "A", "query": "what plans did I make in January 2025",                  "min": "2025-01-01", "max": "2025-01-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-in-december",      "set": "A", "query": "what plans did I make in December",                      "min": "2025-12-01", "max": "2025-12-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-in-january",       "set": "A", "query": "what happened in January",                               "min": "2026-01-01", "max": "2026-01-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-in-march",         "set": "A", "query": "what happened in March",                                 "min": "2025-03-01", "max": "2025-03-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-range-jan-jan",    "set": "A", "query": "where did I vacation from January 2025 to January 2026", "min": "2025-01-01", "max": "2026-01-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-this-winter",      "set": "A", "query": "who mentioned skiing this winter",                       "min": "2025-12-01", "max": "2026-02-28", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-last-summer",      "set": "A", "query": "what did we do last summer",                             "min": "2025-06-01", "max": "2025-08-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "A-last-5-days",      "set": "A", "query": "what happened in the last 5 days",                       "min": "2026-02-04", "max": "2026-02-09", "prefer_recent": true,  "match": "fuzzy"},
+    {"id": "A-past-2-weeks",     "set": "A", "query": "who texted me the past 2 weeks",                         "min": "2026-01-26", "max": "2026-02-09", "prefer_recent": true,  "match": "fuzzy"},
+    {"id": "A-last-3-months",    "set": "A", "query": "what happened last 3 months",                            "min": "2025-11-09", "max": "2026-02-09", "prefer_recent": true,  "match": "fuzzy"},
+    {"id": "A-recently",         "set": "A", "query": "what restaurant did someone recommend recently",         "min": "2026-01-10", "max": "2026-02-09", "prefer_recent": true,  "match": "fuzzy"},
+    {"id": "A-no-temporal",      "set": "A", "query": "what restaurants does mom like",                         "min": null,         "max": null,         "prefer_recent": false, "match": "none"},
+
+    {"id": "B-christmastime",    "set": "B", "query": "what was I chatting about around christmastime",          "min": "2025-12-15", "max": "2025-12-31", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-back-half",        "set": "B", "query": "stuff from the back half of last year",                  "min": "2025-07-01", "max": "2025-12-31", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-holidays",         "set": "B", "query": "what did we talk about over the holidays",               "min": "2025-12-20", "max": "2026-01-02", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-couple-months",    "set": "B", "query": "what was I up to a couple months ago",                   "min": "2025-12-01", "max": "2025-12-31", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-first-quarter",    "set": "B", "query": "conversations from the first quarter of 2025",            "min": "2025-01-01", "max": "2025-03-31", "prefer_recent": false, "match": "crisp"},
+    {"id": "B-thanksgiving-nye", "set": "B", "query": "what happened between thanksgiving and new years",        "min": "2025-11-27", "max": "2026-01-01", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-covid",            "set": "B", "query": "what were we saying when covid started",                  "min": "2020-03-01", "max": "2020-04-30", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-year-ago",         "set": "B", "query": "what was going on about a year ago",                      "min": "2025-01-25", "max": "2025-02-25", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-early-this-week",  "set": "B", "query": "what did I say earlier this week",                        "min": "2026-02-09", "max": "2026-02-09", "prefer_recent": true,  "match": "fuzzy"},
+    {"id": "B-summer-before",    "set": "B", "query": "messages from the summer before last",                   "min": "2024-06-01", "max": "2024-08-31", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-turn-of-year",     "set": "B", "query": "what were we planning right around the turn of the year", "min": "2025-12-26", "max": "2026-01-05", "prefer_recent": false, "match": "fuzzy"},
+    {"id": "B-unknowable",       "set": "B", "query": "anything from my birthday last year",                     "min": null,         "max": null,         "prefer_recent": false, "match": "none"}
+  ]
+}

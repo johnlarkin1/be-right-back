@@ -1,0 +1,10 @@
+[project]
+name = "duckdb-index-compat"
+version = "0.1.0"
+description = "DuckDB HNSW/FTS index cross-language compatibility experiment"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb==2.0.1",
+    "numpy>=1.26.0",
+    "pyarrow>=15.0.0",
+]

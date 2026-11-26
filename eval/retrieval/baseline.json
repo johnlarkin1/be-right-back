@@ -1,0 +1,25 @@
+{
+  "embed_model": "mlx-community/nomicai-modernbert-embed-base-8bit",
+  "frozen_now": "2026-07-27T04:00:00+00:00",
+  "ranks": {
+    "agg-001": 0,
+    "cross-001": 0,
+    "cross-002": 0,
+    "fact-001": 1,
+    "fact-002": 1,
+    "fact-003": 1,
+    "fact-004": 1,
+    "fact-005": 1,
+    "recent-001": 3,
+    "recent-002": 1,
+    "sem-001": 2,
+    "sem-002": 1,
+    "sem-003": 2,
+    "sem-004": 1,
+    "sem-005": 1,
+    "super-001": 1,
+    "super-002": 4,
+    "temp-001": 1,
+    "temp-002": 0
+  }
+}

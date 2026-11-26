@@ -1,0 +1,312 @@
+[
+  {
+    "id": "A-yesterday",
+    "latency_s": 0.02,
+    "max": "2026-02-08",
+    "min": "2026-02-08",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "who did I text yesterday",
+    "result_count": 7
+  },
+  {
+    "id": "A-today",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-02-09",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what happened today",
+    "result_count": 7
+  },
+  {
+    "id": "A-last-month",
+    "latency_s": 0.0,
+    "max": "2026-01-31",
+    "min": "2026-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what happened last month",
+    "result_count": 7
+  },
+  {
+    "id": "A-this-month",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-02-01",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what happened this month",
+    "result_count": 7
+  },
+  {
+    "id": "A-this-year",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what concerts did I go to this year",
+    "result_count": 7
+  },
+  {
+    "id": "A-last-year",
+    "latency_s": 0.0,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what happened last year",
+    "result_count": 7
+  },
+  {
+    "id": "A-in-2025",
+    "latency_s": 0.0,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "who did I text the most in 2025",
+    "result_count": 20
+  },
+  {
+    "id": "A-in-jan-2025",
+    "latency_s": 0.0,
+    "max": "2025-01-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what plans did I make in January 2025",
+    "result_count": 7
+  },
+  {
+    "id": "A-in-december",
+    "latency_s": 0.0,
+    "max": "2025-12-31",
+    "min": "2025-12-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what plans did I make in December",
+    "result_count": 7
+  },
+  {
+    "id": "A-in-january",
+    "latency_s": 0.0,
+    "max": "2026-01-31",
+    "min": "2026-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what happened in January",
+    "result_count": 7
+  },
+  {
+    "id": "A-in-march",
+    "latency_s": 0.0,
+    "max": "2025-03-31",
+    "min": "2025-03-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what happened in March",
+    "result_count": 7
+  },
+  {
+    "id": "A-range-jan-jan",
+    "latency_s": 0.0,
+    "max": "2026-01-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "where did I vacation from January 2025 to January 2026",
+    "result_count": 7
+  },
+  {
+    "id": "A-this-winter",
+    "latency_s": 0.0,
+    "max": "2026-02-28",
+    "min": "2025-12-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "who mentioned skiing this winter",
+    "result_count": 7
+  },
+  {
+    "id": "A-last-summer",
+    "latency_s": 0.0,
+    "max": "2025-08-31",
+    "min": "2025-06-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what did we do last summer",
+    "result_count": 7
+  },
+  {
+    "id": "A-last-5-days",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-02-04",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what happened in the last 5 days",
+    "result_count": 7
+  },
+  {
+    "id": "A-past-2-weeks",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-01-26",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "who texted me the past 2 weeks",
+    "result_count": 7
+  },
+  {
+    "id": "A-last-3-months",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2025-11-11",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what happened last 3 months",
+    "result_count": 7
+  },
+  {
+    "id": "A-recently",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-01-10",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what restaurant did someone recommend recently",
+    "result_count": 7
+  },
+  {
+    "id": "A-no-temporal",
+    "latency_s": 0.01,
+    "max": null,
+    "min": null,
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what restaurants does mom like",
+    "result_count": 7
+  },
+  {
+    "id": "B-christmastime",
+    "latency_s": 1.65,
+    "max": "2026-01-05",
+    "min": "2025-12-15",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what was I chatting about around christmastime",
+    "result_count": 7
+  },
+  {
+    "id": "B-back-half",
+    "latency_s": 0.0,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "stuff from the back half of last year",
+    "result_count": 7
+  },
+  {
+    "id": "B-holidays",
+    "latency_s": 1.04,
+    "max": "2026-01-01",
+    "min": "2025-12-25",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what did we talk about over the holidays",
+    "result_count": 7
+  },
+  {
+    "id": "B-couple-months",
+    "latency_s": 1.05,
+    "max": "2026-02-09",
+    "min": "2025-12-09",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what was I up to a couple months ago",
+    "result_count": 7
+  },
+  {
+    "id": "B-first-quarter",
+    "latency_s": 1.04,
+    "max": "2025-03-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "conversations from the first quarter of 2025",
+    "result_count": 7
+  },
+  {
+    "id": "B-thanksgiving-nye",
+    "latency_s": 1.03,
+    "max": "2026-01-01",
+    "min": "2025-11-28",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what happened between thanksgiving and new years",
+    "result_count": 7
+  },
+  {
+    "id": "B-covid",
+    "latency_s": 1.03,
+    "max": "2020-01-22",
+    "min": "2020-01-22",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what were we saying when covid started",
+    "result_count": 7
+  },
+  {
+    "id": "B-year-ago",
+    "latency_s": 1.03,
+    "max": "2026-02-09",
+    "min": "2025-02-09",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what was going on about a year ago",
+    "result_count": 7
+  },
+  {
+    "id": "B-early-this-week",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2026-02-09",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "what did I say earlier this week",
+    "result_count": 7
+  },
+  {
+    "id": "B-summer-before",
+    "latency_s": 0.0,
+    "max": "2026-02-09",
+    "min": "2025-11-11",
+    "parse_ok": true,
+    "prefer_recent": true,
+    "query": "messages from the summer before last",
+    "result_count": 7
+  },
+  {
+    "id": "B-turn-of-year",
+    "latency_s": 1.03,
+    "max": "2026-01-10",
+    "min": "2025-12-20",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "what were we planning right around the turn of the year",
+    "result_count": 7
+  },
+  {
+    "id": "B-unknowable",
+    "latency_s": 0.0,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "parse_ok": true,
+    "prefer_recent": false,
+    "query": "anything from my birthday last year",
+    "result_count": 7
+  }
+]

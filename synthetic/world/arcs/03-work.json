@@ -1,0 +1,85 @@
+[
+  {
+    "id": "halyard-migration",
+    "title": "The Halyard migration",
+    "contact": "priya",
+    "days": [
+      {
+        "day_offset": -330,
+        "slot": "morning",
+        "messages": [
+          { "from": "priya", "text": "did you see they're actually greenlighting the storage rewrite" },
+          { "from": "me", "text": "the one we scoped in january? I thought that died" },
+          { "from": "priya", "text": "it un-died. we're calling it Halyard apparently", "fact": "project-name" },
+          { "from": "me", "text": "ok that's a genuinely good codename" }
+        ]
+      },
+      {
+        "day_offset": -276,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "priya", "text": "I'm three days into the dual-write path and I want to walk into the sea" },
+          { "from": "me", "text": "what's breaking" },
+          { "from": "priya", "text": "backfill ordering. the old table has no monotonic key so replaying is a nightmare" },
+          { "from": "me", "text": "oh that's rough. can you synthesize one off created_at plus a tiebreaker?" },
+          { "from": "priya", "text": "...that might actually work. brb" }
+        ]
+      },
+      {
+        "day_offset": -211,
+        "slot": "evening",
+        "messages": [
+          { "from": "priya", "text": "the Halyard migration is finally fully green in prod. every shard cut over, zero rollbacks", "fact": "halyard-shipped" },
+          { "from": "me", "text": "PRIYA" },
+          { "from": "priya", "text": "eleven months. eleven months of my life" },
+          { "from": "me", "text": "genuinely one of the best pieces of engineering I've watched happen up close" }
+        ]
+      },
+      {
+        "day_offset": -158,
+        "slot": "lunch",
+        "messages": [
+          { "from": "priya", "text": "I heard through the grapevine they're running the promo cycle early this year", "distractor_for": "promotion" },
+          { "from": "me", "text": "where'd you hear that" },
+          { "from": "priya", "text": "the most reliable source in the company: the kitchen" },
+          { "from": "me", "text": "unimpeachable" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "promotion",
+    "title": "The promotion",
+    "contact": "sam",
+    "days": [
+      {
+        "day_offset": -186,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "sam", "text": "Hi Alex — I'd like to add thirty minutes to our 1:1 this week, nothing alarming." },
+          { "from": "me", "text": "sure, that phrasing is extremely calming" },
+          { "from": "sam", "text": "Ha. It's good news, I just don't want to do it over text." }
+        ]
+      },
+      {
+        "day_offset": -181,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "sam", "text": "Following up in writing so you have it: it's official, you're moving to Staff Engineer effective the first of next month.", "fact": "promotion" },
+          { "from": "me", "text": "thank you. genuinely." },
+          { "from": "sam", "text": "You earned it. The committee spent about four minutes on your packet, which is the fastest I've seen." },
+          { "from": "me", "text": "I'm going to think about that sentence for a week" }
+        ]
+      },
+      {
+        "day_offset": -95,
+        "slot": "morning",
+        "messages": [
+          { "from": "sam", "text": "Do you have bandwidth to take on the on-call rotation redesign next quarter?" },
+          { "from": "me", "text": "yeah I'd actually like that one" },
+          { "from": "sam", "text": "Great. Let's scope it in our next 1:1." }
+        ]
+      }
+    ]
+  }
+]

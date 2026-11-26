@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BM25, one knob at a time</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #0b0f0c;
+    --surface: #10140f;
+    --surface-elev: #161b14;
+    --border: rgba(232, 228, 210, 0.12);
+    --text: #ede7d6;
+    --text-body: #d8d3c2;
+    --text-secondary: #a8a294;
+    --text-muted: #6e685b;
+    --accent: #ffb000;
+    --accent-soft: #e8a042;
+    --green: #00ff41;
+    --cyan: #66d9ef;
+    --purple: #c792ea;
+    --pink: #f78fb3;
+
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  header.hero { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.01em; }
+  .subtitle { color: var(--text-secondary); margin: 0; }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 2.5rem 0 0.75rem;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+  }
+  h2 .num { color: var(--accent); font-family: var(--font-mono); margin-right: 0.5em; font-weight: 500; }
+
+  p { margin: 0.75em 0; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-elev);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  .tldr {
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface-elev));
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0 2rem;
+  }
+  .tldr > div:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 1.5rem; margin: 1.5rem 0; align-items: start; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem 1.3rem;
+  }
+  .panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
+  }
+
+  .ctrl { margin-bottom: 1.1rem; }
+  .ctrl-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 0.45rem;
+  }
+  .ctrl-label .name { color: var(--cyan); }
+  .ctrl-label .val { color: var(--accent); font-size: 1.0rem; font-weight: 600; }
+  input[type="range"] {
+    width: 100%; -webkit-appearance: none; appearance: none;
+    height: 4px; border-radius: 2px; background: var(--surface-elev);
+    border: 1px solid var(--border); outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg);
+  }
+  .ctrl-hint { font-size: 0.74rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .reset {
+    font-family: var(--font-mono); font-size: 0.76rem;
+    background: var(--surface-elev); color: var(--text-secondary);
+    border: 1px solid var(--border); border-radius: 5px;
+    padding: 0.4rem 0.8rem; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  }
+  .reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* score readout */
+  .score-big { font-family: var(--font-mono); font-size: 2.6rem; color: var(--accent); font-weight: 700; line-height: 1; }
+  .score-cap { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.3rem; }
+
+  .breakdown { margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; }
+  .brow { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed var(--border); }
+  .brow:last-child { border-bottom: none; }
+  .brow .k { color: var(--text-secondary); }
+  .brow .v { color: var(--text); }
+  .brow .v.idf { color: var(--purple); }
+  .brow .v.tf { color: var(--cyan); }
+
+  .formula {
+    color: var(--text-body);
+    background: var(--surface-elev); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1rem 1.1rem; margin: 1rem 0; overflow-x: auto;
+  }
+  .formula > div { margin: 0.45rem 0; }
+  .formula .katex { color: var(--text-body); font-size: 1.05em; }
+  /* per-chart caption showing the exact function being plotted */
+  .chart-formula { margin-top: 0.6rem; overflow-x: auto; overflow-y: hidden; }
+  .chart-formula .katex { color: var(--text-body); font-size: 0.82rem; }
+  /* fallback text if KaTeX fails to load */
+  .mathfallback { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; }
+
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1rem 0; }
+  @media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.1rem; }
+  .chart-title { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+  .chart-title b { color: var(--cyan); }
+  svg { width: 100%; height: auto; display: block; }
+  .axis { stroke: var(--border); stroke-width: 1; }
+  .gridline { stroke: var(--border); stroke-width: 0.5; stroke-dasharray: 2 3; opacity: 0.6; }
+  .curve { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .marker-line { stroke: var(--green); stroke-width: 1; stroke-dasharray: 3 3; }
+  .marker-dot { fill: var(--green); }
+  .axlabel { fill: var(--text-muted); font-family: var(--font-mono); font-size: 9px; }
+
+  footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--text-muted); font-size: 0.85rem; }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--accent-soft); font-style: italic; }
+  ul { padding-left: 1.3rem; } li { margin: 0.3em 0; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <div class="eyebrow">be right back · interactive explainer</div>
+  <h1>BM25, one knob at a time</h1>
+  <p class="subtitle">
+    BM25 scores how relevant a document is to a single query term. It's three ideas multiplied together: rarity
+    (<span style="color: var(--purple)">IDF</span>), term frequency with diminishing returns, and a length penalty. Drag
+    the knobs and watch the score — and the curves — respond.
+  </p>
+</header>
+
+<div class="tldr">
+  <div>tl;dr</div>
+  <p>
+    Matching a <strong>rare</strong> term is worth more than a common one (<span style="color: var(--purple)">IDF</span>).
+    Seeing a term <strong>more times</strong> in a doc helps, but with <em>diminishing returns</em> controlled by
+    <code>k₁</code>. And a match in a <strong>short, focused</strong> doc counts for more than the same match in a long
+    rambly one — the length penalty, controlled by <code>b</code>. DuckDB's defaults are <code>k₁=1.2</code>,
+    <code>b=0.75</code>.
+  </p>
+</div>
+
+<div class="formula">
+  <div id="f-score"></div>
+  <div id="f-idf"></div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <div class="panel-title">Knobs</div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">tf — term frequency in this doc</span><span class="val" id="v-tf">3</span></div>
+      <input type="range" id="tf" min="0" max="20" step="1" value="3" />
+      <div class="ctrl-hint">How many times the query term appears in the document.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">|d| — this doc's length (tokens)</span><span class="val" id="v-dl">90</span></div>
+      <input type="range" id="dl" min="5" max="400" step="5" value="90" />
+      <div class="ctrl-hint">Longer docs get penalized relative to the corpus average.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">avgdl — average doc length</span><span class="val" id="v-avgdl">120</span></div>
+      <input type="range" id="avgdl" min="20" max="300" step="5" value="120" />
+      <div class="ctrl-hint">The corpus-wide average chunk length.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">n — docs containing the term</span><span class="val" id="v-n">40</span></div>
+      <input type="range" id="n" min="1" max="1000" step="1" value="40" />
+      <div class="ctrl-hint">The term's document frequency (df). Lower = rarer = higher IDF.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">N — total docs in corpus</span><span class="val" id="v-N">1000</span></div>
+      <input type="range" id="N" min="10" max="5000" step="10" value="1000" />
+      <div class="ctrl-hint">Total number of chunks. (BRB: ~245K.)</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">k₁ — tf saturation</span><span class="val" id="v-k1">1.2</span></div>
+      <input type="range" id="k1" min="0" max="3" step="0.1" value="1.2" />
+      <div class="ctrl-hint">Lower = saturates faster (the 2nd mention barely helps). DuckDB default 1.2.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label"><span class="name">b — length normalization</span><span class="val" id="v-b">0.75</span></div>
+      <input type="range" id="b" min="0" max="1" step="0.05" value="0.75" />
+      <div class="ctrl-hint">0 = ignore length entirely; 1 = full length penalty. DuckDB default 0.75.</div>
+    </div>
+
+    <button class="reset" id="reset">↺ reset to DuckDB defaults</button>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Score for this term</div>
+    <div class="score-big" id="score">—</div>
+    <div class="score-cap">single-term BM25 contribution (a full query sums this over every term)</div>
+
+    <div class="breakdown" id="breakdown"></div>
+  </div>
+</div>
+
+<h2><span class="num">1.</span>Watch the two curves move</h2>
+
+<p>
+  The left curve fixes everything except <b style="color: var(--cyan)">tf</b> and sweeps it — this is the
+  <em>saturation</em> shape <code>k₁</code> controls. The right curve sweeps <b style="color: var(--cyan)">|d|</b> — the
+  <em>length penalty</em> <code>b</code> controls. The <span style="color: var(--green)">green</span> marker is where your
+  current sliders sit.
+</p>
+
+<div class="charts">
+  <div class="chart-card">
+    <div class="chart-title">score vs <b>tf</b> (term frequency) — saturation</div>
+    <svg id="chart-tf" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="chart-formula" id="cf-tf"></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">score vs <b>|d|</b> (doc length) — length penalty</div>
+    <svg id="chart-dl" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="chart-formula" id="cf-dl"></div>
+  </div>
+</div>
+
+<footer>
+  <p>
+    <strong>What's faked vs real:</strong> the math here is the exact BM25 formula DuckDB's FTS extension evaluates
+    (Okapi BM25 with the <code>+1</code> IDF variant that keeps weights non-negative). The only simplification is that a
+    real query sums this single-term score across every non-stopword query term; here we isolate one term so the knobs
+    are legible.
+  </p>
+  <p>
+    <strong>Where this shows up in BRB:</strong> <code>fts_main_message_chunks.match_bm25(chunk_id, query)</code> in
+    <code>crates/ingestion/src/queries.rs</code> returns exactly this score per chunk, which then feeds RRF alongside the
+    semantic and <code>ilike</code> rankers.
+  </p>
+</footer>
+
+</main>
+
+<script>
+  "use strict";
+
+  // Render LaTeX with KaTeX; fall back to readable plain text if the CDN
+  // didn't load (offline, blocked, SRI mismatch).
+  function renderMath(node, latex, plain) {
+    if (window.katex) {
+      try {
+        window.katex.render(latex, node, { displayMode: true, throwOnError: false });
+        return;
+      } catch (e) { /* fall through */ }
+    }
+    node.replaceChildren();
+    const span = document.createElement("span");
+    span.className = "mathfallback";
+    span.textContent = plain;
+    node.appendChild(span);
+  }
+
+  // ── static formula block (rendered once) ──
+  renderMath(
+    document.getElementById("f-score"),
+    "\\text{score} = \\textcolor{#c792ea}{\\text{IDF}(t)} \\cdot \\textcolor{#66d9ef}{\\dfrac{tf\\,(k_1+1)}{tf + k_1\\left(1 - b + b\\,\\dfrac{|d|}{\\text{avgdl}}\\right)}}",
+    "score = IDF(t) · [ tf·(k1+1) ] / [ tf + k1·(1 − b + b·|d|/avgdl) ]"
+  );
+  renderMath(
+    document.getElementById("f-idf"),
+    "\\textcolor{#c792ea}{\\text{IDF}(t)} = \\ln\\!\\left(\\dfrac{N - n + 0.5}{n + 0.5} + 1\\right)",
+    "IDF(t) = ln( (N − n + 0.5) / (n + 0.5) + 1 )"
+  );
+
+  const DEFAULTS = { tf: 3, dl: 90, avgdl: 120, n: 40, N: 1000, k1: 1.2, b: 0.75 };
+  const IDS = ["tf", "dl", "avgdl", "n", "N", "k1", "b"];
+  const inputs = {};
+  IDS.forEach((id) => { inputs[id] = document.getElementById(id); });
+
+  function vals() {
+    return {
+      tf: Number(inputs.tf.value),
+      dl: Number(inputs.dl.value),
+      avgdl: Number(inputs.avgdl.value),
+      n: Number(inputs.n.value),
+      N: Number(inputs.N.value),
+      k1: Number(inputs.k1.value),
+      b: Number(inputs.b.value),
+    };
+  }
+
+  function idf(n, N) {
+    // clamp n <= N so IDF stays sensible
+    const nn = Math.min(n, N);
+    return Math.log((N - nn + 0.5) / (nn + 0.5) + 1);
+  }
+
+  function tfComponent(tf, k1, b, dl, avgdl) {
+    const denom = tf + k1 * (1 - b + b * (dl / avgdl));
+    if (denom === 0) return 0;
+    return (tf * (k1 + 1)) / denom;
+  }
+
+  function bm25(v) {
+    return idf(v.n, v.N) * tfComponent(v.tf, v.k1, v.b, v.dl, v.avgdl);
+  }
+
+  // ── SVG plotting ──────────────────────────────────────────────────
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function svg(tag, attrs) {
+    const node = document.createElementNS(SVGNS, tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    return node;
+  }
+
+  // pad: left, right, top, bottom
+  const PAD = { l: 34, r: 10, t: 12, b: 22 };
+  const W = 320, H = 200;
+  const plotW = W - PAD.l - PAD.r;
+  const plotH = H - PAD.t - PAD.b;
+
+  function drawPlot(svgEl, fn, xRange, curX, xLabel) {
+    svgEl.replaceChildren();
+    const samples = 100;
+    const pts = [];
+    let yMax = 0;
+    for (let i = 0; i <= samples; i++) {
+      const x = xRange[0] + (xRange[1] - xRange[0]) * (i / samples);
+      const y = fn(x);
+      pts.push([x, y]);
+      if (y > yMax) yMax = y;
+    }
+    // include current marker's y in scaling
+    const curY = fn(curX);
+    yMax = Math.max(yMax, curY) * 1.12 || 1;
+
+    const sx = (x) => PAD.l + ((x - xRange[0]) / (xRange[1] - xRange[0])) * plotW;
+    const sy = (y) => PAD.t + plotH - (y / yMax) * plotH;
+
+    // gridlines (y)
+    for (let g = 0; g <= 4; g++) {
+      const yy = PAD.t + (plotH * g) / 4;
+      svgEl.appendChild(svg("line", { class: "gridline", x1: PAD.l, y1: yy, x2: W - PAD.r, y2: yy }));
+    }
+    // axes
+    svgEl.appendChild(svg("line", { class: "axis", x1: PAD.l, y1: PAD.t, x2: PAD.l, y2: PAD.t + plotH }));
+    svgEl.appendChild(svg("line", { class: "axis", x1: PAD.l, y1: PAD.t + plotH, x2: W - PAD.r, y2: PAD.t + plotH }));
+
+    // y-axis labels (top = yMax, bottom = 0)
+    svgEl.appendChild(svg("text", { class: "axlabel", x: 4, y: PAD.t + 4 })).textContent = yMax.toFixed(1);
+    svgEl.appendChild(svg("text", { class: "axlabel", x: 4, y: PAD.t + plotH })).textContent = "0";
+    // x-axis labels
+    const xl = svg("text", { class: "axlabel", x: PAD.l, y: H - 6 }); xl.textContent = String(xRange[0]);
+    svgEl.appendChild(xl);
+    const xr = svg("text", { class: "axlabel", x: W - PAD.r - 18, y: H - 6 }); xr.textContent = String(xRange[1]);
+    svgEl.appendChild(xr);
+    const xc = svg("text", { class: "axlabel", x: PAD.l + plotW / 2 - 8, y: H - 6 }); xc.textContent = xLabel;
+    svgEl.appendChild(xc);
+
+    // curve path
+    let d = "";
+    pts.forEach(([x, y], i) => { d += (i === 0 ? "M" : "L") + sx(x).toFixed(1) + " " + sy(y).toFixed(1) + " "; });
+    svgEl.appendChild(svg("path", { class: "curve", d: d.trim() }));
+
+    // current marker
+    const mx = sx(curX), my = sy(curY);
+    svgEl.appendChild(svg("line", { class: "marker-line", x1: mx, y1: PAD.t, x2: mx, y2: PAD.t + plotH }));
+    svgEl.appendChild(svg("circle", { class: "marker-dot", cx: mx, cy: my, r: 3.5 }));
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────
+  const breakdownEl = document.getElementById("breakdown");
+  function brow(k, val, cls) {
+    const row = document.createElement("div"); row.className = "brow";
+    const kk = document.createElement("span"); kk.className = "k"; kk.textContent = k;
+    const vv = document.createElement("span"); vv.className = "v" + (cls ? " " + cls : ""); vv.textContent = val;
+    row.appendChild(kk); row.appendChild(vv); return row;
+  }
+
+  function render() {
+    const v = vals();
+    // keep n <= N visually
+    if (v.n > v.N) { inputs.n.value = v.N; v.n = v.N; }
+
+    IDS.forEach((id) => {
+      const disp = (id === "k1" || id === "b") ? Number(inputs[id].value).toFixed(2) : inputs[id].value;
+      document.getElementById("v-" + id).textContent = disp;
+    });
+
+    const idfVal = idf(v.n, v.N);
+    const tfVal = tfComponent(v.tf, v.k1, v.b, v.dl, v.avgdl);
+    const score = idfVal * tfVal;
+
+    document.getElementById("score").textContent = score.toFixed(3);
+
+    breakdownEl.replaceChildren();
+    breakdownEl.appendChild(brow("IDF(t) = rarity", idfVal.toFixed(3), "idf"));
+    breakdownEl.appendChild(brow("tf component = freq × length", tfVal.toFixed(3), "tf"));
+    breakdownEl.appendChild(brow("length factor = 1−b+b·|d|/avgdl", (1 - v.b + v.b * (v.dl / v.avgdl)).toFixed(3)));
+    breakdownEl.appendChild(brow("score = IDF × tf component", score.toFixed(3)));
+
+    // chart 1: vary tf
+    drawPlot(
+      document.getElementById("chart-tf"),
+      (tf) => idfVal * tfComponent(tf, v.k1, v.b, v.dl, v.avgdl),
+      [0, 20], v.tf, "tf"
+    );
+    // chart 2: vary |d|
+    drawPlot(
+      document.getElementById("chart-dl"),
+      (dl) => idfVal * tfComponent(v.tf, v.k1, v.b, dl, v.avgdl),
+      [5, 400], v.dl, "|d|"
+    );
+
+    // ── live captions: the exact function each curve plots, constants substituted ──
+    const k1p1 = (v.k1 + 1).toFixed(1);
+    const k1s = v.k1.toFixed(1);
+    const idfS = idfVal.toFixed(2);
+    const Lval = (1 - v.b + v.b * (v.dl / v.avgdl)).toFixed(2);
+    const oneMinusB = (1 - v.b).toFixed(2);
+    const bOverAvg = (v.b / v.avgdl).toFixed(4);
+
+    renderMath(
+      document.getElementById("cf-tf"),
+      "\\text{score}(\\textcolor{#66d9ef}{tf}) = " + idfS + " \\cdot \\dfrac{\\textcolor{#66d9ef}{tf}\\,(" + k1p1 + ")}{\\textcolor{#66d9ef}{tf} + " + k1s + " \\cdot " + Lval + "}",
+      "score(tf) = " + idfS + " · tf·" + k1p1 + " / (tf + " + k1s + "·" + Lval + ")"
+    );
+    renderMath(
+      document.getElementById("cf-dl"),
+      "\\text{score}(\\textcolor{#66d9ef}{|d|}) = " + idfS + " \\cdot \\dfrac{" + v.tf + "\\,(" + k1p1 + ")}{" + v.tf + " + " + k1s + "\\left(" + oneMinusB + " + " + bOverAvg + "\\,\\textcolor{#66d9ef}{|d|}\\right)}",
+      "score(|d|) = " + idfS + " · " + v.tf + "·" + k1p1 + " / (" + v.tf + " + " + k1s + "·(" + oneMinusB + " + " + bOverAvg + "·|d|))"
+    );
+  }
+
+  IDS.forEach((id) => inputs[id].addEventListener("input", render));
+  document.getElementById("reset").addEventListener("click", () => {
+    IDS.forEach((id) => { inputs[id].value = DEFAULTS[id]; });
+    render();
+  });
+  render();
+</script>
+</body>
+</html>

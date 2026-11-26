@@ -1,0 +1,41 @@
+app = "brb-collab"
+primary_region = "iad"
+# The server saves dirty rooms on SIGTERM before it exits.
+kill_signal = "SIGTERM"
+kill_timeout = "15s"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  COLLAB_ADDR = "0.0.0.0:8787"
+  COLLAB_DB_PATH = "/data/collab.db"
+  RUST_LOG = "collab=info"
+
+[mounts]
+  source = "collab_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  # WebSockets are long-lived connections, so limit by connection count.
+  [http_service.concurrency]
+    type = "connections"
+    soft_limit = 900
+    hard_limit = 1000
+
+  [[http_service.checks]]
+    grace_period = "5s"
+    interval = "15s"
+    timeout = "2s"
+    method = "GET"
+    path = "/healthz"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo test:*)",
+      "Bash(cargo build:*)",
+      "WebSearch",
+      "WebFetch(domain:v2.tauri.app)",
+      "Skill(example-skills:frontend-design)",
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:github.com)",
+      "Bash(cargo check:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(uv venv:*)",
+      "Bash(uv pip install:*)",
+      "mcp__mcp-server-motherduck__query",
+      "Bash(ls:*)",
+      "Bash(git status:*)",
+      "SlashCommand(/create-pr)",
+      "Bash(git fetch:*)",
+      "Bash(~/.be-right-back/mlx-venv/bin/python:*)",
+      "Skill(generate-pr)",
+      "Bash(grep:*)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_hover",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(python3:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:duckdb.org)",
+      "Bash(make lint-rust:*)",
+      "Bash(make:*)",
+      "Bash(uv run:*)"
+    ]
+  },
+  "outputStyle": "default",
+  "additionalDirectories": [
+    "schema/**"
+  ],
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "tmux"
+}

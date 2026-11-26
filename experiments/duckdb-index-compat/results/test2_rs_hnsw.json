@@ -1,0 +1,246 @@
+{
+  "action": "query-hnsw",
+  "language": "rust",
+  "results": [
+    {
+      "actual_top1": 0,
+      "expected_top1": 0,
+      "query_id": "q1",
+      "results": [
+        {
+          "chunk_id": 0,
+          "distance": 0.36462295055389404
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.8896092772483826
+        },
+        {
+          "chunk_id": 35,
+          "distance": 0.9338734149932861
+        },
+        {
+          "chunk_id": 34,
+          "distance": 0.9453622698783875
+        },
+        {
+          "chunk_id": 25,
+          "distance": 0.949895441532135
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.9500262141227722
+        },
+        {
+          "chunk_id": 47,
+          "distance": 0.9508801698684692
+        },
+        {
+          "chunk_id": 30,
+          "distance": 0.9520279765129089
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9529038667678833
+        },
+        {
+          "chunk_id": 40,
+          "distance": 0.95517498254776
+        }
+      ],
+      "top1_match": true
+    },
+    {
+      "actual_top1": 50,
+      "expected_top1": 50,
+      "query_id": "q2",
+      "results": [
+        {
+          "chunk_id": 50,
+          "distance": 0.4122399091720581
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.9280915260314941
+        },
+        {
+          "chunk_id": 30,
+          "distance": 0.9366363883018494
+        },
+        {
+          "chunk_id": 5,
+          "distance": 0.9401929378509521
+        },
+        {
+          "chunk_id": 21,
+          "distance": 0.9410355687141418
+        },
+        {
+          "chunk_id": 33,
+          "distance": 0.9518257975578308
+        },
+        {
+          "chunk_id": 98,
+          "distance": 0.9519948363304138
+        },
+        {
+          "chunk_id": 11,
+          "distance": 0.9536914229393005
+        },
+        {
+          "chunk_id": 99,
+          "distance": 0.9593973159790039
+        },
+        {
+          "chunk_id": 63,
+          "distance": 0.9598997235298157
+        }
+      ],
+      "top1_match": true
+    },
+    {
+      "actual_top1": 99,
+      "expected_top1": 99,
+      "query_id": "q3",
+      "results": [
+        {
+          "chunk_id": 99,
+          "distance": 0.35934948921203613
+        },
+        {
+          "chunk_id": 3,
+          "distance": 0.9337964057922363
+        },
+        {
+          "chunk_id": 78,
+          "distance": 0.9500040411949158
+        },
+        {
+          "chunk_id": 17,
+          "distance": 0.9519155621528625
+        },
+        {
+          "chunk_id": 4,
+          "distance": 0.9530649781227112
+        },
+        {
+          "chunk_id": 14,
+          "distance": 0.9541336297988892
+        },
+        {
+          "chunk_id": 92,
+          "distance": 0.9554764032363892
+        },
+        {
+          "chunk_id": 84,
+          "distance": 0.9574069976806641
+        },
+        {
+          "chunk_id": 20,
+          "distance": 0.9612465500831604
+        },
+        {
+          "chunk_id": 96,
+          "distance": 0.9646880030632019
+        }
+      ],
+      "top1_match": true
+    },
+    {
+      "actual_top1": 25,
+      "expected_top1": 25,
+      "query_id": "q4",
+      "results": [
+        {
+          "chunk_id": 25,
+          "distance": 0.38000810146331787
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.924396812915802
+        },
+        {
+          "chunk_id": 8,
+          "distance": 0.9400609135627747
+        },
+        {
+          "chunk_id": 75,
+          "distance": 0.9587173461914062
+        },
+        {
+          "chunk_id": 16,
+          "distance": 0.9595520496368408
+        },
+        {
+          "chunk_id": 97,
+          "distance": 0.9597817659378052
+        },
+        {
+          "chunk_id": 74,
+          "distance": 0.9633998274803162
+        },
+        {
+          "chunk_id": 73,
+          "distance": 0.965501606464386
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9671672582626343
+        },
+        {
+          "chunk_id": 38,
+          "distance": 0.9676392078399658
+        }
+      ],
+      "top1_match": true
+    },
+    {
+      "actual_top1": 75,
+      "expected_top1": 75,
+      "query_id": "q5",
+      "results": [
+        {
+          "chunk_id": 75,
+          "distance": 0.4190102815628052
+        },
+        {
+          "chunk_id": 19,
+          "distance": 0.9344465732574463
+        },
+        {
+          "chunk_id": 3,
+          "distance": 0.9346050024032593
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.9521358013153076
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.9528958797454834
+        },
+        {
+          "chunk_id": 98,
+          "distance": 0.9621654152870178
+        },
+        {
+          "chunk_id": 76,
+          "distance": 0.9629302620887756
+        },
+        {
+          "chunk_id": 42,
+          "distance": 0.9692463874816895
+        },
+        {
+          "chunk_id": 5,
+          "distance": 0.9698559045791626
+        },
+        {
+          "chunk_id": 40,
+          "distance": 0.9708604216575623
+        }
+      ],
+      "top1_match": true
+    }
+  ]
+}

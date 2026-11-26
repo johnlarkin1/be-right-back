@@ -1,0 +1,444 @@
+[
+  {
+    "query_id": "recency-1",
+    "relevant_chunks": {
+      "87087": 5,
+      "72335": 4,
+      "102480": 5,
+      "21391": 3,
+      "103498": 3,
+      "87789": 4,
+      "120135": 5
+    }
+  },
+  {
+    "query_id": "recency-4",
+    "relevant_chunks": {
+      "59088": 5,
+      "73212": 5,
+      "243435": 2
+    }
+  },
+  {
+    "query_id": "recency-5",
+    "relevant_chunks": {}
+  },
+  {
+    "query_id": "recency-6",
+    "relevant_chunks": {
+      "215642": 3,
+      "164653": 4,
+      "83975": 4
+    }
+  },
+  {
+    "query_id": "recency-8",
+    "relevant_chunks": {}
+  },
+  {
+    "query_id": "recency-9",
+    "relevant_chunks": {
+      "155092": 5,
+      "71901": 4,
+      "236000": 3,
+      "158199": 4,
+      "115053": 4
+    }
+  },
+  {
+    "query_id": "temporal-1",
+    "relevant_chunks": {
+      "167362": 4,
+      "169507": 3,
+      "228545": 3
+    }
+  },
+  {
+    "query_id": "temporal-2",
+    "relevant_chunks": {
+      "81059": 4,
+      "47230": 5,
+      "45154": 3,
+      "91927": 1
+    }
+  },
+  {
+    "query_id": "temporal-3",
+    "relevant_chunks": {
+      "178904": 5,
+      "70221": 3,
+      "95076": 2
+    }
+  },
+  {
+    "query_id": "temporal-4",
+    "relevant_chunks": {
+      "89368": 3,
+      "113554": 3,
+      "9297": 3,
+      "61329": 2,
+      "51403": 2
+    }
+  },
+  {
+    "query_id": "temporal-5",
+    "relevant_chunks": {
+      "191851": 5,
+      "239478": 3,
+      "77934": 3,
+      "111926": 2
+    }
+  },
+  {
+    "query_id": "temporal-6",
+    "relevant_chunks": {
+      "68542": 4,
+      "123940": 5,
+      "53110": 2
+    }
+  },
+  {
+    "query_id": "temporal-7",
+    "relevant_chunks": {
+      "127350": 1,
+      "188015": 2
+    }
+  },
+  {
+    "query_id": "temporal-8",
+    "relevant_chunks": {
+      "19311": 4,
+      "79476": 5,
+      "231042": 5,
+      "65818": 4,
+      "95823": 5
+    }
+  },
+  {
+    "query_id": "temporal-9",
+    "relevant_chunks": {
+      "78460": 3,
+      "110807": 3,
+      "241604": 2,
+      "238948": 2,
+      "57413": 3
+    }
+  },
+  {
+    "query_id": "temporal-10",
+    "relevant_chunks": {
+      "239722": 2,
+      "112864": 4,
+      "106953": 3,
+      "210713": 4
+    }
+  },
+  {
+    "query_id": "preference-1",
+    "relevant_chunks": {
+      "111180": 5,
+      "121751": 5,
+      "103920": 3,
+      "131108": 2,
+      "125084": 1
+    }
+  },
+  {
+    "query_id": "preference-2",
+    "relevant_chunks": {
+      "189995": 5,
+      "34484": 4,
+      "187633": 3
+    }
+  },
+  {
+    "query_id": "preference-3",
+    "relevant_chunks": {
+      "130655": 2,
+      "192806": 5,
+      "9496": 5,
+      "112389": 3
+    }
+  },
+  {
+    "query_id": "preference-4",
+    "relevant_chunks": {
+      "127193": 3,
+      "103902": 5
+    }
+  },
+  {
+    "query_id": "preference-5",
+    "relevant_chunks": {
+      "62004": 5,
+      "146024": 4,
+      "208698": 5,
+      "35739": 4,
+      "134505": 2
+    }
+  },
+  {
+    "query_id": "preference-6",
+    "relevant_chunks": {
+      "148686": 3,
+      "202063": 3,
+      "8571": 5,
+      "230374": 3,
+      "30059": 4
+    }
+  },
+  {
+    "query_id": "preference-7",
+    "relevant_chunks": {
+      "214830": 4,
+      "39972": 3,
+      "198492": 2,
+      "224069": 4
+    }
+  },
+  {
+    "query_id": "preference-8",
+    "relevant_chunks": {
+      "187505": 5,
+      "191436": 4,
+      "73291": 4
+    }
+  },
+  {
+    "query_id": "preference-9",
+    "relevant_chunks": {
+      "238112": 5,
+      "119826": 5,
+      "92209": 2,
+      "237993": 5,
+      "236232": 4
+    }
+  },
+  {
+    "query_id": "preference-10",
+    "relevant_chunks": {
+      "229379": 5,
+      "120697": 4,
+      "170090": 5,
+      "109459": 4,
+      "18197": 5
+    }
+  },
+  {
+    "query_id": "fact-1",
+    "relevant_chunks": {
+      "204076": 5,
+      "243773": 3,
+      "62756": 5,
+      "60041": 3,
+      "103645": 4
+    }
+  },
+  {
+    "query_id": "fact-3",
+    "relevant_chunks": {
+      "165843": 5,
+      "44499": 5,
+      "166420": 4,
+      "217535": 5,
+      "225618": 4
+    }
+  },
+  {
+    "query_id": "fact-4",
+    "relevant_chunks": {
+      "181238": 5,
+      "142203": 5,
+      "130014": 1,
+      "98744": 3
+    }
+  },
+  {
+    "query_id": "fact-5",
+    "relevant_chunks": {
+      "37858": 5,
+      "24707": 3,
+      "87870": 3,
+      "51830": 2
+    }
+  },
+  {
+    "query_id": "fact-6",
+    "relevant_chunks": {
+      "226905": 4,
+      "165603": 5,
+      "168804": 4
+    }
+  },
+  {
+    "query_id": "fact-7",
+    "relevant_chunks": {
+      "67001": 5,
+      "230134": 5,
+      "111215": 3,
+      "230568": 4,
+      "100311": 2
+    }
+  },
+  {
+    "query_id": "fact-8",
+    "relevant_chunks": {
+      "166572": 5,
+      "51552": 5,
+      "162992": 4,
+      "195867": 5,
+      "163073": 4
+    }
+  },
+  {
+    "query_id": "fact-9",
+    "relevant_chunks": {
+      "107529": 5,
+      "157487": 5,
+      "166715": 5,
+      "116256": 2,
+      "90853": 4
+    }
+  },
+  {
+    "query_id": "fact-10",
+    "relevant_chunks": {
+      "71469": 5,
+      "52692": 5,
+      "57413": 3
+    }
+  },
+  {
+    "query_id": "cross-contact-1",
+    "relevant_chunks": {
+      "49802": 5,
+      "100387": 3,
+      "82719": 2
+    }
+  },
+  {
+    "query_id": "cross-contact-3",
+    "relevant_chunks": {
+      "89121": 4,
+      "77275": 3,
+      "126836": 5,
+      "118953": 1,
+      "106561": 4
+    }
+  },
+  {
+    "query_id": "cross-contact-5",
+    "relevant_chunks": {
+      "108015": 5,
+      "72771": 2,
+      "7003": 5,
+      "125014": 2,
+      "231095": 4
+    }
+  },
+  {
+    "query_id": "cross-contact-7",
+    "relevant_chunks": {
+      "14736": 5,
+      "136032": 2,
+      "52827": 5
+    }
+  },
+  {
+    "query_id": "cross-contact-8",
+    "relevant_chunks": {
+      "204072": 4,
+      "225141": 2,
+      "225116": 2,
+      "225206": 2,
+      "225027": 2
+    }
+  },
+  {
+    "query_id": "cross-contact-9",
+    "relevant_chunks": {
+      "225029": 5,
+      "166465": 3,
+      "152926": 4,
+      "155848": 5
+    }
+  },
+  {
+    "query_id": "aggregation-1",
+    "relevant_chunks": {
+      "34888": 4,
+      "59131": 3,
+      "129633": 4
+    }
+  },
+  {
+    "query_id": "aggregation-2",
+    "relevant_chunks": {}
+  },
+  {
+    "query_id": "aggregation-3",
+    "relevant_chunks": {
+      "119102": 3,
+      "128421": 4,
+      "125464": 4
+    }
+  },
+  {
+    "query_id": "aggregation-4",
+    "relevant_chunks": {
+      "69170": 5,
+      "91109": 4,
+      "122316": 3,
+      "114588": 4,
+      "64559": 4
+    }
+  },
+  {
+    "query_id": "aggregation-5",
+    "relevant_chunks": {}
+  },
+  {
+    "query_id": "aggregation-6",
+    "relevant_chunks": {
+      "239587": 3,
+      "121857": 2
+    }
+  },
+  {
+    "query_id": "aggregation-7",
+    "relevant_chunks": {
+      "238427": 5,
+      "1877": 4
+    }
+  },
+  {
+    "query_id": "aggregation-8",
+    "relevant_chunks": {
+      "90958": 4,
+      "71833": 4,
+      "39308": 5,
+      "97876": 3,
+      "152302": 4
+    }
+  },
+  {
+    "query_id": "aggregation-9",
+    "relevant_chunks": {
+      "85028": 5,
+      "48654": 5,
+      "123381": 5,
+      "130196": 4,
+      "130741": 4
+    }
+  },
+  {
+    "query_id": "aggregation-10",
+    "relevant_chunks": {
+      "219391": 5,
+      "220626": 4,
+      "62437": 4,
+      "117192": 3,
+      "132195": 3
+    }
+  }
+]

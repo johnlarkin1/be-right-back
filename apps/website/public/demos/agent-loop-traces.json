@@ -1,0 +1,208 @@
+{
+  "__meta": {
+    "footerNote": "These three traces are hand-authored to be representative — they're not captured token-for-token from one live run, and the conversations are fictional. But the shape is faithful: the Qwen3.5 tool_call/tool_response format, the iteration cap, the synthesis fallback, and the guards shown all live in crates/inference/src/agent/mod.rs.",
+    "source": "fallback (hand-authored placeholder — replace with a real capture)"
+  },
+  "happy": {
+    "label": "Happy path",
+    "tag": "1 search → answer",
+    "question": "what did Sarah and I decide about the cabin trip?",
+    "steps": [
+      {
+        "kind": "user",
+        "text": "what did Sarah and I decide about the cabin trip?"
+      },
+      {
+        "kind": "plan",
+        "text": "Query planner runs first. No date words → regex finds no range, temporal_hint is false, so no LLM fallback. No date filter; result_count = 7."
+      },
+      {
+        "kind": "think",
+        "iter": 1,
+        "text": "The user wants the decisions they reached with Sarah about a cabin trip. I should search their messages with Sarah for that thread."
+      },
+      {
+        "kind": "tool_call",
+        "iter": 1,
+        "name": "search_messages",
+        "args": {
+          "query": "cabin trip plans decision",
+          "contact_id": "Sarah"
+        }
+      },
+      {
+        "kind": "tool_response",
+        "iter": 1,
+        "results": [
+          {
+            "meta": "Sarah · 2025-09-14 · score 0.88",
+            "snip": "ok so cabin trip — weekend of the 14th works for me, I'll book the place"
+          },
+          {
+            "meta": "Me · 2025-09-14 · score 0.81",
+            "snip": "perfect. i'll drive, you handle the cabin + i'll cover groceries"
+          },
+          {
+            "meta": "Sarah · 2025-09-15 · score 0.74",
+            "snip": "booked! 2 nights, checks in friday at 4"
+          }
+        ]
+      },
+      {
+        "kind": "think",
+        "iter": 2,
+        "text": "I have the decision: weekend of the 14th, Sarah books the cabin, the user drives and buys groceries, 2 nights checking in Friday at 4. I can answer now."
+      },
+      {
+        "kind": "answer",
+        "iter": 2,
+        "text": "You two settled it on Sept 14th: the trip's the weekend of the 14th, Sarah booked the cabin (2 nights, Friday check-in at 4pm), you're driving and covering groceries."
+      }
+    ]
+  },
+  "dedup": {
+    "label": "Anti-loop: duplicate call",
+    "tag": "model repeats itself",
+    "question": "who did I text the most in college?",
+    "steps": [
+      {
+        "kind": "user",
+        "text": "who did I text the most in college?"
+      },
+      {
+        "kind": "plan",
+        "text": "Inferential 'who…most' question → the agent pre-fetches top-contact volume so the model has frequency data. 'college' is a life period → it reaches for get_message_volume_by_period."
+      },
+      {
+        "kind": "think",
+        "iter": 1,
+        "text": "This is a frequency question over a life period. Let me pull message volume by contact for my college years (~2014–2018)."
+      },
+      {
+        "kind": "tool_call",
+        "iter": 1,
+        "name": "get_message_volume_by_period",
+        "args": {
+          "min_date": "2014-09-01",
+          "max_date": "2018-06-01"
+        }
+      },
+      {
+        "kind": "tool_response",
+        "iter": 1,
+        "results": [
+          {
+            "meta": "rank 1",
+            "snip": "Mike R. — 8,412 messages"
+          },
+          {
+            "meta": "rank 2",
+            "snip": "Jess — 6,107 messages"
+          },
+          {
+            "meta": "rank 3",
+            "snip": "Dorm Group 🏈 — 5,338 messages"
+          }
+        ]
+      },
+      {
+        "kind": "think",
+        "iter": 2,
+        "text": "Let me pull message volume by contact for my college years to be sure."
+      },
+      {
+        "kind": "tool_call",
+        "iter": 2,
+        "name": "get_message_volume_by_period",
+        "args": {
+          "min_date": "2014-09-01",
+          "max_date": "2018-06-01"
+        },
+        "dup": true
+      },
+      {
+        "kind": "guard",
+        "text": "Guard tripped: this tool call's JSON is byte-identical to the previous one (last_tool_call_json == current). The model is looping. Skip re-running the tool and force an answer from the result we already have."
+      },
+      {
+        "kind": "answer",
+        "iter": 2,
+        "text": "In your college years it was Mike R. by a wide margin — about 8,400 messages — followed by Jess (~6,100) and your dorm group chat (~5,300).",
+        "forced": true
+      }
+    ]
+  },
+  "nudge": {
+    "label": "Anti-loop: narrated intent",
+    "tag": "talks instead of acting",
+    "question": "what's my mom's favorite restaurant?",
+    "steps": [
+      {
+        "kind": "user",
+        "text": "what's my mom's favorite restaurant?"
+      },
+      {
+        "kind": "plan",
+        "text": "'favorite' → aggregation detected, result_count bumped to 20. No temporal words, so no date filter."
+      },
+      {
+        "kind": "think",
+        "iter": 1,
+        "text": "I should look through messages with Mom for restaurant mentions and recommendations."
+      },
+      {
+        "kind": "answer",
+        "iter": 1,
+        "text": "Sure! Let me search your messages with Mom for restaurant recommendations and see which ones come up the most.",
+        "narrated": true
+      },
+      {
+        "kind": "guard",
+        "text": "Guard tripped: is_narrated_intent() matched — the model described what it plans to do but emitted no <tool_call>. Don't accept this as a final answer; nudge it: \"Don't describe what you plan to do — actually call the tool now.\""
+      },
+      {
+        "kind": "think",
+        "iter": 2,
+        "text": "Right — actually calling the tool this time."
+      },
+      {
+        "kind": "tool_call",
+        "iter": 2,
+        "name": "search_messages",
+        "args": {
+          "query": "favorite restaurant recommend love this place",
+          "contact_id": "Mom",
+          "limit": 20
+        }
+      },
+      {
+        "kind": "tool_response",
+        "iter": 2,
+        "results": [
+          {
+            "meta": "Mom · 2025-03-02 · score 0.79",
+            "snip": "we HAVE to go back to Via Carota, best meal I've had all year"
+          },
+          {
+            "meta": "Mom · 2025-07-19 · score 0.71",
+            "snip": "thinking about Via Carota again lol I can't stop"
+          },
+          {
+            "meta": "Me · 2024-12-05 · score 0.63",
+            "snip": "mom's obsessed with that little italian place in the village"
+          }
+        ]
+      },
+      {
+        "kind": "think",
+        "iter": 3,
+        "text": "Via Carota comes up repeatedly and she calls it the best meal of the year. That's the answer."
+      },
+      {
+        "kind": "answer",
+        "iter": 3,
+        "text": "It's Via Carota — the little Italian spot in the West Village. She's mentioned it more than once, called it 'the best meal I've had all year,' and keeps wanting to go back."
+      }
+    ]
+  }
+}

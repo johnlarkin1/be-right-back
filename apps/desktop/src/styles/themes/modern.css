@@ -1,0 +1,394 @@
+/* ============================================
+   MODERN SLEEK THEME
+   Clean, minimal, professional
+   Inspired by Notion/Linear design language
+   ============================================ */
+
+[data-theme="modern"] {
+  /* ============================================
+     SURFACES
+     Slightly warmer, less harsh
+     ============================================ */
+
+  --color-surface: var(--primitive-slate-950);
+  --color-surface-elevated: var(--primitive-slate-900);
+  --color-surface-card: rgba(30, 41, 59, 0.5);
+  --color-surface-tooltip: rgba(15, 23, 42, 0.95);
+
+  /* ============================================
+     TEXT
+     Higher contrast, cleaner
+     ============================================ */
+
+  --color-text-primary: var(--primitive-slate-50);
+  --color-text-secondary: var(--primitive-slate-400);
+  --color-text-muted: var(--primitive-slate-500);
+  --color-text-accent: var(--primitive-emerald-500);
+  --color-text-accent-secondary: var(--primitive-blue-500);
+
+  /* ============================================
+     ACCENT COLORS
+     Softer emerald
+     ============================================ */
+
+  --color-accent: var(--primitive-emerald-500);
+  --color-accent-dim: var(--primitive-emerald-400);
+  --color-accent-subtle: rgba(16, 185, 129, 0.1);
+  --color-accent-secondary: var(--primitive-blue-500);
+  --color-accent-secondary-dim: var(--primitive-blue-600);
+  --color-accent-secondary-subtle: rgba(59, 130, 246, 0.1);
+
+  /* ============================================
+     BORDERS
+     More subtle
+     ============================================ */
+
+  --color-border: rgba(51, 65, 85, 0.5);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-accent: rgba(16, 185, 129, 0.3);
+  --color-border-accent-secondary: rgba(59, 130, 246, 0.3);
+  --color-border-tooltip: var(--primitive-slate-700);
+
+  /* ============================================
+     STATUS COLORS
+     ============================================ */
+
+  --color-success: var(--primitive-emerald-500);
+  --color-warning: #f59e0b;
+  --color-error: var(--primitive-rose-500);
+  --color-info: var(--primitive-blue-500);
+
+  /* ============================================
+     TYPOGRAPHY
+     Clean sans-serif
+     ============================================ */
+
+  --font-display: var(--primitive-font-inter);
+  --font-body: var(--primitive-font-inter);
+  --font-mono: var(--primitive-font-geist-mono);
+  --font-terminal: var(--primitive-font-geist-mono);
+
+  /* ============================================
+     EFFECTS
+     No glow in modern mode
+     ============================================ */
+
+  --shadow-glow: none;
+  --text-glow: none;
+  --text-glow-strong: none;
+  --box-glow: none;
+  --shadow-card: var(--primitive-shadow-md);
+  --shadow-elevated: var(--primitive-shadow-lg);
+
+  /* ============================================
+     BORDER RADII
+     Softer, more rounded
+     ============================================ */
+
+  --radius-card: var(--primitive-radius-xl);
+  --radius-button: var(--primitive-radius-lg);
+  --radius-input: var(--primitive-radius-md);
+  --radius-modal: var(--primitive-radius-2xl);
+
+  /* ============================================
+     CRT EFFECTS
+     Disabled
+     ============================================ */
+
+  --show-crt-effects: 0;
+  --show-ghost-mascot: 0;
+  --crt-scanline-opacity: 0;
+  --crt-vignette-opacity: 0;
+  --crt-glow-opacity: 0;
+
+  /* ============================================
+     COMPONENT OVERRIDES
+     ============================================ */
+
+  /* Message Bubbles */
+  --message-user-bg: rgba(16, 185, 129, 0.1);
+  --message-user-border: rgba(16, 185, 129, 0.2);
+  --message-user-text: var(--primitive-emerald-400);
+  --message-persona-bg: rgba(59, 130, 246, 0.1);
+  --message-persona-border: rgba(59, 130, 246, 0.2);
+  --message-persona-text: var(--primitive-blue-500);
+
+  /* Navigation */
+  --nav-item-active-bg: rgba(16, 185, 129, 0.1);
+  --nav-item-hover-bg: rgba(16, 185, 129, 0.05);
+  --nav-item-active-text: var(--primitive-emerald-500);
+  --nav-item-inactive-text: var(--primitive-slate-400);
+
+  /* Input Fields */
+  --input-bg: rgba(15, 23, 42, 0.5);
+  --input-border: var(--color-border);
+  --input-focus-border: var(--primitive-emerald-500);
+  --input-text: var(--primitive-slate-50);
+  --input-caret: var(--primitive-emerald-500);
+
+  /* Cards */
+  --card-bg: var(--color-surface-card);
+  --card-border: var(--color-border);
+
+  /* TopBar */
+  --topbar-bg: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(15, 23, 42, 0.85)
+  );
+  --topbar-border: var(--color-border);
+
+  /* Insights */
+  --insights-gradient-start: var(--primitive-emerald-400);
+  --insights-gradient-end: var(--primitive-blue-500);
+  --insights-you-color: var(--primitive-emerald-500);
+  --insights-them-color: var(--primitive-blue-500);
+
+  /* Page type scale */
+  --text-page-title-size: 28px;
+  --text-page-title-weight: 700;
+  --text-section-title-size: 16px;
+  --text-section-title-weight: 600;
+  --text-stat-size: 28px;
+  --text-stat-weight: 700;
+
+  /* Charts: categorical palette for series such as topics */
+  --chart-cat-1: #10b981;
+  --chart-cat-2: #3b82f6;
+  --chart-cat-3: #f59e0b;
+  --chart-cat-4: #06b6d4;
+  --chart-cat-5: #84cc16;
+  --chart-cat-6: #f97316;
+  --chart-cat-7: #14b8a6;
+  --chart-cat-8: #eab308;
+  --chart-other: var(--primitive-slate-700);
+  --chart-grid: rgba(148, 163, 184, 0.18);
+
+  --color-surface-hover: rgba(148, 163, 184, 0.08);
+
+  /* Title Gradient - emerald to indigo */
+  --title-gradient-start: var(--primitive-emerald-400);
+  --title-gradient-end: var(--primitive-violet-500);
+
+  /* Scrollbar */
+  --scrollbar-track: var(--color-surface-elevated);
+  --scrollbar-thumb: var(--primitive-slate-700);
+  --scrollbar-thumb-hover: var(--primitive-slate-600);
+
+  /* Date picker filter for modern mode */
+  --date-picker-filter: invert(0.6);
+}
+
+/* ============================================
+   Settings Modal - Modern overrides
+   Clean, minimal modal with sans-serif fonts
+   and subtle styling instead of terminal glow
+   ============================================ */
+
+[data-theme="modern"] .settings-modal {
+  box-shadow: var(--shadow-elevated);
+  border-color: var(--color-border);
+  background: linear-gradient(
+    180deg,
+    var(--color-surface-elevated) 0%,
+    var(--color-surface) 100%
+  );
+}
+
+[data-theme="modern"] .settings-modal-close {
+  color: var(--color-text-muted);
+  border-radius: var(--primitive-radius-md);
+}
+
+[data-theme="modern"] .settings-modal-close:hover {
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: transparent;
+}
+
+[data-theme="modern"] .settings-modal-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-shadow: none;
+}
+
+[data-theme="modern"] .settings-modal-subtitle {
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="modern"] .settings-loading {
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+[data-theme="modern"] .settings-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--color-border);
+  border-radius: var(--primitive-radius-lg);
+}
+
+[data-theme="modern"] .settings-section-title {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 12px;
+}
+
+[data-theme="modern"] .settings-label {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+[data-theme="modern"] .settings-hint {
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+[data-theme="modern"] .settings-input,
+[data-theme="modern"] .settings-back-to-simple {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+  border-radius: var(--radius-input);
+}
+
+[data-theme="modern"] .settings-input:focus {
+  box-shadow: 0 0 0 2px var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+[data-theme="modern"] .settings-select {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+[data-theme="modern"] .settings-select option {
+  color: var(--color-text-primary);
+}
+
+[data-theme="modern"] .settings-toggle {
+  border-color: var(--color-border);
+}
+
+[data-theme="modern"] .settings-toggle.enabled {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent);
+}
+
+[data-theme="modern"] .settings-toggle.enabled .settings-toggle-thumb,
+[data-theme="modern"] .settings-slider::-webkit-slider-thumb {
+  box-shadow: none;
+}
+
+[data-theme="modern"] .settings-toggle-thumb {
+  background: var(--color-text-muted);
+}
+
+[data-theme="modern"] .settings-toggle.enabled .settings-toggle-thumb {
+  background: var(--color-accent);
+}
+
+[data-theme="modern"] .settings-slider-value {
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="modern"] .settings-advanced-toggle {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--color-border);
+  border-radius: var(--primitive-radius-lg);
+}
+
+[data-theme="modern"] .settings-advanced-toggle:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-border-accent);
+}
+
+[data-theme="modern"] .settings-advanced-icon {
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="modern"] .settings-advanced-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+[data-theme="modern"] .settings-advanced-hint {
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+[data-theme="modern"] .settings-advanced-content {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--color-border);
+  border-radius: 0 0 var(--primitive-radius-lg) var(--primitive-radius-lg);
+}
+
+[data-theme="modern"] .settings-subsection-title {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 11px;
+}
+
+[data-theme="modern"] .settings-privacy-note {
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  background: rgba(16, 185, 129, 0.05);
+  border-color: var(--color-border);
+  border-radius: var(--primitive-radius-lg);
+}
+
+[data-theme="modern"] .settings-privacy-icon {
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+}
+
+[data-theme="modern"] .settings-btn {
+  font-family: var(--font-body);
+  font-weight: 500;
+  border-radius: var(--radius-button);
+}
+
+[data-theme="modern"] .settings-btn-secondary {
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="modern"] .settings-btn-secondary:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-accent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="modern"] .settings-btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--primitive-slate-950);
+  font-weight: 600;
+}
+
+[data-theme="modern"] .settings-btn-primary:hover {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent-dim);
+  box-shadow: none;
+}
+
+[data-theme="modern"]
+  .settings-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+}

@@ -1,0 +1,165 @@
+# ci.yaml
+# Continuous Integration workflow for Be Right Back
+# Optimized for GitHub Free tier (2,000 minutes/month)
+name: ci
+
+# Triggers are cost-aware: macOS runners bill at 10x, so the expensive Tauri bundle stays
+# main-only (see the `if:` guards below) while PRs get the checks that actually catch breakage.
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# One run per ref. A rapid series of pushes to a PR would otherwise stack duplicate macOS jobs,
+# which bill at 10x. main is exempt -- cancelling a push there could abandon a release build.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  rust-and-desktop:
+    name: Rust + Desktop App
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache Cargo Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Check Rust Formatting
+        run: cargo fmt --check
+
+      - name: Run Clippy Lints
+        run: cargo clippy --workspace -- -D warnings
+
+      - name: Run Tests
+        run: cargo test --workspace
+
+      # cargo test rewrites the ts-rs bindings. A diff here means someone changed
+      # a Rust type and did not run `make bindings`.
+      - name: Check TypeScript Bindings Are Current
+        run: git diff --exit-code -- apps/desktop/src/bindings
+
+      - name: Build Workspace
+        run: cargo build --workspace --release
+
+      # Python linting rides on this macOS runner rather than getting its own ubuntu job:
+      # mlx/pyproject.toml depends on mlx, whose wheels target Apple Silicon, so resolving
+      # the environment on Linux is not straightforward. This runner is already paid for.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Lint Python (ruff + mypy)
+        run: make lint-python
+
+      # desktop build only runs on main branch to save minutes
+      - name: Setup Node.js
+        if: github.ref == 'refs/heads/main'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/desktop/package-lock.json
+
+      - name: Install Desktop Dependencies
+        if: github.ref == 'refs/heads/main'
+        working-directory: apps/desktop
+        run: npm ci
+
+      - name: Build Desktop Frontend
+        if: github.ref == 'refs/heads/main'
+        working-directory: apps/desktop
+        run: npm run build
+
+      - name: Build Tauri App
+        if: github.ref == 'refs/heads/main'
+        working-directory: apps/desktop
+        run: npm run tauri build
+
+  desktop-frontend:
+    name: Desktop Frontend (typecheck, lint, test)
+    # Runs on ubuntu, not macOS: no Rust or Tauri involved, so this costs 1x instead of 10x
+    # and still catches the class of breakage that silently blocked release builds --
+    # `npm run build` failing on type errors before Tauri ever gets to bundle.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/desktop/package-lock.json
+
+      - name: Install Desktop Dependencies
+        working-directory: apps/desktop
+        run: npm ci
+
+      - name: Check Formatting
+        working-directory: apps/desktop
+        run: npm run format:check
+
+      - name: Production Build (typechecks src, excluding tests)
+        working-directory: apps/desktop
+        run: npm run build
+
+      - name: Typecheck Test Suite
+        working-directory: apps/desktop
+        # Non-blocking for now: the suite has pre-existing type errors. Flip to a hard failure
+        # once they are cleared so tests cannot rot further.
+        continue-on-error: true
+        run: npx tsc -p tsconfig.test.json --noEmit
+
+      - name: Run Unit Tests
+        working-directory: apps/desktop
+        run: npm test
+
+  website-build:
+    name: Website Build & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/website/package-lock.json
+
+      - name: Install Website Dependencies
+        working-directory: apps/website
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: apps/website
+        run: npm run lint
+
+      - name: Build Next.js Site
+        working-directory: apps/website
+        run: npm run build

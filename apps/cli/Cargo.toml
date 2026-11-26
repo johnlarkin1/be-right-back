@@ -1,0 +1,43 @@
+[package]
+name = "brb"
+version = "0.1.0"
+edition = "2024"
+description = "Be Right Back CLI — iMessage ingestion, search, and persona tooling"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[[bin]]
+name = "brb"
+path = "src/main.rs"
+
+[dependencies]
+# Workspace crates
+common = { path = "../../crates/common" }
+messages-db = { path = "../../crates/messages-db" }
+training = { path = "../../crates/training" }
+ingestion = { path = "../../crates/ingestion" }
+
+# LLM inference + Casper agent
+inference = { path = "../../crates/inference" }
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+comfy-table = "7.1"
+indicatif = "0.17"
+
+# Async runtime (for streaming)
+tokio = { workspace = true, features = ["rt", "sync"] }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Date/time
+chrono = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

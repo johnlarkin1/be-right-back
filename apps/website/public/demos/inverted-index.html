@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How an inverted index works (BM25 / DuckDB FTS)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #0b0f0c;
+    --surface: #10140f;
+    --surface-elev: #161b14;
+    --border: rgba(232, 228, 210, 0.12);
+    --text: #ede7d6;
+    --text-body: #d8d3c2;
+    --text-secondary: #a8a294;
+    --text-muted: #6e685b;
+    --accent: #ffb000;
+    --accent-soft: #e8a042;
+    --green: #00ff41;
+    --cyan: #66d9ef;
+    --purple: #c792ea;
+    --pink: #f78fb3;
+
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  header.hero { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.01em; }
+  .subtitle { color: var(--text-secondary); margin: 0; }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 2.5rem 0 0.75rem;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+  }
+  h2 .num { color: var(--accent); font-family: var(--font-mono); margin-right: 0.5em; font-weight: 500; }
+
+  h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; color: var(--text); }
+
+  p { margin: 0.75em 0; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-elev);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    color: var(--text-body);
+    margin: 1em 0;
+  }
+
+  /* KaTeX math. [data-tex] elements hold plain-text fallback until KaTeX renders. */
+  .formula {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    color: var(--text);
+  }
+  .formula .katex-display { margin: 0.25em 0; }
+  .formula .katex { font-size: 1.15em; }
+  @media (max-width: 520px) { .formula { padding: 0.75rem; } .formula .katex { font-size: 0.82em; } }
+  .formula:not(.rendered) { font-family: var(--font-mono); font-size: 0.82rem; white-space: pre; color: var(--text-body); }
+  .math-inline .katex { color: var(--text); font-size: 1.05em; }
+  .math-inline:not(.rendered) { font-family: var(--font-mono); font-size: 0.88em; color: var(--green); }
+
+  .tldr {
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface-elev));
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0 2rem;
+  }
+  .tldr > div:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 820px) { .panels { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem 1.2rem;
+  }
+  .panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
+  }
+  .panel-title .hint { color: var(--text-muted); font-weight: normal; letter-spacing: 0.04em; text-transform: none; }
+
+  .doc {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 0.6rem;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  }
+  .doc.match-all {
+    border-color: var(--green);
+    background: color-mix(in srgb, var(--green) 8%, var(--surface-elev));
+  }
+  .doc.match-none {
+    opacity: 0.4;
+  }
+  .doc-id {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .doc-text {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    line-height: 1.7;
+    color: var(--text-body);
+  }
+
+  .tok {
+    display: inline-block;
+    padding: 0.05em 0.4em;
+    margin: 0.05em 0.08em;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    background: rgba(232, 228, 210, 0.06);
+    color: var(--text-body);
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .tok.stopword {
+    background: transparent;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-muted);
+  }
+  .tok.active {
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .ix-list {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+  .ix-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 0.5rem;
+    padding: 0.35em 0.55em;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin-bottom: 0.15rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .ix-row:hover { background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+  .ix-row.active {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    border-color: var(--accent);
+  }
+  .ix-term { color: var(--cyan); font-weight: 500; }
+  .ix-row.active .ix-term { color: var(--accent); }
+  .ix-postings {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+    align-items: center;
+  }
+  .posting {
+    display: inline-block;
+    padding: 0.05em 0.45em;
+    border-radius: 3px;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    color: var(--text-body);
+    font-size: 0.78rem;
+  }
+  .posting .pos { color: var(--text-muted); font-size: 0.72rem; }
+  .ix-df {
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    margin-left: 0.5em;
+  }
+
+  .query-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+  .query-input-wrap {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .query-input {
+    flex: 1;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.85rem;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .query-input:focus { border-color: var(--accent); }
+  .query-mode {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .query-mode button {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    padding: 0.45rem 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .query-mode button.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .query-status {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    align-items: center;
+  }
+  .pill {
+    display: inline-block;
+    padding: 0.15em 0.55em;
+    border-radius: 12px;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+  .pill.stop { color: var(--text-muted); text-decoration: line-through; }
+  .pill.hit { color: var(--accent); border-color: var(--accent); }
+  .pill.miss { color: var(--text-muted); }
+  .verdict { color: var(--text); font-weight: 600; }
+
+  .stopwords {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0;
+  }
+  .stopwords .sw-tag {
+    margin-right: 0.4em;
+    font-size: 0.85em;
+    color: var(--text-muted);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .step {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+  }
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.3rem;
+  }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+  .step-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+  .ann {
+    font-family: var(--font-mono);
+    color: var(--cyan);
+    font-size: 0.9em;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--accent-soft); font-style: italic; }
+  ul { padding-left: 1.3rem; } li { margin: 0.3em 0; }
+
+  .ix-list::-webkit-scrollbar { width: 6px; }
+  .ix-list::-webkit-scrollbar-track { background: transparent; }
+  .ix-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <div class="eyebrow">be right back · interactive explainer</div>
+  <h1>How an inverted index works</h1>
+  <p class="subtitle">
+    A from-scratch visualization of the data structure DuckDB FTS (and almost every text search engine) builds to make
+    keyword queries fast. Click around — it's interactive.
+  </p>
+</header>
+
+<div class="tldr">
+  <div>tl;dr</div>
+  <p>
+    A <strong>forward index</strong> answers "what tokens does this document contain?" — useful for showing documents.
+    An <strong>inverted index</strong> answers "what documents contain this token?" — useful for searching. The flip is
+    the whole trick. Plus a tokenization + stopword-removal pipeline before the flip to keep the index small and
+    matchable.
+  </p>
+</div>
+
+<h2><span class="num">1.</span>The pipeline</h2>
+
+<p>
+  An FTS engine doesn't store raw text. It runs every document through a preprocessing pipeline that yields a clean
+  list of "indexable" tokens, then stores the inversion of those tokens:
+</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">step 1</div>
+    <div class="step-title">tokenize</div>
+    <div class="step-desc">Lowercase, split on whitespace and punctuation</div>
+  </div>
+  <div class="step">
+    <div class="step-num">step 2</div>
+    <div class="step-title">strip stopwords</div>
+    <div class="step-desc">Drop high-frequency words (<code>the</code>, <code>is</code>, <code>to</code>…) that match almost everything</div>
+  </div>
+  <div class="step">
+    <div class="step-num">step 3</div>
+    <div class="step-title">stem (optional)</div>
+    <div class="step-desc"><code>cooked → cook</code>, <code>tickets → ticket</code>. We skip stemming here for clarity.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">step 4</div>
+    <div class="step-title">invert</div>
+    <div class="step-desc">For each token, record every (doc_id, position) pair it appears in.</div>
+  </div>
+</div>
+
+<p class="stopwords" id="stopwords-list">
+  Stopword list used here:
+</p>
+
+<h2><span class="num">2.</span>The data — five documents</h2>
+
+<p>
+  We have five (fictional) iMessage chunks. They're shown below as a <strong>forward index</strong>: each document
+  paired with the tokens it contains. Stopwords are <span class="ann">struck through</span> to show they're filtered
+  out before indexing.
+</p>
+
+<div class="panels">
+  <div class="panel">
+    <div class="panel-title">Forward index — documents as token streams</div>
+    <div id="docs"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      Inverted index — same data, flipped
+      <span class="hint">(click a term to highlight)</span>
+    </div>
+    <div id="ix" class="ix-list"></div>
+  </div>
+</div>
+
+<p>
+  <strong>The flip is the whole structural difference.</strong> The forward index has one entry per document. The
+  inverted index has one entry per <em>unique token</em>, and each entry holds a "postings list" of every document that
+  contains it. Querying <code>"thanksgiving"</code> against the forward index is O(N) — we'd have to read every
+  document. Against the inverted index it's O(1) — direct lookup of the term's postings list.
+</p>
+
+<h2><span class="num">3.</span>Try a multi-term query</h2>
+
+<p>
+  Type a query below. The engine tokenizes it, drops stopwords, looks up each remaining term in the inverted index,
+  and intersects (AND) or unions (OR) the postings lists. Documents matching are highlighted in the panel above.
+</p>
+
+<div class="query-section">
+  <div class="query-input-wrap">
+    <input class="query-input" id="q" type="text" placeholder="e.g. thanksgiving turkey" value="thanksgiving turkey" autocomplete="off" />
+    <div class="query-mode" id="mode">
+      <button data-mode="AND" class="active">AND</button>
+      <button data-mode="OR">OR</button>
+    </div>
+  </div>
+  <div class="query-status" id="status"></div>
+</div>
+
+<p>
+  The cost of resolving an N-term query is approximately:
+  <span class="ann">cost ≈ sum(|postings_list(term)|) — already-tiny because each list is just a list of doc IDs</span>.
+  Real engines (DuckDB included) sort postings lists by doc ID so intersection is a linear merge, not a quadratic loop.
+</p>
+
+<h2><span class="num">4.</span>From inverted index to BM25 score</h2>
+
+<p>
+  An inverted index just tells you <em>which</em> docs contain a term. BM25 builds on that with three extra numbers
+  per match:
+</p>
+
+<ul>
+  <li><strong>tf</strong> (term frequency): how many times the term appears in the doc. More mentions of the query term → likely more relevant.</li>
+  <li><strong>df</strong> (document frequency): how many docs in the corpus contain the term. Common terms get downweighted via <span class="math-inline" data-tex="\mathrm{idf}(t) = \log(N / \mathrm{df}(t))">idf = log(N/df)</span>.</li>
+  <li><strong>doc length</strong>: matches in a short, focused doc count for more than matches in a long, sprawling one (BM25 normalizes against avg doc length with parameter <em>b</em>).</li>
+</ul>
+
+<p>
+  All three of these are either already in the inverted index or computed from it. The postings list gives you <code>tf</code> per doc (just count entries for that doc) and <code>df</code> for the term (length of the postings list). Doc length is a separate small lookup table.
+</p>
+
+<div class="formula" data-tex="\mathrm{BM25}(q, d) = \sum_{t \in q} \mathrm{idf}(t) \cdot \frac{\mathrm{tf}(t, d) \cdot (k_1 + 1)}{\mathrm{tf}(t, d) + k_1 \cdot \left(1 - b + b \cdot \dfrac{|d|}{\mathrm{avgdl}}\right)}" data-display>BM25(query, doc) = Σ idf(t) · (tf(t,doc) · (k₁+1)) / (tf(t,doc) + k₁ · (1 - b + b · |doc|/avgdl))
+                  t ∈ query</div>
+
+<p>
+  This is exactly what DuckDB's FTS extension computes when you call <code>match_bm25(...)</code> against an indexed table.
+  The inverted index does the heavy lifting (finding candidate docs); BM25 just plugs in the per-term and per-doc counts
+  the index has already kept.
+</p>
+
+<footer>
+  <p>
+    <strong>What's faked vs real:</strong> the tokenizer here is a toy (lowercase + split on non-word characters + a
+    small stopword list). DuckDB's FTS extension uses the Snowball stemmer and a larger English stopword set, and stores
+    postings in a compressed columnar format. The structural concept — invert the mapping, intersect postings — is the
+    same.
+  </p>
+  <p>
+    <strong>Where this shows up in BRB:</strong>
+    <code>crates/ingestion/src/queries.rs</code> builds BM25 search queries against
+    a DuckDB <code>FTS_MAIN_chunks</code> virtual table populated at ingest time over the <code>formatted_text</code>
+    column of each chunk.
+  </p>
+</footer>
+
+</main>
+
+<script>
+  // Render [data-tex] elements with KaTeX. If the CDN fails to load,
+  // the plain-text fallback already inside each element stays visible.
+  if (window.katex) {
+    document.querySelectorAll("[data-tex]").forEach((node) => {
+      try {
+        window.katex.render(node.dataset.tex, node, {
+          displayMode: node.hasAttribute("data-display"),
+          throwOnError: true,
+        });
+        node.classList.add("rendered");
+      } catch (e) { /* keep fallback text */ }
+    });
+  }
+</script>
+
+<script>
+  "use strict";
+
+  const STOPWORDS = new Set(["a","an","and","the","is","in","on","to","at","for","of","with"]);
+
+  const DOCS = [
+    { id: 1, text: "happy thanksgiving turkey day" },
+    { id: 2, text: "the turkey is in the oven" },
+    { id: 3, text: "thanksgiving tickets to austin" },
+    { id: 4, text: "cooked an entire thanksgiving meal" },
+    { id: 5, text: "happy birthday turkey friend" },
+  ];
+
+  function tokenize(text) {
+    return text
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter(Boolean)
+      .map((w) => ({ w, isStop: STOPWORDS.has(w) }));
+  }
+
+  function buildInvertedIndex(docs) {
+    const ix = new Map();
+    for (const d of docs) {
+      const tokens = tokenize(d.text);
+      let pos = 0;
+      for (const t of tokens) {
+        if (t.isStop) continue;
+        if (!ix.has(t.w)) ix.set(t.w, []);
+        const list = ix.get(t.w);
+        let entry = list.find(e => e.docId === d.id);
+        if (!entry) {
+          entry = { docId: d.id, positions: [] };
+          list.push(entry);
+        }
+        entry.positions.push(pos);
+        pos++;
+      }
+    }
+    const sorted = [...ix.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+    sorted.forEach(([, postings]) => postings.sort((a, b) => a.docId - b.docId));
+    return sorted;
+  }
+
+  const INVERTED_INDEX = buildInvertedIndex(DOCS);
+
+  // ─── DOM helpers (safe, no innerHTML with interpolation) ──────────
+  function el(tag, opts = {}) {
+    const node = document.createElement(tag);
+    if (opts.className) node.className = opts.className;
+    if (opts.text !== undefined) node.textContent = opts.text;
+    if (opts.dataset) Object.entries(opts.dataset).forEach(([k, v]) => { node.dataset[k] = v; });
+    if (opts.attrs) Object.entries(opts.attrs).forEach(([k, v]) => node.setAttribute(k, v));
+    if (opts.children) for (const c of opts.children) if (c) node.appendChild(c);
+    if (opts.onClick) node.addEventListener("click", opts.onClick);
+    return node;
+  }
+
+  // ─── Stopword list ────────────────────────────────────────────────
+  const stopwordsContainer = document.getElementById("stopwords-list");
+  for (const sw of STOPWORDS) {
+    stopwordsContainer.appendChild(el("code", { className: "sw-tag", text: sw }));
+  }
+
+  // ─── Forward index ─────────────────────────────────────────────────
+  const docsEl = document.getElementById("docs");
+  function renderDocs(activeTerms, matchSet) {
+    docsEl.replaceChildren();
+    for (const d of DOCS) {
+      let docClass = "doc";
+      if (matchSet) docClass += matchSet.has(d.id) ? " match-all" : " match-none";
+
+      const tokenSpans = tokenize(d.text).map(t => {
+        let cls = "tok";
+        if (t.isStop) cls += " stopword";
+        if (activeTerms.has(t.w)) cls += " active";
+        return el("span", { className: cls, text: t.w });
+      });
+
+      const docNode = el("div", {
+        className: docClass,
+        dataset: { docId: String(d.id) },
+        children: [
+          el("div", { className: "doc-id", text: "Doc " + d.id }),
+          el("div", { className: "doc-text", children: tokenSpans }),
+        ],
+      });
+      docsEl.appendChild(docNode);
+    }
+  }
+
+  // ─── Inverted index ────────────────────────────────────────────────
+  const ixEl = document.getElementById("ix");
+  function renderIx(activeTerms) {
+    ixEl.replaceChildren();
+    for (const [term, postings] of INVERTED_INDEX) {
+      const isActive = activeTerms.has(term);
+      const termNode = el("div", { className: "ix-term", text: term });
+
+      const postingNodes = postings.map(entry => {
+        const positionsLabel = "[" + entry.positions.join(",") + "]";
+        return el("span", {
+          className: "posting",
+          children: [
+            document.createTextNode("Doc " + entry.docId + " "),
+            el("span", { className: "pos", text: positionsLabel }),
+          ],
+        });
+      });
+      postingNodes.push(el("span", { className: "ix-df", text: "df=" + postings.length }));
+      const postingsNode = el("div", { className: "ix-postings", children: postingNodes });
+
+      const row = el("div", {
+        className: "ix-row" + (isActive ? " active" : ""),
+        dataset: { term: term },
+        children: [termNode, postingsNode],
+        onClick: () => {
+          const wasActive = row.classList.contains("active");
+          if (wasActive) {
+            renderIx(new Set());
+            renderDocs(new Set(), null);
+          } else {
+            renderIx(new Set([term]));
+            renderDocs(new Set([term]), null);
+          }
+          clearQuery();
+        },
+      });
+      ixEl.appendChild(row);
+    }
+  }
+
+  // ─── Query resolution ──────────────────────────────────────────────
+  const qInput = document.getElementById("q");
+  const modeEl = document.getElementById("mode");
+  const statusEl = document.getElementById("status");
+  let queryMode = "AND";
+
+  function lookup(term) {
+    const found = INVERTED_INDEX.find(([t]) => t === term);
+    return found ? found[1].map(e => e.docId) : [];
+  }
+
+  function runQuery() {
+    statusEl.replaceChildren();
+    const raw = qInput.value.trim();
+    if (!raw) {
+      renderDocs(new Set(), null);
+      renderIx(new Set());
+      return;
+    }
+    const tokens = raw.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    const validTerms = [];
+    const matchSets = [];
+
+    for (const tok of tokens) {
+      if (STOPWORDS.has(tok)) {
+        statusEl.appendChild(el("span", { className: "pill stop", text: tok }));
+        continue;
+      }
+      const docs = lookup(tok);
+      validTerms.push(tok);
+      if (docs.length === 0) {
+        statusEl.appendChild(el("span", { className: "pill miss", text: tok + " (no match)" }));
+        matchSets.push(new Set());
+      } else {
+        const label = tok + " → {" + docs.map(d => "Doc " + d).join(", ") + "}";
+        statusEl.appendChild(el("span", { className: "pill hit", text: label }));
+        matchSets.push(new Set(docs));
+      }
+    }
+
+    let resultSet;
+    if (matchSets.length === 0) {
+      resultSet = new Set();
+    } else if (queryMode === "AND") {
+      resultSet = matchSets.reduce((acc, s) => new Set([...acc].filter(x => s.has(x))));
+    } else {
+      resultSet = matchSets.reduce((acc, s) => new Set([...acc, ...s]));
+    }
+
+    const verdictText = "→ " + resultSet.size + " doc" + (resultSet.size === 1 ? "" : "s") + " match (" + queryMode + ")";
+    statusEl.appendChild(el("span", { className: "verdict", text: verdictText }));
+
+    renderIx(new Set(validTerms));
+    renderDocs(new Set(validTerms), resultSet);
+  }
+
+  function clearQuery() {
+    qInput.value = "";
+    statusEl.replaceChildren();
+  }
+
+  qInput.addEventListener("input", runQuery);
+  modeEl.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      modeEl.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      queryMode = btn.dataset.mode;
+      runQuery();
+    });
+  });
+
+  // Initial render
+  renderDocs(new Set(), null);
+  renderIx(new Set());
+  runQuery();
+</script>
+</body>
+</html>

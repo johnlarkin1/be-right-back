@@ -1,0 +1,277 @@
+{
+  "self": {
+    "name": "Alex Rivera",
+    "identifier": "+15550100",
+    "style": { "lowercase": true, "emoji": 0.12, "emoji_pool": ["😂", "🙃", "👍"], "avg_words": 8 },
+    "filler": {
+      "openers": [
+        "hey, quick thing",
+        "you free {when}?",
+        "ok so I've been thinking",
+        "sorry for the delay",
+        "wait I have a question"
+      ],
+      "replies": [
+        "yeah ok that tracks",
+        "makes sense to me",
+        "I'll figure it out",
+        "hah fair",
+        "genuinely no idea",
+        "I'm easy either way",
+        "let's do it",
+        "give me a sec",
+        "oh interesting",
+        "hmm ok"
+      ],
+      "banks": {}
+    }
+  },
+
+  "shared_filler": {
+    "openers": [
+      "hey, you around {when}?",
+      "quick q — {when} still ok?",
+      "morning",
+      "you up?",
+      "hey! {when} works for me if it works for you",
+      "sorry, just saw this",
+      "ok so {when} then?",
+      "running like {minutes} min behind",
+      "can we push to {when}?",
+      "you get my last one? phone's being weird",
+      "hey hey",
+      "just landed back, {when} good?",
+      "wait did we say {when} or {when}",
+      "everything ok? haven't heard from you"
+    ],
+    "replies": [
+      "yeah that works",
+      "works for me",
+      "hmm let me check and get back to you",
+      "ok cool",
+      "sounds good",
+      "haha ok",
+      "no worries at all",
+      "yep",
+      "can't {when} unfortunately, {when}?",
+      "ugh sorry, totally spaced",
+      "on my way",
+      "omw",
+      "give me {minutes}",
+      "I'm here whenever",
+      "let me know when you're close",
+      "all good, take your time",
+      "ok perfect",
+      "wait really?",
+      "lol",
+      "that's fair",
+      "honestly same",
+      "I hear you",
+      "we'll figure it out",
+      "not sure yet tbh",
+      "I'll ping you when I know more",
+      "did you end up {doing}?",
+      "how'd that go?",
+      "any update?",
+      "still thinking about it",
+      "let's just play it by ear"
+    ],
+    "banks": {
+      "when": [
+        "later",
+        "tonight",
+        "tmrw",
+        "this evening",
+        "after 6",
+        "around noon",
+        "first thing",
+        "sometime this week",
+        "next wknd",
+        "friday",
+        "sunday",
+        "in an hour"
+      ],
+      "minutes": ["5", "10", "15", "20", "30", "45"],
+      "doing": ["sorting that out", "calling them back", "sending it over", "looking into it"]
+    }
+  },
+
+  "contacts": [
+    {
+      "key": "jordan",
+      "name": "Jordan Blake",
+      "identifier": "+15550111",
+      "relationship": "partner",
+      "cadence": "daily",
+      "topics": ["logistics", "travel", "cooking", "the apartment"],
+      "style": { "lowercase": true, "emoji": 0.3, "emoji_pool": ["❤️", "😂", "🥺", "🙌"], "avg_words": 10 },
+      "filler": {
+        "openers": ["hi love", "hey {pet}", "you home {when}?", "did you eat?"],
+        "replies": ["love you", "miss you", "ok {pet} 💛", "I'll grab it on the way", "yes chef"],
+        "banks": { "pet": ["babe", "love", "you"] }
+      }
+    },
+    {
+      "key": "maya",
+      "name": "Maya Chen",
+      "identifier": "+15550112",
+      "relationship": "best friend",
+      "cadence": "daily",
+      "topics": ["climbing", "gossip", "music", "career venting"],
+      "style": { "lowercase": true, "emoji": 0.35, "emoji_pool": ["💀", "😭", "🧗", "😤"], "abbreviations": true, "avg_words": 7 },
+      "filler": {
+        "openers": ["ok so", "you're not gonna believe this", "gym {when}?", "I need to vent"],
+        "replies": ["NO", "stop it", "I'm screaming", "tell me everything", "obsessed", "ok but real talk", "💀💀"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "mom",
+      "name": "Elena Rivera",
+      "identifier": "+15550113",
+      "relationship": "mother",
+      "cadence": "frequent",
+      "topics": ["family", "health", "checking in"],
+      "style": { "lowercase": false, "emoji": 0.4, "emoji_pool": ["❤️", "🙏", "😊"], "punctuation": true, "avg_words": 14, "sign_offs": ["Love, Mom"] },
+      "filler": {
+        "openers": ["Good morning sweetheart", "Just checking in on you", "Did you see what I sent?", "Call me when you have a minute"],
+        "replies": ["That's wonderful", "I'm so proud of you", "Please get some rest", "Okay honey", "Love you very much"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "dad",
+      "name": "Robert Rivera",
+      "identifier": "+15550114",
+      "relationship": "father",
+      "cadence": "weekly",
+      "topics": ["cars", "sports", "home repair"],
+      "style": { "lowercase": false, "emoji": 0.05, "emoji_pool": ["👍"], "avg_words": 11 },
+      "filler": {
+        "openers": ["Alex", "Give me a call", "Question for you"],
+        "replies": ["Understood", "Will do", "Thanks bud", "Talk soon", "Makes sense"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "nina",
+      "name": "Nina Rivera",
+      "identifier": "+15550115",
+      "relationship": "sister",
+      "cadence": "weekly",
+      "topics": ["wedding", "family drama", "pets"],
+      "style": { "lowercase": true, "emoji": 0.25, "emoji_pool": ["🙄", "😅", "🥂"], "avg_words": 12 },
+      "filler": {
+        "openers": ["ok don't tell mom but", "are you coming {when}?", "hiii"],
+        "replies": ["she did NOT", "I can't with her", "ok thank you", "you're the best", "I'll handle it"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "dev",
+      "name": "Devon Okafor",
+      "identifier": "+15550116",
+      "relationship": "college friend",
+      "cadence": "frequent",
+      "topics": ["climbing", "gaming", "startups"],
+      "style": { "lowercase": true, "emoji": 0.15, "emoji_pool": ["🧗", "🔥"], "abbreviations": true, "avg_words": 8 },
+      "filler": {
+        "openers": ["yo", "bro", "you seeing this?", "session {when}?"],
+        "replies": ["bet", "say less", "nah I'm good", "fair enough", "lmk"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "priya",
+      "name": "Priya Raghunathan",
+      "identifier": "+15550117",
+      "relationship": "coworker",
+      "cadence": "frequent",
+      "topics": ["work", "code review", "lunch"],
+      "style": { "lowercase": true, "emoji": 0.1, "emoji_pool": ["🫠", "🙃"], "avg_words": 11 },
+      "filler": {
+        "openers": ["do you have {minutes} min?", "did you see the thread?", "standup got moved"],
+        "replies": ["I'll take a look", "approved", "one nit then lgtm", "ok pushing now", "yeah I'm stuck on it too"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "sam",
+      "name": "Sam Whitfield",
+      "identifier": "+15550118",
+      "relationship": "manager",
+      "cadence": "weekly",
+      "topics": ["work", "planning", "one on ones"],
+      "style": { "lowercase": false, "emoji": 0.02, "emoji_pool": ["👍"], "avg_words": 15 },
+      "filler": {
+        "openers": ["Hi Alex, quick one", "Do you have time {when}?", "Following up on this"],
+        "replies": ["Sounds good, thanks", "Appreciate it", "Let's discuss in our 1:1", "Noted", "No rush on this"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "harper",
+      "name": "Harper Lindqvist",
+      "identifier": "+15550119",
+      "relationship": "book club friend",
+      "cadence": "weekly",
+      "topics": ["books", "film", "long walks"],
+      "style": { "lowercase": false, "emoji": 0.08, "emoji_pool": ["📚"], "avg_words": 18 },
+      "filler": {
+        "openers": ["Are we still on for {when}?", "Hope you're well!", "Thought of you earlier"],
+        "replies": ["Wonderful", "I'll bring something", "Looking forward to it", "That's very kind", "See you then"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "omar",
+      "name": "Omar Haddad",
+      "identifier": "+15550120",
+      "relationship": "friend from the climbing gym",
+      "cadence": "frequent",
+      "first_contact_day": -240,
+      "topics": ["climbing", "coffee", "photography"],
+      "style": { "lowercase": true, "emoji": 0.2, "emoji_pool": ["🧗", "☕️", "📷"], "avg_words": 9 },
+      "filler": {
+        "openers": ["hey! {when} still good?", "you at the gym {when}?", "quick one"],
+        "replies": ["for sure", "I'm down", "next time", "appreciate it man", "haha yeah"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "theo",
+      "name": "Theo Marchetti",
+      "identifier": "+15550121",
+      "relationship": "landlord",
+      "cadence": "occasional",
+      "topics": ["the building", "repairs", "rent"],
+      "style": { "lowercase": false, "emoji": 0.0, "emoji_pool": [], "avg_words": 16 },
+      "filler": {
+        "openers": ["Hi Alex", "Following up", "One more thing"],
+        "replies": ["Received, thank you", "I'll send someone {when}", "Understood", "Thanks for letting me know"],
+        "banks": {}
+      }
+    },
+    {
+      "key": "casey",
+      "name": "Casey Nguyen",
+      "identifier": "casey.nguyen@example.com",
+      "identifier_type": "email",
+      "relationship": "old roommate",
+      "cadence": "rare",
+      "topics": ["catching up", "old times"],
+      "style": { "lowercase": true, "emoji": 0.1, "emoji_pool": ["👀"], "avg_words": 13 },
+      "filler": {
+        "openers": ["hey stranger", "long time!", "you still in the city?"],
+        "replies": ["we should catch up properly", "ok for real this time", "miss you man", "haha wow"],
+        "banks": {}
+      }
+    }
+  ],
+
+  "groups": [
+    { "key": "climbing-crew", "display_name": "send it 🧗", "members": ["maya", "dev", "omar"] },
+    { "key": "family", "display_name": "Rivera Family", "members": ["mom", "dad", "nina"] },
+    { "key": "work-standup", "display_name": "Platform Team", "members": ["priya", "sam"] }
+  ]
+}

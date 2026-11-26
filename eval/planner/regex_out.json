@@ -1,0 +1,312 @@
+[
+  {
+    "cleaned_query": "text",
+    "id": "A-yesterday",
+    "is_aggregation": false,
+    "max": "2026-02-08",
+    "min": "2026-02-08",
+    "prefer_recent": true,
+    "query": "who did I text yesterday",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-today",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-02-09",
+    "prefer_recent": true,
+    "query": "what happened today",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-last-month",
+    "is_aggregation": false,
+    "max": "2026-01-31",
+    "min": "2026-01-01",
+    "prefer_recent": false,
+    "query": "what happened last month",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-this-month",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-02-01",
+    "prefer_recent": true,
+    "query": "what happened this month",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "concerts",
+    "id": "A-this-year",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-01-01",
+    "prefer_recent": false,
+    "query": "what concerts did I go to this year",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-last-year",
+    "is_aggregation": false,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "what happened last year",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "text most",
+    "id": "A-in-2025",
+    "is_aggregation": true,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "who did I text the most in 2025",
+    "result_count": 20
+  },
+  {
+    "cleaned_query": "plans",
+    "id": "A-in-jan-2025",
+    "is_aggregation": false,
+    "max": "2025-01-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "what plans did I make in January 2025",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "plans",
+    "id": "A-in-december",
+    "is_aggregation": false,
+    "max": "2025-12-31",
+    "min": "2025-12-01",
+    "prefer_recent": false,
+    "query": "what plans did I make in December",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-in-january",
+    "is_aggregation": false,
+    "max": "2026-01-31",
+    "min": "2026-01-01",
+    "prefer_recent": false,
+    "query": "what happened in January",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-in-march",
+    "is_aggregation": false,
+    "max": "2025-03-31",
+    "min": "2025-03-01",
+    "prefer_recent": false,
+    "query": "what happened in March",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "vacation",
+    "id": "A-range-jan-jan",
+    "is_aggregation": false,
+    "max": "2026-01-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "where did I vacation from January 2025 to January 2026",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "mentioned skiing",
+    "id": "A-this-winter",
+    "is_aggregation": false,
+    "max": "2026-02-28",
+    "min": "2025-12-01",
+    "prefer_recent": false,
+    "query": "who mentioned skiing this winter",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "what did we do",
+    "id": "A-last-summer",
+    "is_aggregation": false,
+    "max": "2025-08-31",
+    "min": "2025-06-01",
+    "prefer_recent": false,
+    "query": "what did we do last summer",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-last-5-days",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-02-04",
+    "prefer_recent": true,
+    "query": "what happened in the last 5 days",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "texted",
+    "id": "A-past-2-weeks",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-01-26",
+    "prefer_recent": true,
+    "query": "who texted me the past 2 weeks",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened",
+    "id": "A-last-3-months",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2025-11-11",
+    "prefer_recent": true,
+    "query": "what happened last 3 months",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "restaurant someone recommend",
+    "id": "A-recently",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-01-10",
+    "prefer_recent": true,
+    "query": "what restaurant did someone recommend recently",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "restaurants mom",
+    "id": "A-no-temporal",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what restaurants does mom like",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "chatting around christmastime",
+    "id": "B-christmastime",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what was I chatting about around christmastime",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "stuff back half",
+    "id": "B-back-half",
+    "is_aggregation": false,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "stuff from the back half of last year",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "over holidays",
+    "id": "B-holidays",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what did we talk about over the holidays",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "couple months ago",
+    "id": "B-couple-months",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what was I up to a couple months ago",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "conversations first quarter 2025",
+    "id": "B-first-quarter",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "conversations from the first quarter of 2025",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "happened between thanksgiving new years",
+    "id": "B-thanksgiving-nye",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what happened between thanksgiving and new years",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "saying covid started",
+    "id": "B-covid",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what were we saying when covid started",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "year ago",
+    "id": "B-year-ago",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what was going on about a year ago",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "earlier",
+    "id": "B-early-this-week",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2026-02-09",
+    "prefer_recent": true,
+    "query": "what did I say earlier this week",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "messages summer before last",
+    "id": "B-summer-before",
+    "is_aggregation": false,
+    "max": "2026-02-09",
+    "min": "2025-11-11",
+    "prefer_recent": true,
+    "query": "messages from the summer before last",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "planning right around turn year",
+    "id": "B-turn-of-year",
+    "is_aggregation": false,
+    "max": null,
+    "min": null,
+    "prefer_recent": false,
+    "query": "what were we planning right around the turn of the year",
+    "result_count": 7
+  },
+  {
+    "cleaned_query": "anything birthday",
+    "id": "B-unknowable",
+    "is_aggregation": false,
+    "max": "2025-12-31",
+    "min": "2025-01-01",
+    "prefer_recent": false,
+    "query": "anything from my birthday last year",
+    "result_count": 7
+  }
+]

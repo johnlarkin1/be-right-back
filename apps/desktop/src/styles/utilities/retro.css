@@ -1,0 +1,229 @@
+/* ============================================
+   RETRO UTILITIES
+   CRT terminal-specific effects
+   These effects are scoped to retro theme
+   ============================================ */
+
+@layer utilities {
+  /* ============================================
+     TEXT GLOW EFFECTS
+     ============================================ */
+
+  /* Default: glow effects active */
+  .text-glow {
+    text-shadow: var(--text-glow);
+  }
+
+  .text-glow-strong {
+    text-shadow: var(--text-glow-strong);
+  }
+
+  /* In modern mode, disable glow */
+  [data-theme="modern"] .text-glow,
+  [data-theme="modern"] .text-glow-strong {
+    text-shadow: none;
+  }
+
+  /* ============================================
+     BOX GLOW EFFECTS
+     ============================================ */
+
+  .box-glow {
+    box-shadow: var(--box-glow);
+  }
+
+  [data-theme="modern"] .box-glow {
+    box-shadow: none;
+  }
+
+  /* ============================================
+     CURSOR BLINK ANIMATION
+     ============================================ */
+
+  @keyframes cursor-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .cursor-blink {
+    animation: cursor-blink var(--cursor-blink-speed, 0.8s) linear infinite;
+  }
+
+  /* Modern mode: no blink, just static cursor */
+  [data-theme="modern"] .cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* ============================================
+     SCREEN FLICKER ANIMATION
+     ============================================ */
+
+  @keyframes flicker {
+    0% {
+      opacity: 1;
+    }
+    3% {
+      opacity: 0.97;
+    }
+    6% {
+      opacity: 1;
+    }
+    7% {
+      opacity: 0.95;
+    }
+    8% {
+      opacity: 1;
+    }
+    9% {
+      opacity: 0.98;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-flicker {
+    animation: flicker 4s infinite;
+  }
+
+  [data-theme="modern"] .animate-flicker {
+    animation: none;
+  }
+
+  /* ============================================
+     PULSE GLOW ANIMATION
+     ============================================ */
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Modern mode: subtle fade instead of glow pulse */
+  [data-theme="modern"] .animate-pulse-glow {
+    animation: fade-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes fade-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* ============================================
+     TYPING ANIMATION
+     ============================================ */
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  .animate-typing {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1s steps(20, end);
+  }
+
+  /* ============================================
+     CRT OVERLAY EFFECTS
+     These are controlled by --show-crt-effects
+     ============================================ */
+
+  /* Scanlines overlay */
+  .crt-scanlines {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--scanline-color, rgba(0, 0, 0, 0.15)),
+      var(--scanline-color, rgba(0, 0, 0, 0.15)) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    z-index: var(--z-crt-scanlines);
+    opacity: var(--crt-scanline-opacity, 0.15);
+  }
+
+  /* Vignette overlay */
+  .crt-vignette {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 60%,
+      rgba(0, 0, 0, var(--crt-vignette-opacity, 0.4)) 100%
+    );
+    z-index: var(--z-crt-vignette);
+  }
+
+  /* Phosphor glow */
+  .crt-glow {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      var(--phosphor-glow-color, rgba(0, 255, 65, 0.03)) 0%,
+      transparent 70%
+    );
+    z-index: var(--z-crt-glow);
+  }
+
+  /* Hide CRT effects in modern mode via opacity */
+  [data-theme="modern"] .crt-scanlines,
+  [data-theme="modern"] .crt-vignette,
+  [data-theme="modern"] .crt-glow {
+    opacity: 0;
+  }
+
+  /* ============================================
+     TERMINAL-SPECIFIC UTILITIES
+     ============================================ */
+
+  /* Terminal prompt prefix */
+  .terminal-prompt::before {
+    content: "$ ";
+    color: var(--color-text-muted);
+    font-family: var(--font-terminal);
+  }
+
+  [data-theme="modern"] .terminal-prompt::before {
+    content: none;
+  }
+
+  /* Terminal-style text selection */
+  .terminal-selection::selection {
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+  }
+}

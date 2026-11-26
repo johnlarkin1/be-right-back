@@ -1,0 +1,31 @@
+{
+  "language": "rust",
+  "timestamp": "2025-12-09T13:14:14.716258Z",
+  "system": {
+    "platform": "macos",
+    "cpu_count": 16,
+    "ram_gb": 48.0,
+    "rust_version": ""
+  },
+  "results": [
+    {
+      "n_points": 10000,
+      "pca_time_sec": 4.39,
+      "hdbscan_time_sec": 0.834,
+      "umap_time_sec": 0.031,
+      "total_time_sec": 5.255,
+      "peak_memory_mb": 606.3,
+      "n_clusters": 20,
+      "noise_ratio": 0.0,
+      "config": {
+        "pca_dims": 50,
+        "min_cluster_size": 100,
+        "min_samples": 10,
+        "umap_n_components": 3,
+        "umap_n_neighbors": 15,
+        "umap_min_dist": 0.1,
+        "random_state": 42
+      }
+    }
+  ]
+}

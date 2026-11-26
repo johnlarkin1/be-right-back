@@ -1,0 +1,50 @@
+# rust artifacts
+.gen
+**target/debug**
+**/target/
+
+# NextJS for marketing website when I get there eventually
+**/node_modules/**
+
+# we don't need our chat.db and addressbook.db
+# schema / dbml in git. i have a separate git repo for that
+schema/
+
+# repomix is a nice tool for LLM support and context building
+# although pretty much deprecated given CC
+repomix-output.xml
+
+# CLAUDE.md files are tracked for documentation
+
+# AI-drafted blog post variants kept local-only (review/reference, not for publish)
+apps/website/content/how-its-built/**/*-claude.md
+
+# ignore all python cache files
+**/__pycache__/**
+
+# Python egg-info directories
+*.egg-info/
+
+# we don't need the main input things
+apps/website/public/unfurls/main_input*.mov
+apps/website/public/unfurls/main_input*.png
+apps/website/public/unfurls/archived/*.mp4
+apps/website/public/unfurls/archived/*.mov
+
+scripts/generate_hash.py
+scripts/*.html
+playwright/
+.playwright-mcp
+
+
+# Test coverage reports
+**/coverage/
+
+.claude/settings.local.json
+.claude/projects/
+
+# Eval corpora: generated per-question SQLite/DuckDB shards and run outputs.
+# Rebuildable from the committed manifests, and far too large to track.
+# (synthetic/build/ is already covered by synthetic/.gitignore.)
+eval/longmemeval/shards/
+eval/longmemeval/runs/

@@ -1,0 +1,536 @@
+/* ============================================
+   SHARED UTILITIES
+   Mode-agnostic utility classes
+   Work in both retro and modern themes
+   ============================================ */
+
+@layer utilities {
+  /* ============================================
+     LAYOUT UTILITIES
+     ============================================ */
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-element);
+  }
+
+  .stack-tight {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tight);
+  }
+
+  .stack-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-section);
+  }
+
+  .row {
+    display: flex;
+    gap: var(--space-element);
+  }
+
+  .row-tight {
+    display: flex;
+    gap: var(--space-tight);
+  }
+
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ============================================
+     TYPOGRAPHY UTILITIES
+     ============================================ */
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-terminal {
+    font-family: var(--font-terminal);
+  }
+
+  .text-accent {
+    color: var(--color-accent);
+  }
+
+  .text-accent-secondary {
+    color: var(--color-accent-secondary);
+  }
+
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  /* ============================================
+     CARD PATTERNS
+     ============================================ */
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-card);
+  }
+
+  .card-elevated {
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ============================================
+     PAGE PATTERNS
+     Page header, section title, stat tile, segmented control
+     ============================================ */
+
+  .page-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-page-title-size);
+    font-weight: var(--text-page-title-weight);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-text-accent);
+    text-shadow: var(--text-glow);
+  }
+
+  .section-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-section-title-size);
+    font-weight: var(--text-section-title-weight);
+    color: var(--color-text-accent);
+    text-shadow: var(--text-glow);
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .stat-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tight);
+    padding: 16px 18px;
+  }
+
+  .stat-label,
+  .stat-note {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-stat-size);
+    font-weight: var(--text-stat-weight);
+    line-height: 1.1;
+    color: var(--color-text-primary);
+  }
+
+  .stat-unit {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+  }
+
+  .segmented {
+    display: inline-flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+  }
+
+  .segmented-item {
+    min-height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--nav-item-inactive-text);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .segmented-select {
+    appearance: none;
+    padding-right: 26px;
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      right 14px center,
+      right 10px center;
+    background-size: 4px 4px;
+    background-repeat: no-repeat;
+  }
+
+  .segmented-select option {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  .segmented-item:hover {
+    background: var(--nav-item-hover-bg);
+  }
+
+  .segmented-item[aria-pressed="true"],
+  .segmented-item[aria-current="page"],
+  .segmented-item[data-active="true"] {
+    background: var(--nav-item-active-bg);
+    color: var(--nav-item-active-text);
+  }
+
+  [data-theme="retro"] .segmented-item {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .progress-track {
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--color-accent-secondary-subtle);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--color-accent-secondary);
+  }
+
+  .list-row {
+    border-radius: var(--radius-button);
+    transition: var(--transition-fast);
+  }
+
+  .list-row:hover {
+    background: var(--color-surface-hover);
+  }
+
+  /* ============================================
+     BUTTON UTILITIES
+     ============================================ */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-inline);
+    min-height: 36px;
+    padding: var(--primitive-space-2) var(--primitive-space-4);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: var(--radius-button);
+    font-family: var(--font-body);
+    transition: var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  [data-theme="retro"] .btn {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  [data-theme="retro"] .btn-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--color-border-accent);
+    color: var(--color-accent);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-accent-subtle);
+  }
+
+  /* ============================================
+     FOCUS STATES
+     ============================================ */
+
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .focus-within-ring:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     SURFACE UTILITIES
+     ============================================ */
+
+  .surface {
+    background: var(--color-surface);
+  }
+
+  .surface-elevated {
+    background: var(--color-surface-elevated);
+  }
+
+  .surface-card {
+    background: var(--color-surface-card);
+  }
+
+  .surface-overlay {
+    background: var(--color-surface-overlay);
+  }
+
+  /* ============================================
+     BORDER UTILITIES
+     ============================================ */
+
+  .border-default {
+    border: 1px solid var(--color-border);
+  }
+
+  .border-subtle {
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .border-accent {
+    border: 1px solid var(--color-border-accent);
+  }
+
+  /* ============================================
+     TRANSITION UTILITIES
+     ============================================ */
+
+  .transition-fast {
+    transition: all var(--transition-fast);
+  }
+
+  .transition-normal {
+    transition: all var(--transition-normal);
+  }
+
+  .transition-slow {
+    transition: all var(--transition-slow);
+  }
+
+  /* ============================================
+     ANIMATION UTILITIES (Shared)
+     ============================================ */
+
+  /* Skeleton loading pulse */
+  @keyframes skeleton-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-skeleton {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Spin animation */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin {
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* Fade in */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in var(--primitive-duration-normal)
+      var(--primitive-ease-out);
+  }
+
+  /* Scale in */
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in var(--primitive-duration-normal)
+      var(--primitive-ease-out);
+  }
+
+  /* Float animation - used by Ghost, works in both themes */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* ============================================
+     TOOLTIP UTILITIES
+     ============================================ */
+
+  .tooltip-wrapper {
+    position: relative;
+    display: inline-flex;
+    cursor: help;
+  }
+
+  .tooltip {
+    position: absolute;
+    z-index: var(--z-tooltip, 1600);
+    width: max-content;
+    max-width: 240px;
+    padding: var(--primitive-space-2) var(--primitive-space-3);
+    border-radius: var(--radius-card);
+    font-size: var(--primitive-text-xs);
+    line-height: 1.4;
+    pointer-events: none;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center;
+  }
+
+  /* Retro mode tooltip */
+  [data-theme="retro"] .tooltip {
+    background: rgba(10, 14, 10, 0.95);
+    border: 1px solid rgba(0, 255, 65, 0.4);
+    color: var(--primitive-crt-green);
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+    font-family: var(--font-terminal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 10px;
+  }
+
+  /* Modern mode tooltip */
+  [data-theme="modern"] .tooltip {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--primitive-slate-700);
+    color: var(--primitive-slate-50);
+    box-shadow: var(--primitive-shadow-md);
+    font-family: var(--font-body);
+  }
+
+  /* Tooltip arrow */
+  .tooltip-arrow {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+  }
+
+  [data-theme="retro"] .tooltip-arrow {
+    background: rgba(10, 14, 10, 0.95);
+    border-left: 1px solid rgba(0, 255, 65, 0.4);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.4);
+  }
+
+  [data-theme="modern"] .tooltip-arrow {
+    background: rgba(15, 23, 42, 0.95);
+    border-left: 1px solid var(--primitive-slate-700);
+    border-bottom: 1px solid var(--primitive-slate-700);
+  }
+
+  /* Arrow positioning for each direction */
+  .tooltip-arrow-top {
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .tooltip-arrow-bottom {
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(225deg);
+  }
+
+  .tooltip-arrow-left {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(315deg);
+  }
+
+  .tooltip-arrow-right {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(135deg);
+  }
+}

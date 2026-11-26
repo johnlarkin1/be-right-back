@@ -1,0 +1,66 @@
+[project]
+name = "be-right-back-python"
+version = "0.1.0"
+description = "MLX-based LoRA training for Be Right Back personas"
+license = "PolyForm-Noncommercial-1.0.0"  # Full text in LICENSE at the repo root
+requires-python = ">=3.13,<3.14"  # Match bundled Python 3.13.9
+dependencies = [
+    "mlx>=0.31.2",  # Floor required by mlx-lm 0.31.3 on Darwin
+    # Qwen3.5 DeltaNet support reached PyPI in 0.31.0, so this is a plain registry dependency.
+    # Do NOT go back to a `git+` URL: uv shells out to the `git` CLI for git dependencies, and on
+    # a Mac without Xcode Command Line Tools `/usr/bin/git` is a stub that opens the CLT installer
+    # and fails, which breaks first-run setup in the bundled app.
+    "mlx-lm>=0.31.3",
+    "transformers>=4.40.0",
+    "huggingface-hub>=0.25.0",
+    "numpy>=1.26.0",
+    "pyyaml>=6.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "safetensors>=0.4.0",
+    # Embedding dependencies
+    "sentence-transformers>=3.0.0", # For embedding generation with Metal support
+    "duckdb==2.0.1", # Pin to match the Rust duckdb crate (1.20001.0 = DuckDB 2.0.1)
+    "pandas>=2.0.0", # For bulk DataFrame inserts to DuckDB
+    "psutil>=5.9.0", # For RAM detection (dynamic batch sizing)
+    "pyarrow>=15.0.0", # For Parquet-based bulk loading to DuckDB
+    "einops>=0.7.0", # Required by nomic-embed model
+    "mlx-embeddings>=0.0.5",
+    # macOS-specific for decoding iMessage attributedBody (NSAttributedString)
+    "pyobjc-framework-Cocoa>=12.1; sys_platform == 'darwin'",
+    # Analytics pipeline dependencies (clustering + dimensionality reduction)
+    "scikit-learn>=1.3.0", # For PCA
+    "igraph>=1.0.0", # kNN graph for Leiden
+    "leidenalg>=0.12.0", # Topic communities
+    "pynndescent>=0.5.13", # Approximate kNN
+    "umap-learn>=0.5.7", # Dimensionality reduction for visualization
+    "numba>=0.61.0", # Force newer numba for Python 3.13 support
+    "llvmlite>=0.44.0", # Force newer llvmlite for Python 3.13 support
+    "ujson>=5.11.0",
+]
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["config*", "constants*", "core*", "data*", "entry*", "fidelity*", "ml*", "pipelines*", "progress*", "utils*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.19.1",
+    "pandas-stubs>=2.3.3.251219",
+    "types-psutil>=7.1.3.20251211",
+    "types-pyyaml>=6.0.12.20250915",
+]

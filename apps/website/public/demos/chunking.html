@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How sliding-window chunking works (window / stride)</title>
+<style>
+  :root {
+    --bg: #0b0f0c;
+    --surface: #10140f;
+    --surface-elev: #161b14;
+    --border: rgba(232, 228, 210, 0.12);
+    --text: #ede7d6;
+    --text-body: #d8d3c2;
+    --text-secondary: #a8a294;
+    --text-muted: #6e685b;
+    --accent: #ffb000;
+    --accent-soft: #e8a042;
+    --green: #00ff41;
+    --cyan: #66d9ef;
+    --purple: #c792ea;
+    --pink: #f78fb3;
+    --red: #f85149;
+
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  header.hero { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.01em; }
+  .subtitle { color: var(--text-secondary); margin: 0; }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 2.5rem 0 0.75rem;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+  }
+  h2 .num { color: var(--accent); font-family: var(--font-mono); margin-right: 0.5em; font-weight: 500; }
+
+  p { margin: 0.75em 0; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-elev);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  .tldr {
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface-elev));
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0 2rem;
+  }
+  .tldr > div:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  /* ── Controls ── */
+  .controls {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.25rem;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.75rem;
+  }
+  @media (max-width: 720px) { .controls { grid-template-columns: 1fr; } }
+  .ctrl-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .ctrl-label .val { color: var(--accent); font-size: 1.05rem; font-weight: 600; }
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .ctrl-hint { font-size: 0.76rem; color: var(--text-muted); margin-top: 0.35rem; }
+
+  /* ── Stats ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+  }
+  .stat {
+    background: var(--surface-elev);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+  }
+  .stat-val { font-family: var(--font-mono); font-size: 1.4rem; color: var(--accent); font-weight: 600; }
+  .stat-val.good { color: var(--green); }
+  .stat-val.warn { color: var(--red); }
+  .stat-label { font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.15rem; }
+
+  .banner {
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    margin: 1rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    display: none;
+  }
+  .banner.show { display: block; }
+  .banner.gap { background: color-mix(in srgb, var(--red) 12%, var(--surface)); border: 1px solid var(--red); color: var(--red); }
+  .banner.tile { background: color-mix(in srgb, var(--cyan) 10%, var(--surface)); border: 1px solid var(--cyan); color: var(--cyan); }
+
+  /* ── Chunk grid ── */
+  .grid-wrap { overflow-x: auto; margin: 1.25rem 0; }
+  .chunk-grid { border-collapse: collapse; font-family: var(--font-mono); font-size: 0.74rem; }
+  .chunk-grid th { color: var(--text-muted); font-weight: normal; padding: 0.2rem 0; text-align: center; min-width: 26px; }
+  .chunk-grid td.rowlabel { color: var(--cyan); padding-right: 0.75rem; white-space: nowrap; text-align: right; }
+  .cell { width: 26px; height: 26px; border: 1px solid var(--border); border-radius: 3px; }
+  .cell.on { background: color-mix(in srgb, var(--accent) 55%, transparent); border-color: var(--accent); }
+  .covbar td { height: 8px; padding: 0; }
+  .cov0 { background: color-mix(in srgb, var(--red) 60%, transparent); }
+  .cov1 { background: color-mix(in srgb, var(--text-muted) 45%, transparent); }
+  .cov2 { background: color-mix(in srgb, var(--green) 55%, transparent); }
+
+  /* ── Message stream ── */
+  .msgs { margin: 1.25rem 0; }
+  .msg {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding: 0.35rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    margin-bottom: 0.2rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .msg.overlap { background: color-mix(in srgb, var(--green) 7%, transparent); border-color: color-mix(in srgb, var(--green) 35%, transparent); }
+  .msg.gap { background: color-mix(in srgb, var(--red) 7%, transparent); border-color: color-mix(in srgb, var(--red) 30%, transparent); opacity: 0.75; }
+  .msg-idx { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); min-width: 1.6rem; text-align: right; padding-top: 0.2rem; }
+  .msg-sender { font-family: var(--font-mono); font-size: 0.72rem; min-width: 3.2rem; padding-top: 0.15rem; }
+  .msg-sender.me { color: var(--accent); }
+  .msg-sender.them { color: var(--cyan); }
+  .msg-text { color: var(--text-body); font-size: 0.9rem; flex: 1; }
+  .msg-cover { display: flex; gap: 0.2rem; flex-wrap: wrap; padding-top: 0.18rem; }
+  .cchip { font-family: var(--font-mono); font-size: 0.62rem; padding: 0.05em 0.4em; border-radius: 10px; background: var(--surface-elev); border: 1px solid var(--border); color: var(--text-secondary); }
+
+  .legend { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.78rem; color: var(--text-secondary); margin: 0.75rem 0; font-family: var(--font-mono); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4em; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--accent-soft); font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <div class="eyebrow">be right back · interactive explainer</div>
+  <h1>Sliding-window chunking</h1>
+  <p class="subtitle">
+    Before messages can be embedded, they're grouped into overlapping <strong>chunks</strong> with two knobs:
+    <code>window</code> (how many messages per chunk) and <code>stride</code> (how far the window jumps each step).
+    Drag them and watch the overlap appear and disappear.
+  </p>
+</header>
+
+<div class="tldr">
+  <div>tl;dr</div>
+  <p>
+    A chunk is a window of consecutive messages. We slide the window forward by <code>stride</code> messages each step.
+    When <strong>stride &lt; window</strong>, consecutive chunks share messages — that overlap is <em>deliberate</em>, so a
+    message near a boundary still has its surrounding context in at least one chunk. <strong>stride = window</strong> tiles
+    with no overlap; <strong>stride &gt; window</strong> skips messages entirely (bad). Production uses
+    <code>window=8, stride=4</code> — 50% overlap.
+  </p>
+</div>
+
+<h2><span class="num">1.</span>The knobs</h2>
+
+<div class="controls">
+  <div>
+    <div class="ctrl-label"><span>window — messages per chunk</span><span class="val" id="window-val">8</span></div>
+    <input type="range" id="window" min="1" max="12" value="8" />
+    <div class="ctrl-hint">How many consecutive messages each chunk contains.</div>
+  </div>
+  <div>
+    <div class="ctrl-label"><span>stride — step between chunks</span><span class="val" id="stride-val">4</span></div>
+    <input type="range" id="stride" min="1" max="12" value="4" />
+    <div class="ctrl-hint">How far the window advances before cutting the next chunk.</div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="s-chunks">—</div><div class="stat-label">chunks produced</div></div>
+  <div class="stat"><div class="stat-val" id="s-overlap">—</div><div class="stat-label">overlap per step</div></div>
+  <div class="stat"><div class="stat-val" id="s-pct">—</div><div class="stat-label">overlap ratio</div></div>
+  <div class="stat"><div class="stat-val" id="s-cov">—</div><div class="stat-label">messages covered</div></div>
+</div>
+
+<div class="banner gap" id="banner-gap">⚠ stride &gt; window — some messages fall into <em>no</em> chunk and are never embedded. Those rows are dimmed below.</div>
+<div class="banner tile" id="banner-tile">stride = window — chunks tile edge-to-edge with zero overlap. Boundary messages lose their cross-chunk context.</div>
+
+<h2><span class="num">2.</span>Which chunk covers which message</h2>
+
+<p>
+  Each row is one chunk; each column is one message in the conversation. A filled cell means that chunk contains that
+  message. The thin strip underneath colors each message by <em>how many</em> chunks cover it.
+</p>
+
+<div class="legend">
+  <span><i class="sw" style="background: color-mix(in srgb, var(--accent) 55%, transparent)"></i> in chunk</span>
+  <span><i class="sw cov2"></i> overlap (2+ chunks)</span>
+  <span><i class="sw cov1"></i> single chunk</span>
+  <span><i class="sw cov0"></i> gap (0 chunks)</span>
+</div>
+
+<div class="grid-wrap">
+  <table class="chunk-grid" id="grid"></table>
+</div>
+
+<h2><span class="num">3.</span>The conversation, annotated</h2>
+
+<p>
+  The same result on the actual messages. Rows highlighted <span style="color: var(--green)">green</span> sit in the
+  overlap zone (covered by more than one chunk); rows in <span style="color: var(--red)">red</span> were skipped entirely.
+  The chips on the right list which chunks each message landed in.
+</p>
+
+<div class="msgs" id="msgs"></div>
+
+<footer>
+  <p>
+    <strong>What's faked vs real:</strong> this uses a single 16-message conversation and treats the window as a flat
+    slide. The real <code>create_chunks()</code> first splits messages into separate conversations on &gt;4h time gaps,
+    prepends a <code>who/when</code> header line to each chunk for the embedding model, and drops chunks under
+    <code>min_chunk_chars</code>. The window/stride mechanic is identical.
+  </p>
+  <p>
+    <strong>Where this shows up in BRB:</strong> <code>mlx/src/data/chunking.py::create_chunks()</code>, called with
+    the production <code>window_size=8, stride=4</code>. Each chunk becomes one row in <code>message_chunks</code> and
+    one 768-dim embedding.
+  </p>
+</footer>
+
+</main>
+
+<script>
+  "use strict";
+
+  // ── A fictional conversation (16 messages) ───────────────────────────
+  const MESSAGES = [
+    { sender: "me",   text: "you around this weekend?" },
+    { sender: "them", text: "yeah should be! what's up" },
+    { sender: "me",   text: "thinking of doing a friendsgiving thing" },
+    { sender: "them", text: "ohh i'm in. when" },
+    { sender: "me",   text: "saturday afternoon probably" },
+    { sender: "them", text: "perfect. should i bring anything" },
+    { sender: "me",   text: "if you can do a dessert that'd be clutch" },
+    { sender: "them", text: "pie it is" },
+    { sender: "me",   text: "amazing. i'm doing the turkey" },
+    { sender: "them", text: "brave. you ever cooked one before" },
+    { sender: "me",   text: "no but how hard can it be lol" },
+    { sender: "them", text: "famous last words" },
+    { sender: "me",   text: "i'll watch a video the night before" },
+    { sender: "them", text: "send me the address when you can" },
+    { sender: "me",   text: "will do. starts around 3" },
+    { sender: "them", text: "see you then!" },
+  ];
+  const N = MESSAGES.length;
+
+  function el(tag, opts = {}) {
+    const node = document.createElement(tag);
+    if (opts.className) node.className = opts.className;
+    if (opts.text !== undefined) node.textContent = opts.text;
+    if (opts.children) for (const c of opts.children) if (c) node.appendChild(c);
+    return node;
+  }
+
+  // ── Compute chunks: windows starting at 0, stride, 2*stride, ... ──────
+  function computeChunks(windowSize, stride) {
+    const chunks = [];
+    for (let i = 0; i < N; i += stride) {
+      const start = i;
+      const end = Math.min(i + windowSize, N); // exclusive
+      chunks.push({ start, end });
+      if (end >= N) break; // last window already reached the end
+    }
+    return chunks;
+  }
+
+  // coverage[msgIndex] = array of chunk indices covering it
+  function computeCoverage(chunks) {
+    const cov = Array.from({ length: N }, () => []);
+    chunks.forEach((c, ci) => {
+      for (let m = c.start; m < c.end; m++) cov[m].push(ci);
+    });
+    return cov;
+  }
+
+  const windowEl = document.getElementById("window");
+  const strideEl = document.getElementById("stride");
+  const gridEl = document.getElementById("grid");
+  const msgsEl = document.getElementById("msgs");
+
+  function render() {
+    const windowSize = Number(windowEl.value);
+    const stride = Number(strideEl.value);
+    document.getElementById("window-val").textContent = windowSize;
+    document.getElementById("stride-val").textContent = stride;
+
+    const chunks = computeChunks(windowSize, stride);
+    const cov = computeCoverage(chunks);
+
+    // ── stats ──
+    const overlapPerStep = Math.max(0, windowSize - stride);
+    const overlapRatio = windowSize > 0 ? overlapPerStep / windowSize : 0;
+    const coveredCount = cov.filter((c) => c.length > 0).length;
+
+    document.getElementById("s-chunks").textContent = chunks.length;
+    document.getElementById("s-overlap").textContent =
+      stride > windowSize ? "0" : overlapPerStep + " msg";
+    const pctEl = document.getElementById("s-pct");
+    pctEl.textContent = stride > windowSize ? "—" : Math.round(overlapRatio * 100) + "%";
+    pctEl.className = "stat-val" + (overlapRatio > 0 && stride <= windowSize ? " good" : "");
+    const covEl = document.getElementById("s-cov");
+    covEl.textContent = coveredCount + " / " + N;
+    covEl.className = "stat-val" + (coveredCount === N ? " good" : " warn");
+
+    // ── banners ──
+    document.getElementById("banner-gap").classList.toggle("show", stride > windowSize);
+    document.getElementById("banner-tile").classList.toggle("show", stride === windowSize);
+
+    renderGrid(chunks, cov);
+    renderMsgs(chunks, cov);
+  }
+
+  function renderGrid(chunks, cov) {
+    gridEl.replaceChildren();
+
+    // header row: message indices
+    const headRow = el("tr");
+    headRow.appendChild(el("th", { text: "" }));
+    for (let m = 0; m < N; m++) headRow.appendChild(el("th", { text: String(m) }));
+    gridEl.appendChild(headRow);
+
+    // one row per chunk
+    chunks.forEach((c, ci) => {
+      const row = el("tr");
+      row.appendChild(el("td", { className: "rowlabel", text: "chunk " + ci + " [" + c.start + "–" + (c.end - 1) + "]" }));
+      for (let m = 0; m < N; m++) {
+        const on = m >= c.start && m < c.end;
+        const td = el("td");
+        td.appendChild(el("div", { className: "cell" + (on ? " on" : "") }));
+        row.appendChild(td);
+      }
+      gridEl.appendChild(row);
+    });
+
+    // coverage strip
+    const covRow = el("tr", { className: "covbar" });
+    covRow.appendChild(el("td", { className: "rowlabel", text: "coverage" }));
+    for (let m = 0; m < N; m++) {
+      const n = cov[m].length;
+      const klass = n === 0 ? "cov0" : n === 1 ? "cov1" : "cov2";
+      covRow.appendChild(el("td", { className: klass }));
+    }
+    gridEl.appendChild(covRow);
+  }
+
+  function renderMsgs(chunks, cov) {
+    msgsEl.replaceChildren();
+    MESSAGES.forEach((m, i) => {
+      const n = cov[i].length;
+      let cls = "msg";
+      if (n === 0) cls += " gap";
+      else if (n >= 2) cls += " overlap";
+
+      const chips = cov[i].map((ci) => el("span", { className: "cchip", text: "c" + ci }));
+      const coverNode = el("div", { className: "msg-cover", children: chips.length ? chips : [el("span", { className: "cchip", text: "—" })] });
+
+      msgsEl.appendChild(el("div", {
+        className: cls,
+        children: [
+          el("div", { className: "msg-idx", text: String(i) }),
+          el("div", { className: "msg-sender " + (m.sender === "me" ? "me" : "them"), text: m.sender === "me" ? "Me" : "Them" }),
+          el("div", { className: "msg-text", text: m.text }),
+          coverNode,
+        ],
+      }));
+    });
+  }
+
+  windowEl.addEventListener("input", render);
+  strideEl.addEventListener("input", render);
+  render();
+</script>
+</body>
+</html>

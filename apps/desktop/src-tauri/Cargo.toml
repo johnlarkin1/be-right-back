@@ -1,0 +1,51 @@
+[package]
+name = "be-right-back"
+version = "0.1.0"
+description = "Create personalized AI chatbot personas from your iMessage history, entirely on-device"
+edition = "2021"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "be_right_back_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+ts-rs = { workspace = true }
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Workspace crates
+messages-db = { path = "../../../crates/messages-db" }
+training = { path = "../../../crates/training" }
+personas = { path = "../../../crates/personas" }
+common = { path = "../../../crates/common", features = ["tauri-support"] }
+ingestion = { path = "../../../crates/ingestion" }
+
+# LLM inference + Casper agent
+inference = { path = "../../../crates/inference" }
+
+# Python environment management
+dirs = { workspace = true }
+tokio = { workspace = true, features = ["process", "fs", "sync", "time"] }
+chrono = { workspace = true }
+sysinfo = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Signal handling for daemon cleanup on Ctrl+C
+ctrlc = "3.4"
+tracing-appender = "0.2.5"

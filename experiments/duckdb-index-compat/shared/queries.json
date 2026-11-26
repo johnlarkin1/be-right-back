@@ -1,0 +1,57 @@
+{
+  "description": "5 test queries with deterministic expected results. Embeddings are generated from known seed vectors.",
+  "hnsw_queries": [
+    {
+      "id": "q1",
+      "description": "Query near chunk_id=0 (seed vector [1,0,0,...,0] normalized)",
+      "note": "Should return chunk 0 as top-1 with distance ~0.0"
+    },
+    {
+      "id": "q2",
+      "description": "Query near chunk_id=50 (midpoint in dataset)",
+      "note": "Should return chunk 50 as top-1"
+    },
+    {
+      "id": "q3",
+      "description": "Query near chunk_id=99 (last chunk)",
+      "note": "Should return chunk 99 as top-1"
+    },
+    {
+      "id": "q4",
+      "description": "Query equidistant from multiple chunks",
+      "note": "Tests ordering stability"
+    },
+    {
+      "id": "q5",
+      "description": "Zero-ish vector query (all dims ~equal)",
+      "note": "Tests edge case with near-uniform embeddings"
+    }
+  ],
+  "fts_queries": [
+    {
+      "id": "fts1",
+      "query_text": "hello world",
+      "description": "Exact text match (chunk 0 contains 'hello world')"
+    },
+    {
+      "id": "fts2",
+      "query_text": "weather forecast",
+      "description": "Phrase match (chunk 25 contains weather-related text)"
+    },
+    {
+      "id": "fts3",
+      "query_text": "dinner restaurant",
+      "description": "Multi-term match"
+    },
+    {
+      "id": "fts4",
+      "query_text": "meeting tomorrow",
+      "description": "Common words that appear in multiple chunks"
+    },
+    {
+      "id": "fts5",
+      "query_text": "unique_token_xyz",
+      "description": "Unique token that appears in exactly one chunk (chunk 42)"
+    }
+  ]
+}

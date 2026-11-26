@@ -1,0 +1,30 @@
+[package]
+name = "collab"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+license = "PolyForm-Noncommercial-1.0.0"
+publish = false
+description = "y-websocket collaboration server for the Be Right Back website"
+
+# Standalone workspace: the root workspace pulls in macOS-only crates.
+[workspace]
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", features = ["ws"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+rusqlite = { version = "0.43", features = ["bundled"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal", "sync", "time"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+yrs = { version = "0.28", features = ["sync"] }
+
+[dev-dependencies]
+tempfile = "3"
+tokio-tungstenite = "0.29"
+
+[profile.release]
+strip = true
+lto = "thin"

@@ -1,0 +1,91 @@
+/* ============================================
+   RETRO CRT TERMINAL THEME
+   Glowing green, scanlines, pixel fonts
+   This is the default theme
+   ============================================ */
+
+[data-theme="retro"],
+:root {
+  /* ============================================
+     SURFACES
+     Deep dark CRT background
+     ============================================ */
+
+  --color-surface: var(--primitive-crt-bg);
+  --color-surface-elevated: var(--primitive-crt-bg-light);
+  --color-surface-card: rgba(24, 24, 27, 0.4);
+
+  /* ============================================
+     ACCENT COLORS
+     CRT phosphor green + amber
+     ============================================ */
+
+  --color-accent: var(--primitive-crt-green);
+  --color-accent-dim: var(--primitive-crt-green-dim);
+  --color-accent-subtle: var(--primitive-crt-green-faint);
+  --color-accent-secondary: var(--primitive-crt-amber);
+  --color-accent-secondary-dim: var(--primitive-crt-amber-dim);
+
+  /* ============================================
+     TYPOGRAPHY
+     Retro terminal fonts
+     ============================================ */
+
+  --font-display: var(--primitive-font-vt323);
+  --font-body: var(--primitive-font-ibm-plex);
+  --font-terminal: var(--primitive-font-vt323);
+
+  /* ============================================
+     EFFECTS
+     Glows enabled
+     ============================================ */
+
+  --shadow-glow: var(--primitive-shadow-glow-green);
+  --text-glow: 0 0 8px currentColor;
+  --text-glow-strong:
+    0 0 4px currentColor, 0 0 8px currentColor, 0 0 16px currentColor;
+  --box-glow:
+    0 0 8px var(--primitive-crt-green-glow),
+    inset 0 0 8px var(--primitive-crt-green-faint);
+
+  /* ============================================
+     BORDER RADII
+     Rounded edges for clean retro aesthetic
+     ============================================ */
+
+  --radius-card: var(--primitive-radius-xl);
+  --radius-button: var(--primitive-radius-lg);
+  --radius-input: var(--primitive-radius-md);
+
+  /* ============================================
+     CRT EFFECT SETTINGS
+     ============================================ */
+
+  --crt-scanline-opacity: 0.15;
+  --crt-vignette-opacity: 0.4;
+  --crt-glow-opacity: 0.03;
+  --show-crt-effects: 1;
+  --show-ghost-mascot: 1;
+
+  /* ============================================
+     RETRO-SPECIFIC TOKENS
+     ============================================ */
+
+  /* Terminal cursor */
+  --cursor-color: var(--primitive-crt-green);
+  --cursor-blink-speed: 0.8s;
+
+  /* Scanline gradient */
+  --scanline-color: rgba(0, 0, 0, 0.15);
+
+  /* Phosphor glow center color */
+  --phosphor-glow-color: rgba(0, 255, 65, 0.03);
+
+  /* ============================================
+     TITLE GRADIENT
+     Vibrant CRT aesthetic: mint → purple
+     ============================================ */
+
+  --title-gradient-start: var(--primitive-mint-400);
+  --title-gradient-end: var(--primitive-violet-500);
+}

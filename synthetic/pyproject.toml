@@ -1,0 +1,43 @@
+[project]
+name = "brb-synthetic"
+version = "0.1.0"
+description = "Build a synthetic iMessage corpus (chat.db + AddressBook) for Be Right Back demos and RAG evals"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    # Writer layer: schema-accurate chat.db / AddressBook emission.
+    # We drive DatabaseBuilder / AddressBookBuilder directly and never use the
+    # foundry's LLM conversation generator -- content comes from world/.
+    "imessage-data-foundry>=1.0.0",
+    "pydantic>=2.6.0",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["brb_synthetic*"]
+
+[project.scripts]
+brb-synthetic = "brb_synthetic.cli:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+[[tool.mypy.overrides]]
+# The foundry ships no py.typed marker. We only touch its builder classes, whose
+# signatures we exercise directly in `verify`.
+module = ["imessage_data_foundry.*"]
+ignore_missing_imports = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.19.1",
+]

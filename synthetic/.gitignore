@@ -1,0 +1,10 @@
+# Built databases are regenerated from world/ -- the manifest is the source of
+# truth, not the binary. `make synthetic-build` recreates these in seconds.
+build/
+.venv/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+*.egg-info/
+*.pyc

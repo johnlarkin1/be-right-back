@@ -1,0 +1,232 @@
+// iMessage chat.db schema — the FULL real schema, dumped from a live
+// ~/Library/Messages/chat.db on macOS 26.4 (build 25E246).
+//
+// This is not trimmed. `message` really does have 98 columns. The schema
+// drifts slightly between macOS versions, so yours may differ a little.
+//
+// To render the interactive diagram:
+//   1. Open https://dbdiagram.io  (free, no account needed to start)
+//   2. Paste this entire file into the left-hand editor
+//   3. Export > Embed  ->  copy the full iframe src
+//      (it looks like https://dbdiagram.io/e/<id>/<version>)
+//   4. Drop that URL into the ::dbdiagram[...] directive in
+//      content/how-its-built/technical/02-data-foundation.md
+//
+// Regenerate from a Mac with:
+//   sqlite3 ~/Library/Messages/chat.db ".schema message"
+
+Project imessage_chat_db {
+  database_type: 'SQLite'
+  Note: 'Apple Messages local database (~/Library/Messages/chat.db). Be Right Back reads message, handle, chat, attachment and the join tables.'
+}
+
+Table message {
+  ROWID integer [pk, increment]
+  guid text [unique, not null]
+  text text [note: 'Plain text content — nullable; newer messages live in attributedBody']
+  replace integer
+  service_center text
+  handle_id integer [ref: > handle.ROWID, note: 'Sender handle. Apple does not declare this as a FK, but it is one. 0 for messages from you']
+  subject text
+  country text
+  attributedBody blob [note: 'NSAttributedString binary blob — used when text is NULL']
+  version integer
+  type integer
+  service text [note: 'iMessage / SMS / RCS']
+  account text
+  account_guid text
+  error integer
+  date integer [note: "Apple Cocoa timestamp (seconds OR nanoseconds since 2001-01-01)"]
+  date_read integer
+  date_delivered integer
+  is_delivered integer
+  is_finished integer
+  is_emote integer
+  is_from_me integer [note: '1 = you sent it, 0 = received']
+  is_empty integer
+  is_delayed integer
+  is_auto_reply integer
+  is_prepared integer
+  is_read integer
+  is_system_message integer [note: '1 = "X left the chat" style rows — filtered out during ingestion']
+  is_sent integer
+  has_dd_results integer
+  is_service_message integer
+  is_forward integer
+  was_downgraded integer
+  is_archive integer
+  cache_has_attachments integer
+  cache_roomnames text
+  was_data_detected integer
+  was_deduplicated integer
+  is_audio_message integer
+  is_played integer
+  date_played integer
+  item_type integer [note: '0 = regular message']
+  other_handle integer
+  group_title text
+  group_action_type integer
+  share_status integer
+  share_direction integer
+  is_expirable integer
+  expire_state integer
+  message_action_type integer
+  message_source integer
+  associated_message_guid text [note: 'Non-null for reactions/tapbacks — links back to the original message']
+  balloon_bundle_id text [note: 'Set for app messages (e.g. Apple Cash, polls)']
+  payload_data blob [note: 'Serialized payload for rich/app messages']
+  associated_message_type integer [note: 'Tapback kind (love, like, dislike, ...)']
+  expressive_send_style_id text
+  associated_message_range_location integer
+  associated_message_range_length integer
+  time_expressive_send_played integer
+  message_summary_info blob [note: 'Holds edit history / unsend metadata']
+  ck_sync_state integer
+  ck_record_id text
+  ck_record_change_tag text
+  destination_caller_id text
+  sr_ck_sync_state integer
+  sr_ck_record_id text
+  sr_ck_record_change_tag text
+  is_corrupt integer
+  reply_to_guid text
+  sort_id integer
+  is_spam integer
+  has_unseen_mention integer
+  thread_originator_guid text [note: 'Inline-reply threading — points at the parent message']
+  thread_originator_part text
+  syndication_ranges text
+  was_delivered_quietly integer
+  did_notify_recipient integer
+  synced_syndication_ranges text
+  date_retracted integer [note: 'Non-zero if the message was unsent']
+  date_edited integer [note: 'Non-zero if the message was edited']
+  was_detonated integer
+  part_count integer
+  is_stewie integer
+  is_kt_verified integer
+  is_sos integer
+  is_critical integer
+  bia_reference_id text
+  fallback_hash text
+  associated_message_emoji text [note: 'Custom emoji tapback']
+  is_pending_satellite_send integer
+  needs_relay integer
+  schedule_type integer
+  schedule_state integer
+  sent_or_received_off_grid integer
+  date_recovered integer
+  is_time_sensitive integer
+  ck_chat_id text
+  index_state integer
+}
+
+Table handle {
+  ROWID integer [pk, increment, unique]
+  id text [not null, note: 'The actual identifier — phone number or email address']
+  country text [note: 'Country code (e.g. "us"), nullable']
+  service text [not null, note: 'iMessage / SMS — same person on both = two separate rows']
+  uncanonicalized_id text [note: 'Original un-normalized identifier, nullable']
+  person_centric_id text [note: "Apple's attempt to merge duplicates of the same contact"]
+
+  indexes {
+    (id, service) [unique]
+  }
+}
+
+Table chat {
+  ROWID integer [pk, increment]
+  guid text [unique, not null, note: 'e.g. iMessage;-;+15551234567']
+  style integer [note: 'Chat style flag (1:1 vs group encoding)']
+  state integer
+  account_id text
+  properties blob
+  chat_identifier text [note: 'Human-readable identifier (phone/email for 1:1, group id for groups)']
+  service_name text [note: 'iMessage / SMS']
+  room_name text [note: 'NULL for 1:1, non-null for group chats — this is how groups are detected']
+  account_login text
+  is_archived integer [note: '1 if the user archived the conversation']
+  last_addressed_handle text
+  display_name text [note: 'Custom group chat name, nullable']
+  group_id text
+  is_filtered integer
+  successful_query integer
+  engram_id text
+  server_change_token text
+  ck_sync_state integer
+  last_read_message_timestamp integer
+  original_group_id text
+  sr_server_change_token text
+  sr_ck_sync_state integer
+  cloudkit_record_id text
+  sr_cloudkit_record_id text
+  last_addressed_sim_id text
+  is_blackholed integer
+  syndication_date integer
+  syndication_type integer
+  is_recovered integer
+  is_deleting_incoming_messages integer
+  is_pending_review integer
+}
+
+Table attachment {
+  ROWID integer [pk, increment]
+  guid text [unique, not null]
+  created_date integer
+  start_date integer
+  filename text [note: 'On-disk path to the attachment file']
+  uti text [note: 'Uniform Type Identifier']
+  mime_type text [note: 'e.g. image/jpeg']
+  transfer_state integer
+  is_outgoing integer
+  user_info blob
+  transfer_name text [note: 'Original file name']
+  total_bytes integer [note: 'File size in bytes']
+  is_sticker integer
+  sticker_user_info blob
+  attribution_info blob
+  hide_attachment integer
+  ck_sync_state integer
+  ck_server_change_token_blob blob
+  ck_record_id text
+  original_guid text
+  sr_ck_record_id text
+  sr_ck_sync_state integer
+  sr_ck_server_change_token_blob blob
+  is_commsafety_sensitive integer
+  emoji_image_content_identifier text
+  emoji_image_short_description text
+  preview_generation_state integer
+}
+
+// Junction: which handles participate in which chats.
+Table chat_handle_join {
+  chat_id integer [ref: > chat.ROWID, note: 'ON DELETE CASCADE']
+  handle_id integer [ref: > handle.ROWID, note: 'ON DELETE CASCADE']
+
+  indexes {
+    (chat_id, handle_id) [unique]
+  }
+}
+
+// Junction: which messages belong to which chats.
+Table chat_message_join {
+  chat_id integer [ref: > chat.ROWID, note: 'ON DELETE CASCADE']
+  message_id integer [ref: > message.ROWID, note: 'ON DELETE CASCADE']
+  message_date integer
+  index_state integer [not null]
+
+  indexes {
+    (chat_id, message_id) [pk]
+  }
+}
+
+// Junction: which attachments belong to which messages.
+Table message_attachment_join {
+  message_id integer [ref: > message.ROWID, note: 'ON DELETE CASCADE']
+  attachment_id integer [ref: > attachment.ROWID, note: 'ON DELETE CASCADE']
+
+  indexes {
+    (message_id, attachment_id) [unique]
+  }
+}

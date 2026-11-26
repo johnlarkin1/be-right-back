@@ -1,0 +1,18 @@
+{
+  "action": "report-versions",
+  "language": "python",
+  "duckdb_version": "v1.4.4",
+  "python_duckdb_package": "1.4.4",
+  "extensions": [
+    {
+      "name": "fts",
+      "version": "3937662",
+      "installed": true
+    },
+    {
+      "name": "vss",
+      "version": "9b25336",
+      "installed": true
+    }
+  ]
+}

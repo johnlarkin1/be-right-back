@@ -1,0 +1,27 @@
+<!-- @dsCard group="Brand" height=230 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .demo-col { display: flex; flex-direction: column; gap: 12px; }
+  .demo-note { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-secondary); margin: 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  const h = React.createElement, B = window.BeRightBack;
+  const note = (t) => h("p", { className: "demo-note" }, t);
+  const colors = ["green", "pink", "purple", "cyan", "amber"];
+  const variants = ["standard", "happy", "sleepy", "surprised", "angry", "sad", "mischievous", "worried", "excited", "bored", "thinking"];
+  const cell = (label, props) => h("div", { key: label, style: { textAlign: "center" } }, h(B.Ghost, { size: 40, ...props }), note(label));
+  const Demo = () => h("div", { className: "demo-col", style: { gap: 20 } },
+    h("div", { className: "demo-row", style: { gap: 24 } }, colors.map((c) => cell(c, { color: c }))),
+    h("div", { className: "demo-row", style: { gap: 20 } }, variants.map((v) => cell(v, { variant: v, animate: false, glowIntensity: "subtle" }))));
+  ReactDOM.createRoot(document.getElementById("app")).render(h(Demo));
+</script>
+</body>
+</html>

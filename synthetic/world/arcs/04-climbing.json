@@ -1,0 +1,115 @@
+[
+  {
+    "id": "climbing-progress",
+    "title": "Working up the grades",
+    "contact": "maya",
+    "days": [
+      {
+        "day_offset": -420,
+        "slot": "night",
+        "messages": [
+          { "from": "maya", "text": "you were so close on that overhang tonight, you had the heel hook" },
+          { "from": "me", "text": "I had the heel hook and then I did not have the heel hook" },
+          { "from": "maya", "text": "next week. I can feel it" }
+        ]
+      },
+      {
+        "day_offset": -215,
+        "slot": "night",
+        "messages": [
+          { "from": "maya", "text": "ALEX SENT HIS FIRST V7 TONIGHT. the blue one in the cave. I am not okay", "fact": "first-v7" },
+          { "from": "me", "text": "I genuinely blacked out on the last move" },
+          { "from": "maya", "text": "you screamed. everyone heard you scream" },
+          { "from": "me", "text": "worth it" },
+          { "from": "maya", "text": "two years of work. I'm so proud of you 😭" }
+        ]
+      },
+      {
+        "day_offset": -60,
+        "slot": "night",
+        "messages": [
+          { "from": "me", "text": "flashed a V6 tonight which is a first, usually takes me a few goes" },
+          { "from": "maya", "text": "the strength gains are REAL" }
+        ]
+      },
+      {
+        "day_offset": -12,
+        "slot": "night",
+        "messages": [
+          { "from": "me", "text": "gym was packed tonight, barely got on anything" },
+          { "from": "maya", "text": "january resolution crowd. it thins out by march, hold the line" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gunks-weekend",
+    "title": "The Gunks trip",
+    "group": "climbing-crew",
+    "days": [
+      {
+        "day_offset": -140,
+        "slot": "evening",
+        "messages": [
+          { "from": "dev", "text": "ok proposal: we rent a car and do a weekend at the Gunks before it gets cold", "fact": "gunks-trip" },
+          { "from": "maya", "text": "YES" },
+          { "from": "omar", "text": "I'm in, I can drive if someone else books the place" },
+          { "from": "me", "text": "I'll book. how many nights" },
+          { "from": "dev", "text": "two? drive up friday after work, climb sat and sun" }
+        ]
+      },
+      {
+        "day_offset": -119,
+        "slot": "morning",
+        "messages": [
+          { "from": "omar", "text": "leaving in 20, who needs picking up" },
+          { "from": "me", "text": "me please, I'm on the corner" },
+          { "from": "maya", "text": "I have the crash pads and approximately nine snacks" },
+          { "from": "dev", "text": "the correct number of snacks" }
+        ]
+      },
+      {
+        "day_offset": -117,
+        "slot": "evening",
+        "messages": [
+          { "from": "maya", "text": "that was the best weekend of the year and I will not be argued with" },
+          { "from": "omar", "text": "the light on sunday afternoon was unbelievable, I got maybe forty good frames" },
+          { "from": "dev", "text": "same time next year" },
+          { "from": "me", "text": "same time next year" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "omar-friendship",
+    "title": "Meeting Omar",
+    "contact": "omar",
+    "days": [
+      {
+        "day_offset": -240,
+        "slot": "night",
+        "messages": [
+          { "from": "omar", "text": "hey! omar from the gym, you gave me beta on the slab problem. thanks again" },
+          { "from": "me", "text": "hey! any time. you were making that look easy by the end" },
+          { "from": "omar", "text": "I'm usually there tues and thurs if you ever want a partner" }
+        ]
+      },
+      {
+        "day_offset": -168,
+        "slot": "morning",
+        "messages": [
+          { "from": "omar", "text": "found a coffee place near the gym that roasts their own, we should go before a session sometime" },
+          { "from": "me", "text": "sold" }
+        ]
+      },
+      {
+        "day_offset": -33,
+        "slot": "evening",
+        "messages": [
+          { "from": "omar", "text": "I'm putting together a little print show in march, would love if you came" },
+          { "from": "me", "text": "obviously I'm coming" }
+        ]
+      }
+    ]
+  }
+]

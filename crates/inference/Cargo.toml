@@ -1,0 +1,44 @@
+[package]
+name = "inference"
+version = "0.1.0"
+edition = "2024"
+description = "MLX Python inference engine for Be Right Back personas"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+ts-rs = { workspace = true }
+# Shared types and utilities
+common = { path = "../common" }
+personas = { path = "../personas" }
+
+# Async runtime
+tokio = { workspace = true, features = ["sync", "rt", "rt-multi-thread", "net", "io-util", "time", "macros"] }
+
+# Unix process management
+libc = "0.2"
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Serialization (for config)
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Agent dependencies
+regex = { workspace = true }
+ingestion = { path = "../ingestion" }
+messages-db = { path = "../messages-db" }
+chrono = { workspace = true }
+rusqlite = { workspace = true }
+duckdb = { workspace = true }
+
+[dev-dependencies]
+tempfile = "3"
+tokio = { workspace = true, features = ["test-util"] }

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inside an attributedBody blob (NSArchiver streamtyped)</title>
+<style>
+  :root {
+    --bg: #0b0f0c;
+    --surface: #10140f;
+    --surface-elev: #161b14;
+    --border: rgba(232, 228, 210, 0.12);
+    --text: #ede7d6;
+    --text-body: #d8d3c2;
+    --text-secondary: #a8a294;
+    --text-muted: #6e685b;
+    --accent: #ffb000;
+    --accent-soft: #e8a042;
+    --green: #00ff41;
+    --cyan: #66d9ef;
+    --purple: #c792ea;
+    --pink: #f78fb3;
+
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  header.hero { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.01em; }
+  .subtitle { color: var(--text-secondary); margin: 0; }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 2.5rem 0 0.75rem;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+  }
+  h2 .num { color: var(--accent); font-family: var(--font-mono); margin-right: 0.5em; font-weight: 500; }
+
+  p { margin: 0.75em 0; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-elev);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  .tldr {
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface-elev));
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0 2rem;
+  }
+  .tldr > div:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .input-row { display: flex; gap: 0.75rem; align-items: center; margin: 1.5rem 0 1rem; flex-wrap: wrap; }
+  .input-row label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); }
+  .msg-input {
+    flex: 1; min-width: 240px;
+    background: var(--surface-elev); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.6rem 0.85rem; color: var(--text);
+    font-family: var(--font-mono); font-size: 0.95rem; outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .msg-input:focus { border-color: var(--accent); }
+  .presets { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .preset {
+    font-family: var(--font-mono); font-size: 0.74rem;
+    background: var(--surface-elev); color: var(--text-secondary);
+    border: 1px solid var(--border); border-radius: 5px;
+    padding: 0.35rem 0.65rem; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  }
+  .preset:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin: 1.25rem 0; }
+  .stat { background: var(--surface-elev); border: 1px solid var(--border); border-radius: 6px; padding: 0.7rem 0.9rem; }
+  .stat-val { font-family: var(--font-mono); font-size: 1.4rem; color: var(--accent); font-weight: 600; }
+  .stat-val.green { color: var(--green); }
+  .stat-label { font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.15rem; }
+
+  /* overhead bar */
+  .ovbar { display: flex; height: 26px; border-radius: 5px; overflow: hidden; border: 1px solid var(--border); margin: 0.5rem 0 0.25rem; font-family: var(--font-mono); font-size: 0.7rem; }
+  .ovbar .seg { display: flex; align-items: center; justify-content: center; color: var(--bg); font-weight: 600; white-space: nowrap; }
+  .ovbar .seg.over { background: color-mix(in srgb, var(--text-muted) 70%, var(--surface)); color: var(--text-body); }
+  .ovbar .seg.pay { background: var(--green); }
+
+  /* hex dump */
+  .hexwrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.1rem; margin: 1.25rem 0; overflow-x: auto; }
+  .hex { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; white-space: pre; }
+  .hex .off { color: var(--text-muted); }
+  .hex .b { padding: 0 0.5px; border-radius: 2px; }
+  .hex .ascii { color: var(--text-muted); }
+  .r-magic { color: var(--cyan); }
+  .r-classname { color: var(--purple); }
+  .r-lenpfx { color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+  .r-text { color: var(--green); background: color-mix(in srgb, var(--green) 16%, transparent); font-weight: 700; }
+  .r-frame { color: var(--text-muted); }
+  .r-suffix { color: var(--text-secondary); }
+
+  .legend { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: 0.78rem; color: var(--text-secondary); margin: 0.75rem 0; font-family: var(--font-mono); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4em; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  .decode-steps { margin: 1rem 0; }
+  .dstep { display: flex; gap: 0.7rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); }
+  .dstep:last-child { border-bottom: none; }
+  .dstep .dn { font-family: var(--font-mono); color: var(--accent); font-size: 0.8rem; min-width: 1.5rem; }
+  .dstep .dt { font-size: 0.9rem; }
+  .dstep .dt b { color: var(--text); }
+  .dstep code { font-size: 0.82em; }
+  .decoded {
+    font-family: var(--font-mono); font-size: 1.05rem; color: var(--green);
+    background: color-mix(in srgb, var(--green) 8%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+    border-radius: 6px; padding: 0.7rem 1rem; margin-top: 0.5rem; word-break: break-word;
+  }
+
+  footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--text-muted); font-size: 0.85rem; }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--accent-soft); font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <div class="eyebrow">be right back · interactive explainer</div>
+  <h1>Inside an <code>attributedBody</code> blob</h1>
+  <p class="subtitle">
+    When a message isn't in the <code>text</code> column, it's a serialized <code>NSAttributedString</code> in
+    <code>attributedBody</code> — Apple's old <code>NSArchiver</code> "streamtyped" format. Type a message and watch the
+    bytes Apple actually writes to disk, then watch the decoder find your text inside them.
+  </p>
+</header>
+
+<div class="tldr">
+  <div>tl;dr</div>
+  <p>
+    The blob is a length-prefixed walk of an Objective-C object graph:
+    <code>streamtyped</code> magic → the class hierarchy (<code>NSAttributedString</code> → <code>NSObject</code> →
+    <code>NSString</code>) → a <code>+</code> marker, a length byte, and finally <em>your text</em> → then an
+    <code>NSDictionary</code> of attribute runs. For short messages the framing dwarfs the payload — that's why a 5-char
+    message costs ~180 bytes.
+  </p>
+</div>
+
+<h2><span class="num">1.</span>Type a message</h2>
+
+<div class="input-row">
+  <label for="msg">message text</label>
+  <input class="msg-input" id="msg" type="text" value="Yeah " autocomplete="off" maxlength="280" />
+</div>
+<div class="presets" id="presets"></div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val green" id="s-text">—</div><div class="stat-label">text payload (bytes)</div></div>
+  <div class="stat"><div class="stat-val" id="s-over">—</div><div class="stat-label">structural overhead</div></div>
+  <div class="stat"><div class="stat-val" id="s-total">—</div><div class="stat-label">total on disk</div></div>
+  <div class="stat"><div class="stat-val" id="s-pct">—</div><div class="stat-label">% overhead</div></div>
+</div>
+
+<div class="ovbar" id="ovbar"></div>
+<p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;">
+  payload (green) vs framing (grey). Drag the message longer and watch the green slice grow while the grey stays roughly fixed.
+</p>
+
+<h2><span class="num">2.</span>The bytes on disk</h2>
+
+<div class="legend">
+  <span><i class="sw" style="background: var(--cyan)"></i> streamtyped magic</span>
+  <span><i class="sw" style="background: var(--purple)"></i> class names</span>
+  <span><i class="sw" style="background: var(--accent)"></i> length prefix</span>
+  <span><i class="sw" style="background: var(--green)"></i> your text</span>
+  <span><i class="sw" style="background: var(--text-muted)"></i> framing / attribute runs</span>
+</div>
+
+<div class="hexwrap">
+  <div class="hex" id="hex"></div>
+</div>
+
+<h2><span class="num">3.</span>How the decoder gets your text back</h2>
+
+<div class="decode-steps" id="decode-steps"></div>
+<div class="decoded" id="decoded">—</div>
+
+<footer>
+  <p>
+    <strong>What's faked vs real:</strong> the framing here is a faithful, slightly-trimmed <code>streamtyped</code>
+    layout — real <code>NSArchiver</code> blobs carry the same magic, the same length-prefixed class names, the same
+    <code>0x2b</code> C-string marker, and an <code>NSDictionary</code> of attribute runs, but a real attribute run also
+    encodes ranges and style objects we abbreviate. Long strings (≥128 bytes) really do switch to the multi-byte length
+    encoding shown. The decode walk is exactly what the Rust code does via Apple's runtime.
+  </p>
+  <p>
+    <strong>Where this shows up in BRB:</strong> <code>crates/messages-db</code> decodes this through Objective-C FFI
+    (<code>NSUnarchiver</code> for the streamtyped variant), falling back through <code>NSKeyedUnarchiver</code> modern
+    and legacy APIs. Once any unarchiver succeeds, <code>[attributedString string]</code> yields the green bytes above.
+  </p>
+</footer>
+
+</main>
+
+<script>
+  "use strict";
+
+  const PRESETS = ["Yeah ", "happy thanksgiving!", "running late, omw", "lol that's wild 😂", "ok"];
+
+  function el(tag, opts = {}) {
+    const node = document.createElement(tag);
+    if (opts.className) node.className = opts.className;
+    if (opts.text !== undefined) node.textContent = opts.text;
+    if (opts.children) for (const c of opts.children) if (c) node.appendChild(c);
+    return node;
+  }
+
+  // ── Build the streamtyped byte model with per-byte regions ─────────
+  // Each entry: { v: byteValue, r: regionName }
+  const enc = new TextEncoder();
+
+  function pushBytes(arr, bytes, region) {
+    for (const b of bytes) arr.push({ v: b & 0xff, r: region });
+  }
+  function pushStr(arr, str, region) {
+    pushBytes(arr, Array.from(enc.encode(str)), region);
+  }
+  // length-prefixed class name: [len][name bytes], name in classname region, len in frame region
+  function pushClass(arr, name) {
+    arr.push({ v: name.length & 0xff, r: "frame" });
+    pushStr(arr, name, "classname");
+  }
+  // streamtyped variable-length count for the C string
+  function pushStrLen(arr, n) {
+    if (n < 128) {
+      arr.push({ v: n, r: "lenpfx" });
+    } else {
+      arr.push({ v: 0x81, r: "lenpfx" });          // 2-byte marker
+      arr.push({ v: n & 0xff, r: "lenpfx" });        // low byte
+      arr.push({ v: (n >> 8) & 0xff, r: "lenpfx" }); // high byte
+    }
+  }
+
+  function buildBlob(message) {
+    const textBytes = Array.from(enc.encode(message));
+    const arr = [];
+
+    // ── magic ──
+    pushBytes(arr, [0x04, 0x0b], "frame");
+    pushStr(arr, "streamtyped", "magic");
+    pushBytes(arr, [0x81, 0xe8, 0x03], "frame");
+
+    // ── NSAttributedString class decl ──
+    pushBytes(arr, [0x84, 0x01, 0x40, 0x84, 0x84, 0x84], "frame");
+    pushClass(arr, "NSAttributedString");
+    pushBytes(arr, [0x00, 0x84, 0x84], "frame");
+    pushClass(arr, "NSObject");
+    pushBytes(arr, [0x00, 0x85, 0x92, 0x84, 0x84, 0x84], "frame");
+    pushClass(arr, "NSString");
+    pushBytes(arr, [0x01, 0x94, 0x84, 0x01], "frame");
+
+    // ── the C-string: '+' marker, length, then text ──
+    arr.push({ v: 0x2b, r: "frame" }); // '+' marker = C string follows
+    const textStart = arr.length;
+    pushStrLen(arr, textBytes.length);
+    pushBytes(arr, textBytes, "text");
+
+    // ── attribute-run section: NSDictionary -> NSObject -> NSString ──
+    pushBytes(arr, [0x86, 0x84, 0x02, 0x69, 0x49, 0x01, 0x05, 0x92, 0x84, 0x84, 0x84], "suffix");
+    pushClass(arr, "NSDictionary");
+    pushBytes(arr, [0x00, 0x84, 0x84], "suffix");
+    pushClass(arr, "NSObject");
+    pushBytes(arr, [0x00, 0x85, 0x96, 0x92, 0x84, 0x84, 0x84], "suffix");
+    pushClass(arr, "NSString");
+    pushBytes(arr, [0x01, 0x94, 0x84, 0x01, 0x91, 0x84, 0x86, 0x92, 0x84, 0x84, 0x84], "suffix");
+    pushClass(arr, "NSNumber");
+    pushBytes(arr, [0x00, 0x84, 0x84, 0x07], "suffix");
+    pushStr(arr, "NSValue", "classname");
+    pushBytes(arr, [0x00, 0x84, 0x84, 0x01, 0x2a, 0x84, 0x98, 0x98, 0x00, 0x86, 0x86], "suffix");
+
+    return { bytes: arr, textBytes, textStart };
+  }
+
+  // ── Render hex dump ────────────────────────────────────────────────
+  const REGION_CLASS = {
+    magic: "r-magic", classname: "r-classname", lenpfx: "r-lenpfx",
+    text: "r-text", frame: "r-frame", suffix: "r-suffix",
+  };
+
+  function hexByte(v) { return v.toString(16).padStart(2, "0"); }
+  function asciiChar(v) { return v >= 0x20 && v <= 0x7e ? String.fromCharCode(v) : "."; }
+
+  function renderHex(model) {
+    const hexEl = document.getElementById("hex");
+    hexEl.replaceChildren();
+    const bytes = model.bytes;
+    for (let row = 0; row < bytes.length; row += 16) {
+      const line = el("div");
+      line.appendChild(el("span", { className: "off", text: row.toString(16).padStart(8, "0") + "  " }));
+
+      // hex columns
+      for (let i = 0; i < 16; i++) {
+        const idx = row + i;
+        if (idx < bytes.length) {
+          const cell = bytes[idx];
+          line.appendChild(el("span", { className: "b " + REGION_CLASS[cell.r], text: hexByte(cell.v) }));
+          line.appendChild(document.createTextNode(" "));
+        } else {
+          line.appendChild(document.createTextNode("   "));
+        }
+        if (i === 7) line.appendChild(document.createTextNode(" "));
+      }
+
+      line.appendChild(document.createTextNode(" "));
+      // ascii gutter
+      for (let i = 0; i < 16; i++) {
+        const idx = row + i;
+        if (idx < bytes.length) {
+          const cell = bytes[idx];
+          const cls = cell.r === "text" ? "b r-text" : cell.r === "classname" ? "b r-classname" : "b r-frame";
+          line.appendChild(el("span", { className: cls, text: asciiChar(cell.v) }));
+        }
+      }
+      hexEl.appendChild(line);
+    }
+  }
+
+  // ── Decode steps ───────────────────────────────────────────────────
+  // Build step text from segment arrays so we never touch innerHTML:
+  // strings → text nodes, {b} → <b>, {code} → <code>.
+  function frag(parts) {
+    return parts.map((p) => {
+      if (typeof p === "string") return document.createTextNode(p);
+      if (p.b !== undefined) return el("b", { text: p.b });
+      if (p.code !== undefined) return el("code", { text: p.code });
+      return document.createTextNode("");
+    });
+  }
+
+  function renderDecode(model, message) {
+    const stepsEl = document.getElementById("decode-steps");
+    stepsEl.replaceChildren();
+    const tLen = model.textBytes.length;
+    const lenAt = model.textStart;
+    const big = tLen >= 128;
+
+    const steps = [
+      ["1", ["Read the magic ", { b: "streamtyped" }, " at byte 2 → this is the old ", { code: "NSArchiver" }, " format, so use ", { code: "NSUnarchiver" }, "."]],
+      ["2", ["Walk the class table: ", { b: "NSAttributedString → NSObject → NSString" }, ". Each name is length-prefixed (", { code: "0x12" }, " = 18 = len of \"NSAttributedString\")."]],
+      ["3", ["Hit the ", { code: "0x2b" }, " (", { b: "'+'" }, ") marker at byte " + (lenAt - 1) + " → a C string follows."]],
+      ["4", big
+        ? ["Read the length: ", { code: "0x81" }, " then a little-endian 16-bit count → ", { b: tLen + " bytes" }, "."]
+        : ["Read the next byte as the length → ", { b: tLen + " byte" + (tLen === 1 ? "" : "s") }, " (", { code: "0x" + hexByte(tLen) }, ")."]],
+      ["5", ["Slice the next ", { b: String(tLen) }, " bytes and decode as UTF-8 → the message."]],
+      ["6", ["The trailing ", { b: "NSDictionary" }, " holds attribute runs (link ranges, formatting) — we ignore it and keep the plain string."]],
+    ];
+    for (const [n, parts] of steps) {
+      const node = el("div", { className: "dstep" });
+      node.appendChild(el("span", { className: "dn", text: n }));
+      node.appendChild(el("span", { className: "dt", children: frag(parts) }));
+      stepsEl.appendChild(node);
+    }
+
+    const decodedEl = document.getElementById("decoded");
+    decodedEl.replaceChildren();
+    decodedEl.appendChild(document.createTextNode("→ "));
+    decodedEl.appendChild(el("span", { text: message.length ? JSON.stringify(message) : "(empty string)" }));
+  }
+
+  // ── Stats + overhead bar ───────────────────────────────────────────
+  function renderStats(model) {
+    const total = model.bytes.length;
+    const textLen = model.textBytes.length;
+    const over = total - textLen;
+    const pct = total > 0 ? Math.round((over / total) * 100) : 0;
+
+    document.getElementById("s-text").textContent = textLen;
+    document.getElementById("s-over").textContent = over;
+    document.getElementById("s-total").textContent = total;
+    document.getElementById("s-pct").textContent = pct + "%";
+
+    const bar = document.getElementById("ovbar");
+    bar.replaceChildren();
+    const payPct = total > 0 ? (textLen / total) * 100 : 0;
+    const overSeg = el("div", { className: "seg over", text: over + "B framing" });
+    overSeg.style.width = (100 - payPct) + "%";
+    const paySeg = el("div", { className: "seg pay", text: textLen + "B" });
+    paySeg.style.width = payPct + "%";
+    bar.appendChild(overSeg);
+    if (payPct > 0) bar.appendChild(paySeg);
+  }
+
+  // ── Wire up ────────────────────────────────────────────────────────
+  const msgInput = document.getElementById("msg");
+
+  function update() {
+    const message = msgInput.value;
+    const model = buildBlob(message);
+    renderStats(model);
+    renderHex(model);
+    renderDecode(model, message);
+  }
+
+  const presetsEl = document.getElementById("presets");
+  for (const p of PRESETS) {
+    const btn = el("button", { className: "preset", text: JSON.stringify(p) });
+    btn.addEventListener("click", () => { msgInput.value = p; update(); });
+    presetsEl.appendChild(btn);
+  }
+
+  msgInput.addEventListener("input", update);
+  update();
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "dad-surgery",
+    "title": "Dad's knee",
+    "contact": "mom",
+    "days": [
+      {
+        "day_offset": -350,
+        "slot": "evening",
+        "messages": [
+          { "from": "mom", "text": "Your father finally saw the orthopedist about the knee. It's bone on bone, they want to replace it." },
+          { "from": "me", "text": "oh wow. is he ok with that?" },
+          { "from": "mom", "text": "He is pretending to be ok with it, which is his way." }
+        ]
+      },
+      {
+        "day_offset": -338,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "mom", "text": "Dad's knee replacement is scheduled for the twelfth of next month at Saint Vincent's. They said two nights in the hospital.", "fact": "dads-surgery" },
+          { "from": "me", "text": "I'll come up. tell me what would actually help" },
+          { "from": "mom", "text": "Honestly just being here for a few days after. He'll be impossible." }
+        ]
+      },
+      {
+        "day_offset": -306,
+        "slot": "morning",
+        "messages": [
+          { "from": "mom", "text": "He's out of surgery and doing well. Grumpy already, which the nurse says is a good sign. ❤️" },
+          { "from": "me", "text": "thank god. give him my love" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dad-direct",
+    "title": "Dad, directly",
+    "contact": "dad",
+    "days": [
+      {
+        "day_offset": -299,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "dad", "text": "Your mother tells me you're coming up. You don't have to do that." },
+          { "from": "me", "text": "I know. I'm coming up." },
+          { "from": "dad", "text": "Alright. Bring the good coffee." }
+        ]
+      },
+      {
+        "day_offset": -128,
+        "slot": "morning",
+        "messages": [
+          { "from": "dad", "text": "I finally sold the Volvo. Got forty two hundred for it, which is more than I expected for a car with that many miles.", "fact": "car-sold" },
+          { "from": "me", "text": "end of an era honestly" },
+          { "from": "dad", "text": "Twenty two years. I taught you to drive in that car." },
+          { "from": "me", "text": "I know. I'm a little sad about it" }
+        ]
+      },
+      {
+        "day_offset": -41,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "dad", "text": "Knee is at about ninety percent. Walked the whole loop at the park today." },
+          { "from": "me", "text": "that's huge. proud of you" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nina-wedding",
+    "title": "Nina's engagement and wedding",
+    "contact": "nina",
+    "days": [
+      {
+        "day_offset": -262,
+        "slot": "night",
+        "messages": [
+          { "from": "nina", "text": "SHE SAID YES" },
+          { "from": "nina", "text": "I mean I said yes. he asked. I said yes. I'm engaged!!" },
+          { "from": "me", "text": "NINA. congratulations. I'm so happy for you" },
+          { "from": "nina", "text": "I'm shaking. ok I have to call mom" }
+        ]
+      },
+      {
+        "day_offset": -190,
+        "slot": "evening",
+        "messages": [
+          { "from": "nina", "text": "we picked a venue!! we're doing it at the Ashford Barn up in Hudson, next september", "fact": "wedding-venue" },
+          { "from": "me", "text": "that sounds so you" },
+          { "from": "nina", "text": "it has a whole field and string lights and I cried in the parking lot" },
+          { "from": "me", "text": "obviously you did" }
+        ]
+      },
+      {
+        "day_offset": -87,
+        "slot": "evening",
+        "messages": [
+          { "from": "nina", "text": "ok formal ask: will you give a toast at the reception" },
+          { "from": "me", "text": "yes. terrifying. yes." },
+          { "from": "nina", "text": "you have eleven months, don't write it the night before" }
+        ]
+      },
+      {
+        "day_offset": -22,
+        "slot": "afternoon",
+        "messages": [
+          { "from": "nina", "text": "dress shopping was a disaster and also I found the dress" },
+          { "from": "me", "text": "both things can be true" }
+        ]
+      }
+    ]
+  }
+]

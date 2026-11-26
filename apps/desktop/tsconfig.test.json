@@ -1,0 +1,11 @@
+{
+  /* Typechecks the test suite. Kept separate from tsconfig.json so a type error
+     in a test can never block the production build (`npm run build`).
+     Run with: npx tsc -p tsconfig.test.json --noEmit */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": ["src"],
+  "exclude": []
+}

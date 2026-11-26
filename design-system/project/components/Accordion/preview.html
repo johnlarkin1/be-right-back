@@ -1,0 +1,29 @@
+<!-- @dsCard group="Surfaces" height=210 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .demo-col { display: flex; flex-direction: column; gap: 12px; }
+  .demo-note { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-secondary); margin: 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  const h = React.createElement, B = window.BeRightBack;
+  const note = (t) => h("p", { className: "demo-note" }, t);
+  function Demo() {
+    const [open, setOpen] = React.useState("a");
+    const item = (id, title, icon, body) => h(B.Accordion, { key: id, title, icon, isOpen: open === id, onToggle: () => setOpen(open === id ? null : id) },
+      h("p", { style: { margin: 0, fontSize: 12, color: "var(--color-text-secondary)" } }, body));
+    return h("div", { className: "demo-col", style: { maxWidth: 480, gap: 8 } },
+      item("a", "Privacy", B.icons.Shield, "All processing happens locally on your Mac."),
+      item("b", "Storage", B.icons.Database, "Your data stays in ~/.be-right-back."));
+  }
+  ReactDOM.createRoot(document.getElementById("app")).render(h(Demo));
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!-- @dsCard height=320 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; }
+  body { width: 960px; height: 320px; position: relative; overflow: hidden; background: var(--color-surface); }
+  svg { position: absolute; inset: 0; }
+  .accent { fill: var(--color-accent); }
+  .second { fill: var(--color-accent-secondary); }
+  .casper { fill: var(--color-ghost-pink); }
+  .violet { fill: var(--primitive-violet-500); }
+  .dim { fill: var(--color-accent-dim); }
+  .ground { fill: var(--color-surface); }
+  .r-card { rx: var(--radius-card); }
+  .r-btn { rx: var(--radius-button); }
+  .words { position: absolute; left: 32px; bottom: 32px; max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 88px; line-height: 0.95; color: var(--color-text-primary); }
+  [data-theme="modern"] .name, [data-theme="website"] .name { font-weight: 600; letter-spacing: -0.02em; }
+  .tag { margin: 16px 0 0; font-family: var(--font-body); font-size: 14px; color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+<!--
+  Blocks: color-accent 240x236, color-accent-secondary 128x124, color-ghost-pink 56x96, primitive-violet-500 56x96, color-accent-dim 384x32.
+  Arrangement: a flush modular grid with 16px gutters (primitive-space-4) that bleeds off the top and right edges, like stacked terminal panes.
+  Pattern: pixel tiles. The mascot and the display face are pixel art, so 8px square pixels at a 28px pitch are cut from the green block in color-surface.
+  Scales: primitive-space-2 (pixel), primitive-space-4 (gutter), primitive-space-7 (pitch), radius-card and radius-button (corners), primitive-radius-none (pixels).
+-->
+<svg width="960" height="320" viewBox="0 0 960 320" aria-hidden="true">
+  <defs>
+    <pattern id="px" x="594" y="24" width="28" height="28" patternUnits="userSpaceOnUse">
+      <rect class="ground" width="8" height="8"/>
+    </pattern>
+  </defs>
+  <rect class="accent r-card" x="576" y="-12" width="240" height="236"/>
+  <rect x="594" y="24" width="204" height="176" fill="url(#px)"/>
+  <rect class="second r-card" x="832" y="-12" width="140" height="124"/>
+  <rect class="casper r-btn" x="832" y="128" width="56" height="96"/>
+  <rect class="violet r-btn" x="904" y="128" width="68" height="96"/>
+  <rect class="dim r-btn" x="576" y="240" width="396" height="32"/>
+</svg>
+<div class="words">
+  <h1 class="name">Be Right<br>Back</h1>
+  <p class="tag">Your data never leaves your device</p>
+</div>
+</body>
+</html>

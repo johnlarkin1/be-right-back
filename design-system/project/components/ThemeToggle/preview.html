@@ -1,0 +1,23 @@
+<!-- @dsCard group="Actions" height=120 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .demo-col { display: flex; flex-direction: column; gap: 12px; }
+  .demo-note { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-secondary); margin: 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  const h = React.createElement, B = window.BeRightBack;
+  const note = (t) => h("p", { className: "demo-note" }, t);
+  const Demo = () => h("div", { className: "demo-row", style: { gap: 32 } },
+    h(B.ThemeToggle, { compact: true }), h(B.ThemeToggle, { showLabel: true }));
+  ReactDOM.createRoot(document.getElementById("app")).render(h(Demo));
+</script>
+</body>
+</html>

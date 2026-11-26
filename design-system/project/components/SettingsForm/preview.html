@@ -1,0 +1,43 @@
+<!-- @dsCard group="Forms" height=430 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; }
+  [data-theme="modern"] .only-retro { display: none !important; }
+  html:not([data-theme="modern"]) .only-modern { display: none !important; }
+  .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .demo-note { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-secondary); margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<div class="settings-modal-content" style="max-width:440px">
+  <div class="settings-section">
+    <h3 class="settings-section-title">Date range</h3>
+    <div class="settings-row">
+      <label class="settings-label" for="f1">Messages to include</label>
+      <select class="settings-select" id="f1"><option>All messages</option><option>Last 2 years</option></select>
+      <span class="settings-hint">Fewer messages make ingestion faster</span>
+    </div>
+    <div class="settings-row">
+      <label class="settings-label" for="f2">Batch size</label>
+      <input class="settings-input settings-input-small" id="f2" value="32">
+    </div>
+  </div>
+  <div class="settings-section">
+    <h3 class="settings-section-title">Analysis</h3>
+    <div class="settings-row settings-row-toggle">
+      <div class="settings-toggle-group">
+        <span class="settings-label" style="margin-bottom:0">Run analytics after ingestion</span>
+        <button class="settings-toggle enabled" role="switch" aria-checked="true" aria-label="Run analytics after ingestion"><span class="settings-toggle-thumb"></span></button>
+      </div>
+    </div>
+    <div class="settings-row settings-row-slider">
+      <div class="settings-slider-header"><span class="settings-label">Chunk window</span><span class="settings-slider-value">8</span></div>
+      <input class="settings-slider" type="range" min="2" max="16" value="8" aria-label="Chunk window">
+    </div>
+  </div>
+</div>
+</body>
+</html>

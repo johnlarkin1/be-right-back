@@ -1,0 +1,222 @@
+/* ============================================
+   PRIMITIVE TOKENS
+   Raw values - NEVER use directly in components
+   These are the building blocks for semantic tokens
+   ============================================ */
+
+@theme inline {
+  /* ============================================
+     COLORS
+     ============================================ */
+
+  /* Zinc Scale (neutrals) */
+  --primitive-zinc-50: #fafafa;
+  --primitive-zinc-100: #f4f4f5;
+  --primitive-zinc-200: #e4e4e7;
+  --primitive-zinc-300: #d4d4d8;
+  --primitive-zinc-400: #a1a1aa;
+  --primitive-zinc-500: #71717a;
+  --primitive-zinc-600: #52525b;
+  --primitive-zinc-700: #3f3f46;
+  --primitive-zinc-800: #27272a;
+  --primitive-zinc-900: #18181b;
+  --primitive-zinc-950: #09090b;
+
+  /* CRT Terminal Colors */
+  --primitive-crt-bg: #0a0e0a;
+  --primitive-crt-bg-light: #0f150f;
+  --primitive-crt-green: #00ff41;
+  --primitive-crt-green-dim: rgba(0, 255, 65, 0.6);
+  --primitive-crt-green-glow: rgba(0, 255, 65, 0.5);
+  --primitive-crt-green-subtle: rgba(0, 255, 65, 0.2);
+  --primitive-crt-green-faint: rgba(0, 255, 65, 0.1);
+  --primitive-crt-amber: #ffb000;
+  --primitive-crt-amber-dim: rgba(255, 176, 0, 0.6);
+  --primitive-crt-amber-subtle: rgba(255, 176, 0, 0.2);
+  --primitive-crt-amber-faint: rgba(255, 176, 0, 0.1);
+  --primitive-crt-purple: #8b00ff;
+  --primitive-crt-cyan: rgba(0, 255, 255, 0.5);
+  --primitive-crt-cyan-solid: #00ffff;
+  --primitive-crt-error: #ff4141;
+
+  /* Ghost Color Palette */
+  --primitive-ghost-green: #00ff41;
+  --primitive-ghost-pink: #ff69b4;
+  --primitive-ghost-pink-hover: #ff8dc7;
+  --primitive-ghost-pink-active: #ffb6d9;
+  --primitive-ghost-magenta: #ff00ff;
+  --primitive-ghost-purple: #8b5cf6;
+  --primitive-ghost-cyan: #00ffff;
+  --primitive-ghost-amber: #ffb000;
+
+  /* Modern Palette (Slate Scale) */
+  --primitive-slate-50: #f8fafc;
+  --primitive-slate-100: #f1f5f9;
+  --primitive-slate-200: #e2e8f0;
+  --primitive-slate-300: #cbd5e1;
+  --primitive-slate-400: #94a3b8;
+  --primitive-slate-500: #64748b;
+  --primitive-slate-700: #334155;
+  --primitive-slate-800: #1e293b;
+  --primitive-slate-900: #0f172a;
+  --primitive-slate-950: #020617;
+
+  /* Accent Colors (Modern) */
+  --primitive-emerald-400: #34d399;
+  --primitive-emerald-500: #10b981;
+  --primitive-emerald-600: #059669;
+
+  --primitive-blue-500: #3b82f6;
+  --primitive-blue-600: #2563eb;
+
+  --primitive-violet-500: #8b5cf6;
+  --primitive-violet-600: #7c3aed;
+
+  --primitive-rose-500: #f43f5e;
+
+  /* Special Colors */
+  --primitive-mint-400: #3dffbe;
+  --primitive-sky-400: #00d4ff;
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  /* Font Families */
+  --primitive-font-vt323: "VT323", monospace;
+  --primitive-font-ibm-plex: "IBM Plex Mono", monospace;
+  --primitive-font-inter: "Inter", system-ui, sans-serif;
+  --primitive-font-geist: "Geist Sans", system-ui, sans-serif;
+  --primitive-font-geist-mono: "Geist Mono", monospace;
+
+  /* Font Sizes */
+  --primitive-text-xs: 0.75rem;
+  --primitive-text-sm: 0.875rem;
+  --primitive-text-base: 1rem;
+  --primitive-text-lg: 1.125rem;
+  --primitive-text-xl: 1.25rem;
+  --primitive-text-2xl: 1.5rem;
+  --primitive-text-3xl: 1.875rem;
+  --primitive-text-4xl: 2.25rem;
+
+  /* ============================================
+     SPACING
+     ============================================ */
+
+  --primitive-space-0: 0;
+  --primitive-space-px: 1px;
+  --primitive-space-0-5: 0.125rem;
+  --primitive-space-1: 0.25rem;
+  --primitive-space-1-5: 0.375rem;
+  --primitive-space-2: 0.5rem;
+  --primitive-space-2-5: 0.625rem;
+  --primitive-space-3: 0.75rem;
+  --primitive-space-3-5: 0.875rem;
+  --primitive-space-4: 1rem;
+  --primitive-space-5: 1.25rem;
+  --primitive-space-6: 1.5rem;
+  --primitive-space-7: 1.75rem;
+  --primitive-space-8: 2rem;
+  --primitive-space-9: 2.25rem;
+  --primitive-space-10: 2.5rem;
+  --primitive-space-11: 2.75rem;
+  --primitive-space-12: 3rem;
+  --primitive-space-14: 3.5rem;
+  --primitive-space-16: 4rem;
+  --primitive-space-20: 5rem;
+  --primitive-space-24: 6rem;
+
+  /* ============================================
+     BORDER RADII
+     ============================================ */
+
+  --primitive-radius-none: 0;
+  --primitive-radius-sm: 0.125rem;
+  --primitive-radius-md: 0.375rem;
+  --primitive-radius-lg: 0.5rem;
+  --primitive-radius-xl: 0.75rem;
+  --primitive-radius-2xl: 1rem;
+  --primitive-radius-3xl: 1.5rem;
+  --primitive-radius-full: 9999px;
+
+  /* ============================================
+     SHADOWS
+     ============================================ */
+
+  --primitive-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --primitive-shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --primitive-shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --primitive-shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Glow Shadows */
+  --primitive-shadow-glow-green: 0 0 8px rgba(0, 255, 65, 0.5);
+  --primitive-shadow-glow-green-strong:
+    0 0 4px rgba(0, 255, 65, 0.8), 0 0 8px rgba(0, 255, 65, 0.6),
+    0 0 16px rgba(0, 255, 65, 0.4);
+  --primitive-shadow-glow-amber: 0 0 8px rgba(255, 176, 0, 0.5);
+  --primitive-shadow-glow-pink: 0 0 8px rgba(255, 105, 180, 0.5);
+
+  /* ============================================
+     TRANSITIONS
+     ============================================ */
+
+  --primitive-duration-fast: 150ms;
+  --primitive-duration-normal: 200ms;
+  --primitive-duration-slow: 300ms;
+  --primitive-duration-slower: 500ms;
+  --primitive-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --primitive-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --primitive-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --primitive-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ============================================
+     Z-INDEX SCALE
+     ============================================ */
+
+  --primitive-z-base: 0;
+  --primitive-z-dropdown: 1000;
+  --primitive-z-sticky: 1100;
+  --primitive-z-fixed: 1200;
+  --primitive-z-modal-backdrop: 1300;
+  --primitive-z-modal: 1400;
+  --primitive-z-popover: 1500;
+  --primitive-z-tooltip: 1600;
+  --primitive-z-crt-glow: 9996;
+  --primitive-z-crt-vignette: 9997;
+  --primitive-z-crt-scanlines: 9998;
+  --primitive-z-crt-top: 9999;
+
+  /* ============================================
+     TAILWIND UTILITY CLASS COLORS
+     These generate utility classes like text-crt-text, bg-crt-bg
+     They reference semantic tokens for theme switching
+     ============================================ */
+
+  /* CRT Terminal Colors (for Tailwind utilities) */
+  --color-crt-bg: var(--color-surface, #0a0e0a);
+  --color-crt-bg-light: var(--color-surface-elevated, #0f150f);
+  --color-crt-text: var(--color-accent, #00ff41);
+  --color-crt-text-dim: var(--color-accent-dim, rgba(0, 255, 65, 0.6));
+  --color-crt-glow: var(--primitive-crt-green-glow);
+  --color-crt-accent: var(--color-accent-secondary, #ffb000);
+  --color-crt-accent-dim: var(
+    --color-accent-secondary-dim,
+    rgba(255, 176, 0, 0.6)
+  );
+  --color-crt-purple: var(--primitive-crt-purple);
+  --color-crt-cyan: var(--primitive-crt-cyan);
+  --color-crt-error: var(--color-error, #ff4141);
+  --color-crt-border: var(--color-border-accent, rgba(0, 255, 65, 0.2));
+  --color-crt-green: var(--color-accent, #00ff41);
+
+  /* Ghost Colors (for Tailwind utilities) */
+  --color-ghost-green: var(--primitive-ghost-green);
+  --color-ghost-pink: var(--primitive-ghost-pink);
+  --color-ghost-magenta: var(--primitive-ghost-magenta);
+  --color-ghost-purple: var(--primitive-ghost-purple);
+  --color-ghost-cyan: var(--primitive-ghost-cyan);
+  --color-ghost-amber: var(--primitive-ghost-amber);
+}

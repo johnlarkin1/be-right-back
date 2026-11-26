@@ -1,0 +1,37 @@
+[package]
+name = "ingestion"
+version = "0.1.0"
+edition = "2024"
+description = "Ingestion pipeline for Be Right Back - creates app databases from iMessage snapshots"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+ts-rs = { workspace = true }
+# Workspace crates
+messages-db = { path = "../messages-db" }
+common = { path = "../common" }
+
+# Database access
+duckdb = { workspace = true }
+rusqlite = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Date/time
+chrono = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Regex (query planner pattern matching)
+regex = { workspace = true }
+
+[dev-dependencies]
+# Throwaway fixture databases for the retrieval-eval harness
+tempfile = "3"

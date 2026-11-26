@@ -1,0 +1,31 @@
+<!-- @dsCard group="Website" height=430 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 32px; background: var(--web-crt-bg); }
+  .prose-brb { color: var(--web-crt-body); line-height: 1.7; font-size: 1.0625rem; font-family: var(--font-inter); max-width: 640px; }
+  .prose-brb h1, .prose-brb h2 { color: var(--web-crt-accent-soft); font-family: var(--font-inter); font-weight: 600; letter-spacing: -0.015em; margin: 0 0 0.5em; }
+  .prose-brb h1 { font-size: 2rem; letter-spacing: -0.025em; font-weight: 700; margin-top: 0.25em; }
+  .prose-brb h2 { font-size: 1.5rem; margin-top: 1.2em; }
+  .prose-brb p { margin: 0 0 1.15em; }
+  .prose-brb code { font-family: var(--font-jetbrains); font-size: 0.875em; color: var(--web-crt-text);
+    background: color-mix(in srgb, var(--web-crt-text) 7%, var(--web-surface-elevated)); padding: 0.15em 0.4em; border-radius: 0.25rem;
+    border: 1px solid color-mix(in srgb, var(--web-crt-text) 12%, transparent); }
+  .prose-brb pre { background: var(--web-surface); border: 1px solid var(--web-border-subtle); border-radius: 0.5rem; padding: 0.8rem 1rem; margin: 1.15em 0;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.02) inset; font-family: var(--font-jetbrains); font-size: 0.875rem; color: var(--web-crt-body); overflow-x: auto; }
+  .prose-brb blockquote { border-left: 3px solid var(--web-crt-accent); padding-left: 1em; margin: 1.5em 0; color: var(--web-text-secondary); font-style: italic; }
+</style>
+</head>
+<body>
+<article class="prose-brb">
+  <h1>How it's built</h1>
+  <p>Be Right Back is a local-first macOS app. It creates AI personas from your iMessage history, and <code>brb.duckdb</code> holds the vectors.</p>
+  <h2>Privacy</h2>
+  <blockquote>Everything stays on your Mac.</blockquote>
+  <pre>make dev</pre>
+</article>
+</body>
+</html>

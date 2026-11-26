@@ -1,0 +1,113 @@
+[
+  {
+    "id": "book-club",
+    "title": "Book club with Harper",
+    "contact": "harper",
+    "days": [
+      {
+        "day_offset": -310,
+        "slot": "evening",
+        "messages": [
+          { "from": "harper", "text": "We have a spot opening up in the reading group if you'd like it. Second Tuesday of the month, six people, wine is mandatory." },
+          { "from": "me", "text": "the wine clause is what sold me. I'm in" }
+        ]
+      },
+      {
+        "day_offset": -150,
+        "slot": "evening",
+        "messages": [
+          { "from": "harper", "text": "You were right about the ending and I was wrong, and I want that noted in the minutes." },
+          { "from": "me", "text": "noting it. framing it, actually" }
+        ]
+      },
+      {
+        "day_offset": -29,
+        "slot": "evening",
+        "messages": [
+          { "from": "harper", "text": "Next month we're doing Piranesi by Susanna Clarke. It's short, strange, and I think you'll love it.", "fact": "book-club-pick" },
+          { "from": "me", "text": "ordering it tonight" },
+          { "from": "harper", "text": "Don't read anything about it first. Go in cold." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "casey-catchup",
+    "title": "Casey resurfaces",
+    "contact": "casey",
+    "days": [
+      {
+        "day_offset": -390,
+        "slot": "night",
+        "messages": [
+          { "from": "casey", "text": "hey stranger. saw a photo of that apartment we had on bergen and got weirdly emotional" },
+          { "from": "me", "text": "casey!! that place was objectively terrible and I miss it constantly" },
+          { "from": "casey", "text": "the shower that was also the kitchen" },
+          { "from": "me", "text": "architecturally illegal. formative years" }
+        ]
+      },
+      {
+        "day_offset": -73,
+        "slot": "evening",
+        "messages": [
+          { "from": "casey", "text": "I'm moving back east in the spring, portland was great but it wasn't home", "fact": "casey-moving-back" },
+          { "from": "me", "text": "wait really?? that's amazing news" },
+          { "from": "casey", "text": "I know. we should actually see each other this time" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "work-standup-group",
+    "title": "Team logistics",
+    "group": "work-standup",
+    "days": [
+      {
+        "day_offset": -230,
+        "slot": "morning",
+        "messages": [
+          { "from": "sam", "text": "Standup is moving to 9:45 starting Monday to accommodate the London folks." },
+          { "from": "priya", "text": "thank you, that fifteen minutes is life changing" },
+          { "from": "me", "text": "genuinely" }
+        ]
+      },
+      {
+        "day_offset": -70,
+        "slot": "morning",
+        "messages": [
+          { "from": "priya", "text": "I'm out sick today, sorry" },
+          { "from": "sam", "text": "Feel better, we'll cover." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "family-group",
+    "title": "Family group chat",
+    "group": "family",
+    "days": [
+      {
+        "day_offset": -260,
+        "slot": "evening",
+        "messages": [
+          { "from": "nina", "text": "I have news and I want to tell you all at once so nobody feels second" },
+          { "from": "mom", "text": "Nina Marie." },
+          { "from": "nina", "text": "I'M ENGAGED" },
+          { "from": "mom", "text": "OH MY GOODNESS. I'm crying. Robert. ROBERT." },
+          { "from": "dad", "text": "I'm right here. Congratulations sweetheart." },
+          { "from": "me", "text": "best group chat message in this chat's history" }
+        ]
+      },
+      {
+        "day_offset": -55,
+        "slot": "evening",
+        "messages": [
+          { "from": "mom", "text": "Thanksgiving is at our house this year. Please tell me now if you're bringing anyone." },
+          { "from": "nina", "text": "bringing him obviously" },
+          { "from": "me", "text": "jordan and me, so two" },
+          { "from": "dad", "text": "I'm doing the turkey. This is not up for discussion." }
+        ]
+      }
+    ]
+  }
+]
