@@ -876,7 +876,7 @@ mod tests {
 
         let (sql, params) = build_cluster_examples_query(7, None, 2);
         assert!(params.is_empty());
-        assert!(!sql.contains("contact_id"));
+        assert!(!sql.contains("AND contact_id"));
     }
 
     /// End-to-end decode check against a real DuckDB using the production
@@ -896,14 +896,15 @@ mod tests {
                  cluster_label   VARCHAR,
                  cluster_color   VARCHAR,
                  contact_id      VARCHAR,
+                 contact_name    VARCHAR,
                  message_preview VARCHAR,
                  chunk_date      TIMESTAMP WITH TIME ZONE
              );
              INSERT INTO chunk_projections VALUES
-                 (0, 'Dinner plans', '#fff', '+1555', 'pizza tonight?', TIMESTAMPTZ '2024-06-02 00:30:00+00'),
-                 (0, 'Dinner plans', '#fff', '+1555', 'sounds good',    TIMESTAMPTZ '2024-06-04 15:00:00+00'),
-                 (1, 'Work',         '#000', '+1666', 'standup at 9',   TIMESTAMPTZ '2024-07-01 12:00:00+00'),
-                 (-1, 'Noise',       '#ccc', '+1555', 'noise point',    TIMESTAMPTZ '2024-06-03 12:00:00+00');",
+                 (0, 'Dinner plans', '#fff', '+1555', 'Sam',  'pizza tonight?', TIMESTAMPTZ '2024-06-02 00:30:00+00'),
+                 (0, 'Dinner plans', '#fff', '+1555', 'Sam',  'sounds good',    TIMESTAMPTZ '2024-06-04 15:00:00+00'),
+                 (1, 'Work',         '#000', '+1666', NULL,   'standup at 9',   TIMESTAMPTZ '2024-07-01 12:00:00+00'),
+                 (-1, 'Noise',       '#ccc', '+1555', 'Sam',  'noise point',    TIMESTAMPTZ '2024-06-03 12:00:00+00');",
         )
         .expect("schema + fixtures");
 
@@ -954,6 +955,13 @@ mod tests {
             .expect("query examples")
             .collect::<std::result::Result<Vec<_>, _>>()
             .expect("decode examples");
-        assert_eq!(previews, vec!["sounds good".to_string(), "pizza tonight?".to_string()]);
+        // Each preview carries a `[contact | local date]` prefix for the agent.
+        assert_eq!(
+            previews,
+            vec![
+                "[Sam | 2024-06-04] sounds good".to_string(),
+                "[Sam | 2024-06-01] pizza tonight?".to_string()
+            ]
+        );
     }
 }
